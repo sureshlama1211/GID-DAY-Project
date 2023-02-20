@@ -1,46 +1,69 @@
 import React from "react"
-import { useState } from "react";
-import { Button } from "antd";
-import { Link } from "react-router-dom";
-import { useForm } from 'react-hook-form';
-//calling api 
-import axios from "axios"
-export default function Loginpage(){
-    const {register, formState:{errors},handleSubmit} = useForm();
-    const onSubmit = (data) =>{
-        console.log(data)
-    };
-    console.log(errors);
-    const[user,setUser] = useState({
-        email:"",
-        password:"",
-        passwordhai:""
 
-    })
-    const handleChange = e =>{
-        console.log(e.target)
-        const{ name, value} = e.target
-        setUser({
-            ...user,
-            [name]: value
-        })
-    }
-    //signup function
-    const signup = () =>{
-        const {email, password , passwordhai} = user
-        //validation for email password and re enter password
-        if(email && password && (password === passwordhai) ){
-             axios.post("http://localhost:9002/signup",user)
-             .then(res=>console.log(res))
-        }
-        else{
-            alert("invalid")
-        }
+import { Button } from "antd";
+import { Link, Route } from "react-router-dom";
+import { useForm } from 'react-hook-form';
+//importing the axios
+import axios from 'axios'
+//importing from auth file
+import  useToken  from "../../auth/useToken";
+
+import { useNavigate } from "react-router-dom";
+
+
+
+//calling api 
+// import axios from "axios"
+export default function Loginpage(){
+    const navigate = useNavigate();
+    const {register, formState:{errors},handleSubmit} = useForm();
+    console.log(errors);
+
+    const [token, setToken] = useToken();
+    // //signup function
+    // const signup = () =>{
+    //     const {email, password , passwordhai} = user
+    //     //validation for email password and re enter password
+    //     if(email && password && (password === passwordhai) ){
+    //          axios.post("http://localhost:9002/signup",user)
+    //          .then(res=>console.log(res))
+    //     }
+    //     else{
+    //         alert("invalid")
+    //     }
       
+    // }
+    // const[token ,setToken] = useToken();
+
+    // const onSignUpClicked = async ({
+    //     email, password
+    // })=>{
+    //     const response = await axios.post('/api/signup',{
+    //         email:email,
+    //         password:password
+
+    //     });
+    //     const {token} = response.data;
+    //     setToken(token);
+    //     navigate ('/')
+    const onSignUpClicked = async({
+        email,password
+    })=>{
+        const response = await axios.post('http://localhost:5000/api/signup',{
+            email:email,
+            password:password,
+        });
+        const{token} = response.data;
+        setToken(token);
+        navigate('/login')
+
     }
+
+      
+    
     return(
         <div>
-            {console.log("User",user)}
+            
             <div  className="bg-white drop-shadow-xl  ">
                 <div className=" flex justify-between">
                 <div >
@@ -68,20 +91,20 @@ export default function Loginpage(){
                 <div>
                     <p className="text-center mt-11 pt-3 relative right-[90px] text-[20px] font-semibold text-[#D0FBD7] drop-shadow-md">Join The Fun</p>
                 </div>
-                <form className="pb-7" onSubmit={handleSubmit(onSubmit) }>
+                <form className="pb-7" onSubmit={handleSubmit(onSignUpClicked)}  >
                     <div className="text-center mt-3">
-                    <input type="email" name="email" value={user.email} {...register("email",({required:true}))}  placeholder="Email" onChange={handleChange}  className=" placeholder-black  city  w-[250px] h-7 rounded-[8px] border-solid border-white border-[2px]  bg-zinc-400 drop-shadow-md"/>
+                    <input type="email" name="email" {...register("email",({required:true}))}  placeholder="Email"   className=" placeholder-black  city  w-[250px] h-7 rounded-[8px] border-solid border-white border-[2px]  bg-zinc-400 drop-shadow-md"/>
                     <span className="flex ml-[70px] text-red-600 mb-[-10px] text-xs ">{errors.email?.type==="required" && "Email is required"}</span>
                     </div>
                     <div className="mt-6 text-center">
-                    <input type="password" name="password" value={user.password} {...register("password",({required:true}))}  id="password" placeholder="Password" onChange={handleChange} className="placeholder-black w-[250px] h-7 rounded-[8px] border-solid border-white border-[2px] bg-zinc-400 drop-shadow-md"/>
+                    <input type="password" name="password"  {...register("password",({required:true}))}  id="password" placeholder="Password"  className="placeholder-black w-[250px] h-7 rounded-[8px] border-solid border-white border-[2px] bg-zinc-400 drop-shadow-md"/>
                     <span className="flex ml-[70px] text-red-600 mb-[-10px] text-xs ">{errors.password?.type==="required" && "Password  is required"}</span>
                     </div>
                     <div className="mt-6 text-center">
-                    <input type="password" name="passwordhai" value={user.passwordhai} {...register("passwordhai",({required:true}))} id="password1" placeholder="Confirm Password" onChange={handleChange}  className="placeholder-black w-[250px] h-7 rounded-[8px] border-solid border-white border-[2px] bg-zinc-400 drop-shadow-md"/>
+                    <input type="password" name="passwordhai"  {...register("passwordhai",({required:true}))} id="password1" placeholder="Confirm Password"   className="placeholder-black w-[250px] h-7 rounded-[8px] border-solid border-white border-[2px] bg-zinc-400 drop-shadow-md"/>
                     <span className="flex ml-[70px] text-red-600 mb-[-10px] text-xs ">{errors.passwordhai?.type==="required" && "Password  is required"}</span>
                     </div>
-                    <button type="submit" onClick={signup}  className="relative left-[100px] mt-5 rounded-[3px] pt-[1px] pb-[1px] pl-[5px] pr-[5px] text-[14px] bg-[#D1D0E3] drop-shadow-lg">Join Now</button> 
+                    <button type="submit" className="relative left-[100px] mt-5 rounded-[3px] pt-[1px] pb-[1px] pl-[5px] pr-[5px] text-[14px] bg-[#D1D0E3] drop-shadow-lg">Join Now</button> 
                 </form>
                 
                 

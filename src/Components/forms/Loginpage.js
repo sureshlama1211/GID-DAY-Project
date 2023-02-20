@@ -1,29 +1,34 @@
 import React from "react"
 import { Button } from "antd";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+//
+import axios from  'axios'
+import useToken from "../../auth/useToken";
 import { useForm } from 'react-hook-form';
+import { useNavigate } from "react-router-dom";
+
 export default function Loginpage(){
     const {register, formState:{errors},handleSubmit} = useForm();
-    const onSubmit = (data) =>{
-        console.log(data)
-    };
     console.log(errors);
-    const [user, setUser] = useState({
-        email:"",
-        password:""
+    //state for tracking the values of input
+    const[token, setToken] = useToken();
+    const navigate = useNavigate();
+   
+const onLogInClicked = async({
+    email, password
+})=>{
+    const response = await axios.post('http://localhost:5000/api/login',{
+        email:email,
+        password:password,
     })
-    const handleChange = e =>{
-        console.log(e.target)
-        const{ name, value} = e.target
-        setUser({
-            ...user,
-            [name]: value
-        })
-    }
+    const {token} = response.data;
+    setToken(token);
+    navigate('/beforesign');
+
+}
+   
     return(
         <div>
-            {console.log("User",user)}
             <div  className="bg-white drop-shadow-xl  ">
                 <div className=" flex justify-between">
                 <div >
@@ -37,6 +42,7 @@ export default function Loginpage(){
                 <p className=" w-[70px] h-[20px] font-bold text-[13px]    text-center text-black  mr-[20px] ml-[20px]  cursor-pointer">Find Gigs</p>
                 <p className=" w-[70px] h-[20px]  font-bold text-[13px]  text-center text-black ml-[40px]  cursor-pointer">Find Shows</p>
                 </div>
+
                 <div className="flex  space-x-10 mr-[25px] mt-[25px]  ">
                     <Link to="/login">
                         <Button className="border-white" size="small" >Log In</Button>
@@ -52,19 +58,21 @@ export default function Loginpage(){
                 <div>
                     <p className="text-center mt-11 pt-3 relative right-[10px] text-[20px] font-semibold text-[#D0FBD7] drop-shadow-md">LOG IN</p>
                 </div>
-                <form className="pb-7" onSubmit={handleSubmit(onSubmit) }>
+                <form className="pb-7" onSubmit={handleSubmit(onLogInClicked) }>
                     <div className="text-center mt-3">
-                    <input type="email" name="email" value={user.email}  {...register("email",({required:true}))}  placeholder="Email" onChange={handleChange}  className=" placeholder-black  city  w-[250px] h-7 rounded-[8px] border-solid border-white border-[2px]  bg-zinc-400 drop-shadow-md "/>
+                    <input type="email" name="email"   {...register("email",({required:true}))}  placeholder="Email"   className=" placeholder-black  city  w-[250px] h-7 rounded-[8px] border-solid border-white border-[2px]  bg-zinc-400 drop-shadow-md "/>
                     <span className="flex ml-[70px] text-red-600 mb-[-10px] text-xs ">{errors.email?.type==="required" && "Email is required"}</span>
                     </div>
                     <div className="mt-6 text-center">
-                    <input type="password"  name="password" value={user.password}  {...register("password",({required:true}))}  id="password" placeholder="Password" onChange={handleChange}  className="placeholder-black w-[250px] h-7 rounded-[8px] border-solid border-white border-[2px] bg-zinc-400 drop-shadow-md"/>
+                    <input type="password"  name="password"  {...register("password",({required:true}))}  id="password" placeholder="Password"   className="placeholder-black w-[250px] h-7 rounded-[8px] border-solid border-white border-[2px] bg-zinc-400 drop-shadow-md"/>
                     {/* Message for an error */}
                     <span className="flex ml-[70px] text-red-600 mb-[-10px] text-xs ">{errors.password?.type==="required" && "Password  is required"}</span>
                     </div>
                     <button type="submit"  className="relative left-[100px] mt-6 rounded-[3px] pt-[1px] pb-[1px] pl-[5px] pr-[5px] text-[14px] bg-[#D1D0E3] drop-shadow-lg">Join Now</button> 
                 </form>
+                <Link to="/signup">
                 <p className="text-[10px] relative left-[70px] mt-[-18px] pb-[10px]">Don't have an account,Click Here </p>  
+                </Link>
             </div>
             {/* Footer Secrion */}
             <div className="flex justify-between mt-[142px] pt-3 pb-3 bg-[#E3EDEE] ">
