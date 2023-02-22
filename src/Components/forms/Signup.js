@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 // import axios from "axios"
 export default function Loginpage(){
     const navigate = useNavigate();
-    const {register, formState:{errors},handleSubmit} = useForm();
+    const {register, formState:{errors},watch,handleSubmit} = useForm();
     console.log(errors);
 
     const [token, setToken] = useToken();
@@ -47,17 +47,28 @@ export default function Loginpage(){
     //     setToken(token);
     //     navigate ('/')
     const onSignUpClicked = async({
-        email,password
+        email,passwordhai
     })=>{
         const response = await axios.post('http://localhost:5000/api/signup',{
             email:email,
-            password:password,
+            password:passwordhai,
         });
         const{token} = response.data;
         setToken(token);
-        navigate('/login')
+        navigate('/verifyemail')
 
     }
+    watch();
+    //To check password
+    const validatepassword = (value) => {
+        let error;
+        if (!value) {
+            error = "Confirm Password is required";
+        } else if (value !== watch("password")) {
+            error = "Passwords do not match";
+        }
+        return error || true;
+    };
 
       
     
@@ -101,7 +112,7 @@ export default function Loginpage(){
                     <span className="flex ml-[70px] text-red-600 mb-[-10px] text-xs ">{errors.password?.type==="required" && "Password  is required"}</span>
                     </div>
                     <div className="mt-6 text-center">
-                    <input type="password" name="passwordhai"  {...register("passwordhai",({required:true}))} id="password1" placeholder="Confirm Password"   className="placeholder-black w-[250px] h-7 rounded-[8px] border-solid border-white border-[2px] bg-zinc-400 drop-shadow-md"/>
+                    <input type="password" name="passwordhai"  {...register("passwordhai",{validate:validatepassword},({required:true}))} id="password1" placeholder="Confirm Password"   className="placeholder-black w-[250px] h-7 rounded-[8px] border-solid border-white border-[2px] bg-zinc-400 drop-shadow-md"/>
                     <span className="flex ml-[70px] text-red-600 mb-[-10px] text-xs ">{errors.passwordhai?.type==="required" && "Password  is required"}</span>
                     </div>
                     <button type="submit" className="relative left-[100px] mt-5 rounded-[3px] pt-[1px] pb-[1px] pl-[5px] pr-[5px] text-[14px] bg-[#D1D0E3] drop-shadow-lg">Join Now</button> 
