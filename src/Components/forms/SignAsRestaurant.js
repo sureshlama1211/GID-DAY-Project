@@ -26,6 +26,7 @@ export default function SignAsRestaurant() {
   //
   const [token, setToken] = useToken();
   const navigate = useNavigate();
+
   //
   const onupdateProfile = async ({
     profile,
@@ -49,6 +50,7 @@ export default function SignAsRestaurant() {
           gender: gender,
           socialmedia: socialmedia,
           bio: bio,
+          isformfilled: true,
         }
       );
       console.log(response);

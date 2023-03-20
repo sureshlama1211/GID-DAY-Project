@@ -19,7 +19,7 @@ export default function Loginpage() {
     formState: { errors },
     handleSubmit,
   } = useForm();
-  console.log(errors);
+
   //state for tracking the values of input
   const [token, setToken] = useToken();
   const navigate = useNavigate();
@@ -37,13 +37,18 @@ export default function Loginpage() {
       console.log(decoded);
 
       if (decoded.role === "artist") {
-        navigate("/signasartist");
-      } else if (decoded.role === "restaurant") {
-        //if profile is made navigate to home page
-        if (!decoded.firstname) navigate("/signasrestaurant");
-        else {
-          navigate("/findartist");
+        if (decoded.isformfilled === false) {
+          navigate("/signasartist");
+        } else {
+          navigate("/dashboardforartist");
         }
+      } else if (decoded.role === "restaurant") {
+        if (decoded.isformfilled === false) {
+          navigate("/signasrestaurant");
+        } else {
+          navigate("/dashboardforrestaurant");
+        }
+        //if profile is made navigate to home page
       } else if (decoded.role === "viewer") {
         navigate("/signasviewer");
       } else {

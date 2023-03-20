@@ -13,6 +13,8 @@ import Error from "./error/404 error";
 import SignAsViewer from "./Components/forms/SignAsViewer";
 import FindArtist from "./Components/pages/pagesforrestaurant/FindArtist";
 import DashBoardForRestaurant from "./Components/pages/pagesforrestaurant/DashBoardForRestaurant";
+import DashBoardForArtist from "./Components/pages/PagesForArtist/DashBoardForArtist";
+import ApplyForGig from "./Components/pages/PagesForArtist/ApplyForGig";
 function App() {
   return (
     <BrowserRouter>
@@ -43,7 +45,10 @@ function App() {
           path="/dashboardforrestaurant"
           element={<DashBoardForRestaurant />}
         ></Route>
+        <Route path="/dashboardforartist" element={<DashBoardForArtist />} />
+        <Route path="/applyforgig" element={<ApplyForGig />} />
       </Routes>
+      {/* for artist */}
     </BrowserRouter>
   );
 }

@@ -4,33 +4,74 @@ import { Link } from "react-router-dom";
 import { FcAbout, FcBusinessContact } from "react-icons/fc";
 import { SiTwitter, SiFacebook } from "react-icons/si";
 import { MdNotificationsActive } from "react-icons/md";
-import { useState } from "react";
-import { Dropdown, Menu } from "antd";
-import { useAuth0 } from "@auth0/auth0-react";
+import axios from "axios";
 import useUser from "../../auth/useUser";
+import { Menu, Dropdown } from "antd";
+import { useNavigate } from "react-router-dom";
+//importing toast
 
 export default function SignAsArtist() {
-  const user = useUser();
-  const email = user.email;
+  const navigate = useNavigate();
   const {
     register,
     formState: { errors },
     handleSubmit,
     watch,
   } = useForm();
-  //testing phase
-  const onSubmit = (data) => console.log(data);
-  //
+  const user = useUser();
+  const email = user.email;
 
+  const updateprofileofartist = async ({
+    profile,
+    firstname,
+    lastname,
+    phonenumber,
+    address,
+    date,
+    gender,
+    band,
+    skill,
+    genre,
+    expereince,
+    socialmedia,
+    bio,
+  }) => {
+    console.log(gender);
+    try {
+      const response = await axios.patch(
+        `http://localhost:5000/api/loginasrestaurant/${email}`,
+        {
+          profile: profile,
+          firstname: firstname,
+          lastname: lastname,
+          phonenumber: phonenumber,
+          address: address,
+          gender: gender,
+          socialmedia: socialmedia,
+          bio: bio,
+          isformfilled: true,
+          date: date,
+          band: band,
+          skill: skill,
+          genre: genre,
+          expereince: expereince,
+        }
+      );
+      console.log(response);
+      navigate("/dashboardforartist");
+    } catch (error) {}
+  };
+  //dropdown
   const menu = (
-    <Menu>
+    <Menu key="dropdown-menu">
       <Menu.Item key="1">{email}</Menu.Item>
       <Link to="/login">
         <Menu.Item key="3">Logout</Menu.Item>
       </Link>
     </Menu>
   );
-
+  //testing phase
+  const onSubmit = (data) => console.log(data);
   return (
     <div className="text-center">
       <div className=" flex justify-between bg-white drop-shadow-xl">
@@ -43,21 +84,12 @@ export default function SignAsArtist() {
             />
           </Link>
         </div>
-        <div className="flex mt-[28px]">
-          <p className=" w-[90px] h-[35px] rounded-2xl pt-1  font-bold text-[15px]  border-2 hover:border-[#A7727D] text-center text-black mr-[40px] ">
-            DashBoard
-          </p>
-          <p className=" w-[80px] h-[35px] pt-1 rounded-2xl font-bold text-[15px]  border-2 hover:border-[#A7727D]    items-center text-center text-black  mr-[20px] ml-[20px]">
-            Find Gigs
-          </p>
-        </div>
         <div className="flex text-center gap-6 items-center">
           <div>
             <MdNotificationsActive className="text-[25px] hover:text-[#7F669D]" />
           </div>
-
           <div style={{ position: "relative" }}>
-            <Dropdown overlay={menu} trigger={["click"]}>
+            <Dropdown key="dropdown" overlay={menu} trigger={["click"]}>
               <img
                 src={require("../../Images/profile.png")}
                 alt="profile"
@@ -71,7 +103,7 @@ export default function SignAsArtist() {
         PROFILE SETUP FOR ARTIST
       </h1>
       <hr className="border-2 border-black" />
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(updateprofileofartist)}>
         <div className="flex justify-center mt-9 gap-10">
           <div>
             <div>
@@ -169,7 +201,6 @@ export default function SignAsArtist() {
               name="date"
               className="border-2 py-1 px-[90px] placeholder:text-center border-black  rounded-lg shadow-xl"
               {...register("date", { required: true })}
-              placeholder="Address"
             />
             <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
               {errors.date?.type === "required" && "Must Provide Birth Date"}
@@ -187,9 +218,9 @@ export default function SignAsArtist() {
               placeholder="Gender"
             >
               <option value="" selected></option>
-              <option value="1">male</option>
-              <option value="2">female</option>
-              <option value="3">others</option>
+              <option value="male">male</option>
+              <option value="female">female</option>
+              <option value="others">others</option>
             </select>
             <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
               {errors.gender?.type === "required" && "Must Select Gender"}
@@ -210,8 +241,8 @@ export default function SignAsArtist() {
               placeholder="Gender"
             >
               <option value="" selected></option>
-              <option value="1">Single</option>
-              <option value="2">Band</option>
+              <option value="single">Single</option>
+              <option value="band">Band</option>
             </select>
             <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
               {errors.band?.type === "required" && "Must Select artist type"}
@@ -229,9 +260,9 @@ export default function SignAsArtist() {
               placeholder="Gender"
             >
               <option value="" selected></option>
-              <option value="1">Begineer</option>
-              <option value="2">Intermediate</option>
-              <option value="3">Professional</option>
+              <option value="Begineer">Begineer</option>
+              <option value="Intermediate">Intermediate</option>
+              <option value="Professional">Professional</option>
             </select>
 
             <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
@@ -253,11 +284,11 @@ export default function SignAsArtist() {
               placeholder="Gender"
             >
               <option value="" selected></option>
-              <option value="1">Classical</option>
-              <option value="2">Lok Dohori</option>
-              <option value="3">Pop</option>
-              <option value="4">Rock</option>
-              <option value="5">Hip Hop</option>
+              <option value="Classical">Classical</option>
+              <option value="Lok Dohori">Lok Dohori</option>
+              <option value="Pop">Pop</option>
+              <option value="Rock">Rock</option>
+              <option value="Hip Hop">Hip Hop</option>
             </select>
 
             <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
@@ -276,10 +307,10 @@ export default function SignAsArtist() {
               placeholder="Gender"
             >
               <option value="" selected></option>
-              <option value="1">0</option>
-              <option value="2">0-5</option>
-              <option value="3">5-10</option>
-              <option value="4">10+</option>
+              <option value="0">0</option>
+              <option value="0-5">0-5</option>
+              <option value="5-10">5-10</option>
+              <option value="10+">10+</option>
             </select>
             <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
               {errors.expereince?.type === "required" &&

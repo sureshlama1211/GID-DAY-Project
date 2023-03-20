@@ -9,13 +9,10 @@ import { Dropdown, Menu } from "antd";
 
 import useUser from "../../../auth/useUser";
 //
-export default function DashBoardForRestaurant() {
+export default function DashBoardForArtist() {
   const user = useUser();
   const email = user.email;
   const role = user.role;
-
-  //
-  //for modal
 
   //
 
@@ -32,7 +29,7 @@ export default function DashBoardForRestaurant() {
 
   return (
     <div className="text-center bg-[#010101]">
-      <div className=" flex justify-between bg-[#adadb167]  drop-shadow-xl">
+      <div className=" flex justify-between bg-[#adadb167]   drop-shadow-xl">
         <div>
           <Link to="/">
             <img
@@ -43,23 +40,21 @@ export default function DashBoardForRestaurant() {
           </Link>
         </div>
         <div className="flex mt-[28px]">
-          <button className=" w-[90px] h-[35px] mt-[-5px] border-transparent rounded-2xl  border-2 hover:border-[#A7727D] font-bold text-[15px]  items-center text-center text-white mr-[40px] ">
+          <button className=" w-[90px] h-[35px] border-transparent mt-[-5px] rounded-2xl  border-2 hover:border-[#A7727D] font-bold text-[15px]  items-center text-center text-white mr-[40px] ">
             DashBoard
           </button>
-          <Link to="/findartist">
-            <button className=" w-[90px] h-[35px] pt-1 mt-[-5px] border-transparent rounded-2xl  font-bold text-[15px] hover:border-[#A7727D] border-2 text-center text-white mr-[40px] ">
-              Find Artists
+          {/* gig */}
+          <Link to="/applyforgig">
+            <button className=" w-[150px] h-[35px] pt-1 mt-[-5px]  border-transparent rounded-2xl  font-bold text-[15px] hover:border-[#A7727D] border-2 text-center text-white mr-[40px] ">
+              Apply For Gig
             </button>
           </Link>
-          <button className=" w-[100px] h-[40px] font-bold text-[15px] border-transparent border-2 rounded-md hover:border-[#A7727D] mt-[-7px]    text-center text-white  mr-[20px] ml-[20px]">
-            + Create Gig
-          </button>
           {/*  */}
         </div>
 
-        <div className="flex text-center gap-6 items-center">
+        <div className="flex text-center text-white gap-6 items-center">
           <div>
-            <MdNotificationsActive className="text-[25px] hover:text-[#7F669D] text-white" />
+            <MdNotificationsActive className="text-[25px] hover:text-[#7F669D]" />
           </div>
 
           <div style={{ position: "relative" }}>
@@ -75,28 +70,28 @@ export default function DashBoardForRestaurant() {
       </div>
       {/* sidebar for dashboard */}
       <div className="flex justify-between">
-        <div className="bg-[#adadb12a] pb-[240px]  drop-shadow-2xl border-r-2 border-r-white">
+        <div className="bg-[#adadb12a]  pb-[250px]  drop-shadow-2xl ">
           <h1 className="mt-5  pt-[10px] font-bold  animate-pulse pl-5 pr-2 text-white">
             {role}
           </h1>
-          <hr className="mt-20" />
-          <h1 className=" hover:bg-black font-medium cursor-pointer text-white   ">
-            Booking Details
+          <hr className="mt-20 " />
+          <h1 className=" hover:bg-black font-medium cursor-pointer text-white  ">
+            Gig Applied Details
           </h1>
           <hr />
           <hr className="mt-4" />
-          <h1 className=" hover:bg-black font-medium cursor-pointer  text-white">
-            Created Gigs
+          <h1 className=" hover:bg-black text-white font-medium cursor-pointer  ">
+            Events Date
           </h1>
           <hr />
           <hr className="mt-4" />
-          <h1 className=" hover:bg-black  cursor-pointer font-medium text-white">
+          <h1 className="  hover:bg-black text-white cursor-pointer font-medium">
             Setting
           </h1>
           <hr />
         </div>
         <div>
-          <div className="pr-[400px] pt-[100px] font-extrabold text-[30px] animate-bounce text-orange-700">
+          <div className="pr-[400px] text-orange-700 pt-[140px]  font-extrabold  text-[30px] animate-bounce">
             WELCOME TO THE DASHBOARD
           </div>
         </div>
