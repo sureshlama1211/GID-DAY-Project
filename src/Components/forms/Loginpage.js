@@ -50,10 +50,13 @@ export default function Loginpage() {
         }
         //if profile is made navigate to home page
       } else if (decoded.role === "viewer") {
-        navigate("/signasviewer");
-      } else {
-        navigate("/error");
+        if (decoded.isformfilled === false) {
+          navigate("/signasviewer");
+        } else {
+          navigate("/dashboardforviewer");
+        }
       }
+
       // extract role from token
 
       toast.success("Logged in Successfully", {

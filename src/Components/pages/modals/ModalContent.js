@@ -1,21 +1,29 @@
-import React from "react";
-import { useState } from "react";
-
-export default function Modalcontent() {
-  //
-
-  const [showModal, setShowModal] = useState(false);
-  const closeModal = () => {
-    return setShowModal(false);
+const MyModal2 = ({ isvisible, onClose, children }) => {
+  if (!isvisible) return null;
+  //drps the modal if the user preses outside of the modal
+  const handleClose = (e) => {
+    if (e.target.id === "wrapper") onClose();
   };
-
-  //css prpoerties
-
   return (
     <>
-      <button onClick={() => setShowModal(true)}>Open Modal</button>
-
-      {showModal && <MyModal closeModal={closeModal} />}
+      <div
+        className=" fixed inset-0 bg-black opacity-80 backdrop-blur-3xl flex justify-center pt-[20px]  "
+        id="wrapper"
+        onClick={handleClose}
+      >
+        <div className="w-[700px] flex flex-col">
+          <div className="bg-white p-2 rounded-lg ">
+            {children}
+            <button
+              onClick={() => onClose()}
+              className="mt-2 border-2 px-5 border-black bg-red-500 rounded-xl"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
     </>
   );
-}
+};
+export default MyModal2;

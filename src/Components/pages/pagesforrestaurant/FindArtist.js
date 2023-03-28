@@ -15,6 +15,7 @@ import axios from "axios";
 
 import { IoMdMicrophone } from "react-icons/io";
 import MyModal from "../modals/ShowModel";
+import MyModal2 from "../modals/ModalContent";
 //useform hook for gig-drpdown
 import { useForm } from "react-hook-form";
 //
@@ -28,7 +29,13 @@ export default function FindArtist() {
     formState: { errors },
     handleSubmit,
   } = useForm();
-  //
+  //for booking hte artist
+  const {
+    register: register2,
+    handleSubmit: handleSubmit2,
+    formState: { errors: errors2 },
+  } = useForm();
+  //to create gig
   const creatinggig = async ({
     gigProfile,
     gigName,
@@ -57,9 +64,34 @@ export default function FindArtist() {
 
   //modal
   const [showModal, setShowModal] = useState(false);
+
   const [showBookModal, setShowBookModal] = useState(false);
 
-  //
+  //function to post the booking details
+  const Booking = async ({
+    gigname,
+    gigtype,
+    date,
+    showtype,
+    startingtime,
+    endingtime,
+    Address,
+    budget,
+  }) => {
+    const response = await axios.post("http://localhost:5000/api/booking", {
+      gigname: gigname,
+      gigtype: gigtype,
+      date: date,
+      showtype: showtype,
+      startingtime: startingtime,
+      endingtime: endingtime,
+      Address: Address,
+      budget: budget,
+    });
+    console.log(response, "k ayo ta ");
+    setShowBookModal(false);
+  };
+
   //to get the list of artist from get method
   const [getArtist, setGetArtist] = useState([]);
   const getAllArtist = async () => {
@@ -288,7 +320,7 @@ export default function FindArtist() {
                   {...register("genreNeeded", { required: true })}
                   placeholder="Genre"
                 >
-                  <option value="" selected></option>
+                  <option value=""></option>
                   <option value="Classical">Classical</option>
                   <option value="Lok Dohori">Lok Dohori</option>
                   <option value="Pop">Pop</option>
@@ -335,7 +367,7 @@ export default function FindArtist() {
                   {...register("paymenttype", { required: true })}
                   placeholder="Genre"
                 >
-                  <option value="" selected></option>
+                  <option value=""></option>
                   <option value="Hourly">Hourly</option>
                   <option value="Full Show">Full Show</option>
                 </select>
@@ -429,7 +461,7 @@ export default function FindArtist() {
           </div>
           <div className="mt-3">
             <div>
-              <lebel className="text-red-700">Bio*</lebel>
+              <label className="text-red-700">Bio*</label>
             </div>
             <textarea
               name="bio"
@@ -453,12 +485,12 @@ export default function FindArtist() {
 
       {/* second modal for book artist */}
       {/* for modal box */}
-      <MyModal
+      <MyModal2
         isvisible={showBookModal}
         onClose={() => setShowBookModal(false)}
       >
         {/* contents here */}
-        <form onSubmit={handleSubmit(creatinggig)}>
+        <form onSubmit={handleSubmit2(Booking)}>
           <div className="flex justify-center gap-6 mt-5">
             <div>
               <div>
@@ -467,12 +499,12 @@ export default function FindArtist() {
                 </div>
                 <input
                   type="text"
-                  name="gigName"
+                  name="gigname"
                   className="border-2 border-black  rounded-lg shadow-xl "
-                  {...register("gigName", { required: true })}
+                  {...register2("gigname", { required: true })}
                 />
                 <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
-                  {errors.gigName?.type === "required" &&
+                  {errors2.gigname?.type === "required" &&
                     " Gig Name must be added"}
                 </span>
               </div>
@@ -485,12 +517,11 @@ export default function FindArtist() {
                 </div>
                 <select
                   type="text"
-                  name="genreNeeded"
+                  name="gigtype"
                   className="border-2  px-[50px] placeholder:text-center  border-black  rounded-lg shadow-xl"
-                  {...register("genreNeeded", { required: true })}
-                  placeholder="Genre"
+                  {...register2("gigtype", { required: true })}
                 >
-                  <option value="" selected></option>
+                  <option value=""></option>
                   <option value="Classical">Classical</option>
                   <option value="Lok Dohori">Lok Dohori</option>
                   <option value="Pop">Pop</option>
@@ -498,7 +529,7 @@ export default function FindArtist() {
                   <option value="Hip Hop">Hip Hop</option>
                 </select>
                 <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
-                  {errors.genreNeeded?.type === "required" &&
+                  {errors2.gigtype?.type === "required" &&
                     " Genre type  must be added"}
                 </span>
               </div>
@@ -510,12 +541,12 @@ export default function FindArtist() {
                 </div>
                 <input
                   type="date"
-                  name="gigdate"
+                  name="date"
                   className="border-2 px-5 border-black  rounded-lg shadow-xl "
-                  {...register("gigdate", { required: true })}
+                  {...register2("date", { required: true })}
                 />
                 <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
-                  {errors.gigdate?.type === "required" &&
+                  {errors2.date?.type === "required" &&
                     " Gig Date must be added"}
                 </span>
               </div>
@@ -532,17 +563,16 @@ export default function FindArtist() {
                 </div>
                 <select
                   type="text"
-                  name="paymenttype"
+                  name="showtype"
                   className="border-2  px-[45px] placeholder:text-center  border-black  rounded-lg shadow-xl"
-                  {...register("paymenttype", { required: true })}
-                  placeholder="Genre"
+                  {...register2("showtype", { required: true })}
                 >
-                  <option value="" selected></option>
+                  <option value=""></option>
                   <option value="Hourly">Hourly</option>
                   <option value="Full Show">Full Show</option>
                 </select>
                 <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
-                  {errors.paymenttype?.type === "required" &&
+                  {errors2.showtype?.type === "required" &&
                     " Genre type  must be added"}
                 </span>
               </div>
@@ -556,12 +586,12 @@ export default function FindArtist() {
                 </div>
                 <input
                   type="time"
-                  name="starttime"
+                  name="startingtime"
                   className="border-2 px-[45px] border-black  rounded-lg shadow-xl "
-                  {...register("starttime", { required: true })}
+                  {...register2("startingtime", { required: true })}
                 />
                 <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
-                  {errors.starttime?.type === "required" &&
+                  {errors2.startingtime?.type === "required" &&
                     " Starting time  must be added"}
                 </span>
               </div>
@@ -576,14 +606,14 @@ export default function FindArtist() {
                 </div>
                 <input
                   type="time"
-                  name="endtime"
+                  name="endingtime"
                   className="border-2  px-[40px] placeholder:text-center  border-black  rounded-lg shadow-xl"
-                  {...register("endtime", { required: true })}
+                  {...register2("endingtime", { required: true })}
                   placeholder="Genre"
                 />
 
                 <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
-                  {errors.endtime?.type === "required" &&
+                  {errors2.endingtime?.type === "required" &&
                     " Endtime  must be added"}
                 </span>
               </div>
@@ -598,12 +628,12 @@ export default function FindArtist() {
                 </div>
                 <input
                   type="text"
-                  name="address"
+                  name="Address"
                   className="border-2 px-2  border-black  rounded-lg shadow-xl "
-                  {...register("address", { required: true })}
+                  {...register2("Address", { required: true })}
                 />
                 <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
-                  {errors.address?.type === "required" &&
+                  {errors2.Address?.type === "required" &&
                     "Venue Address must be added"}
                 </span>
               </div>
@@ -616,14 +646,13 @@ export default function FindArtist() {
                 </div>
                 <input
                   type="number"
-                  name="payment"
+                  name="budget"
                   className="border-2  px-2 placeholder:text-center  border-black  rounded-lg shadow-xl"
-                  {...register("payment", { required: true })}
-                  placeholder="Genre"
+                  {...register2("budget", { required: true })}
                 />
 
                 <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
-                  {errors.payment?.type === "required" &&
+                  {errors2.budget?.type === "required" &&
                     " Payment must be added"}
                 </span>
               </div>
@@ -631,15 +660,15 @@ export default function FindArtist() {
           </div>
           <div className="mt-3">
             <div>
-              <lebel className="text-red-700">Bio*</lebel>
+              <label className="text-red-700">Bio*</label>
             </div>
             <textarea
-              name="bio"
-              {...register("bio", { required: true })}
+              name="description"
+              {...register2("description", { required: true })}
               className="border-2  border-black w-[60%] pb-[10%] "
             ></textarea>
             <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
-              {errors.bio?.type === "required" &&
+              {errors2.description?.type === "required" &&
                 "Must provide a short discription about an artist or band"}
             </span>
           </div>
@@ -650,7 +679,7 @@ export default function FindArtist() {
             Create
           </button>
         </form>
-      </MyModal>
+      </MyModal2>
       {/* for modal box */}
     </div>
   );

@@ -1,21 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { Link } from "react-router-dom";
 import { FcAbout, FcBusinessContact } from "react-icons/fc";
 import { SiTwitter, SiFacebook } from "react-icons/si";
 import { MdNotificationsActive } from "react-icons/md";
-
+import axios from "axios";
 import { Dropdown, Menu } from "antd";
-
+import { SlCalender } from "react-icons/sl";
+import { AiFillSetting } from "react-icons/ai";
+import { MdPassword } from "react-icons/md";
+import { CgProfile } from "react-icons/cg";
 import useUser from "../../../auth/useUser";
-//
+
 export default function DashBoardForArtist() {
   const user = useUser();
   const email = user.email;
+
   const role = user.role;
-
-  //
-
+  console.log(user);
+  //for collpsable setting
+  const [show, setShow] = useState(false);
+  //state for notification
+  const [notifications, setNotifications] = useState([]);
+  const [notificationCount, setNotificationCount] = useState(0);
+  const getmybooking = async (user) => {
+    const MyBooking = await axios.get(
+      `http://localhost:5000/api/mybooking/${user._id}?role=${user.role}`
+    );
+    setNotifications(MyBooking);
+    setNotificationCount(MyBooking.length);
+  };
+  useEffect(() => {
+    getmybooking(user._id);
+  });
   /// testing
 
   const menu = (
@@ -55,6 +72,7 @@ export default function DashBoardForArtist() {
         <div className="flex text-center text-white gap-6 items-center">
           <div>
             <MdNotificationsActive className="text-[25px] hover:text-[#7F669D]" />
+            <span>{notificationCount}</span>
           </div>
 
           <div style={{ position: "relative" }}>
@@ -70,7 +88,7 @@ export default function DashBoardForArtist() {
       </div>
       {/* sidebar for dashboard */}
       <div className="flex justify-between">
-        <div className="bg-[#adadb12a]  pb-[250px]  drop-shadow-2xl ">
+        <div className="bg-[#adadb12a]  pb-[270px]  drop-shadow-2xl ">
           <h1 className="mt-5  pt-[10px] font-bold  animate-pulse pl-5 pr-2 text-white">
             {role}
           </h1>
@@ -80,15 +98,39 @@ export default function DashBoardForArtist() {
           </h1>
           <hr />
           <hr className="mt-4" />
-          <h1 className=" hover:bg-black text-white font-medium cursor-pointer  ">
+          <h1 className=" hover:bg-black text-white font-medium cursor-pointer flex gap-2  ">
+            <SlCalender className="mt-1" />
             Events Date
           </h1>
           <hr />
           <hr className="mt-4" />
-          <h1 className="  hover:bg-black text-white cursor-pointer font-medium">
-            Setting
-          </h1>
+          <div className="flex gap-4 hover:bg-black ">
+            <h1
+              onClick={() => setShow(!show)}
+              className="   cursor-pointer font-medium text-white flex gap-2"
+            >
+              <AiFillSetting className="mt-1" />
+              Setting
+            </h1>
+            <p className="text-white text-bold ">{show ? "-" : "+"}</p>
+          </div>
           <hr />
+          {show && (
+            <>
+              <Link to="/settingforartist">
+                <p className="text-white cursor-pointer hover:bg-black  flex gap-2">
+                  <CgProfile className="mt-1" />
+                  Edit Profile
+                </p>
+              </Link>
+              <hr />
+              <p className="text-white  cursor-pointer hover:bg-black flex gap-2">
+                <MdPassword className="mt-1" />
+                Reset Password
+              </p>
+              <hr />
+            </>
+          )}
         </div>
         <div>
           <div className="pr-[400px] text-orange-700 pt-[140px]  font-extrabold  text-[30px] animate-bounce">

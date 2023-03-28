@@ -1,62 +1,76 @@
-import React from "react";
-import { useForm } from "react-hook-form";
+import React, { useState, useEffect } from "react";
+
 import { Link } from "react-router-dom";
 import { FcAbout, FcBusinessContact } from "react-icons/fc";
 import { SiTwitter, SiFacebook } from "react-icons/si";
 import { MdNotificationsActive } from "react-icons/md";
-import { useState } from "react";
-import { Dropdown, Menu } from "antd";
-import { useAuth0 } from "@auth0/auth0-react";
-import useUser from "../../auth/useUser";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import useToken from "../../auth/useToken";
 
-export default function SignAsRestaurant() {
+import { Dropdown, Menu } from "antd";
+import { useForm } from "react-hook-form";
+import useUser from "../../../auth/useUser";
+//
+import { useNavigate } from "react-router-dom";
+//
+import axios from "axios";
+
+export default function SettingForViewer() {
   const user = useUser();
   const email = user.email;
+  const navigate = useNavigate();
   const {
     register,
     formState: { errors },
     handleSubmit,
     watch,
+    setValue,
   } = useForm();
-  //testing phase
-  const onSubmit = (data) => console.log(data);
-  //
-  const [token, setToken] = useToken();
-  const navigate = useNavigate();
 
-  //
-  const onupdateProfile = async ({
-    profile,
+  //for getting the previous profile set up info
+  const [getInfoArtist, setGetInfoArtist] = useState();
+  const Artistinformation = async () => {
+    try {
+      const ArtistInfo = await axios.get(
+        `http://localhost:5000/api/profilebeforeedit/${email}`
+      );
+
+      console.log(ArtistInfo);
+      const data = ArtistInfo.data.getprofileinfo;
+      console.log(data);
+      setGetInfoArtist(data);
+      console.log(getInfoArtist);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    Artistinformation();
+  }, []);
+
+  /// calling the update(patch) method
+  const updateprofile = async ({
     firstname,
     lastname,
     phonenumber,
     address,
-    gender,
     socialmedia,
     bio,
-    date,
+    profile,
   }) => {
     try {
       const response = await axios.patch(
-        `http://localhost:5000/api/loginasrestaurant/${email}`,
+        `http://localhost:5000/api/editprofile/${email}`,
         {
           profile: profile,
           firstname: firstname,
           lastname: lastname,
           phonenumber: phonenumber,
           address: address,
-          gender: gender,
           socialmedia: socialmedia,
-          date: date,
           bio: bio,
-          isformfilled: true,
         }
       );
       console.log(response);
-      navigate("/findartist");
+      navigate("/dashboardforrestaurant");
     } catch (error) {}
   };
 
@@ -68,60 +82,67 @@ export default function SignAsRestaurant() {
       </Link>
     </Menu>
   );
-
   return (
-    <div className="text-center">
-      <div className=" flex justify-between bg-white drop-shadow-xl">
+    <div className="text-center bg-[#010101]">
+      <div className=" flex justify-between bg-[#adadb167]  drop-shadow-xl">
         <div>
           <Link to="/">
             <img
               className="h-[14vh] w-[14vh] relative left-6  pointer-cursor "
               alt="logo "
-              src={require("../../Images/gig.png")}
+              src={require("../../../Images/gig.png")}
             />
           </Link>
         </div>
         <div className="flex mt-[28px]">
-          <button className=" w-[90px] h-[35px] mt-[-5px] rounded-2xl  border-2 hover:border-[#A7727D] font-bold text-[15px]  items-center text-center text-black mr-[40px] ">
+          <button className=" w-[90px] h-[35px] border-transparent mt-[-5px] rounded-2xl  border-2 hover:border-[#A7727D] font-bold text-[15px]  items-center text-center text-white mr-[40px] ">
             DashBoard
           </button>
-          <button className=" w-[90px] h-[35px] pt-1 mt-[-5px]  rounded-2xl  font-bold text-[15px] hover:border-[#A7727D] border-2 text-center text-black mr-[40px] ">
-            Find Artists
-          </button>
-          <button className=" w-[100px] h-[40px] font-bold text-[15px]  border-2 rounded-md hover:border-[#A7727D] mt-[-10px]    text-center text-black  mr-[20px] ml-[20px]">
-            + Create Gig
-          </button>
+          <Link to="/findshows">
+            <button className=" w-[150px] h-[35px] pt-1 mt-[-5px]  border-transparent rounded-2xl  font-bold text-[15px] hover:border-[#A7727D] border-2 text-center text-white mr-[40px] ">
+              Find Shows
+            </button>
+          </Link>
+          {/* gig */}
+          <Link to="/viewartist">
+            <button className=" w-[150px] h-[35px] pt-1 mt-[-5px]  border-transparent rounded-2xl  font-bold text-[15px] hover:border-[#A7727D] border-2 text-center text-white mr-[40px] ">
+              View Artists
+            </button>
+          </Link>
+          {/*  */}
         </div>
+
         <div className="flex text-center gap-6 items-center">
           <div>
-            <MdNotificationsActive className="text-[25px] hover:text-[#7F669D]" />
+            <MdNotificationsActive className="text-[25px] hover:text-[#7F669D] text-white" />
           </div>
 
           <div style={{ position: "relative" }}>
             <Dropdown overlay={menu} trigger={["click"]}>
               <img
-                src={require("../../Images/profile.png")}
+                src={require("../../../Images/profile.png")}
                 alt="profile"
-                className="w-[7vh] h-[7vh] rounded-2xl  mr-5 "
+                className="w-[7vh] h-[7vh] rounded-[25px]  mr-5 "
               />
             </Dropdown>
           </div>
         </div>
       </div>
-      <h1 className="text-[30px] font-semibold text-[#d4a373] mt-6">
-        PROFILE SETUP FOR RESTAURANT USER
+      <h1 className="text-orange-500 font-bold text-[30px] ">
+        Edit Your Profile
       </h1>
-      <hr className="border-2 border-black" />
-      <form onSubmit={handleSubmit(onupdateProfile)}>
+      {/* Mapping */}
+      <form className="mb-5" onSubmit={handleSubmit(updateprofile)}>
         <div className="flex justify-center mt-9 gap-10">
           <div>
             <div>
-              <lebel className="text-red-700">Profile Picture*</lebel>
+              <label className="text-red-700">Profile Picture*</label>
             </div>
+
             <input
               type="file"
               name="profile"
-              className="border-2 border-black  py-1 px-[30px] rounded-lg shadow-xl "
+              className="border-2   py-1 px-[30px] rounded-lg shadow-xl border-indigo-400 opacity-30  "
               {...register("profile", { required: true })}
             />
 
@@ -134,14 +155,15 @@ export default function SignAsRestaurant() {
         <div className="flex justify-center mt-9 gap-10">
           <div>
             <div>
-              <lebel className="text-red-700">First Name*</lebel>
+              <label className="text-red-700">First Name*</label>
             </div>
             <input
               type="text"
               name="firstname"
-              className="border-2 border-black  placeholder:text-center py-1 px-[70px] rounded-lg shadow-xl"
+              className="border-2 border-indigo-400 placeholder:text-center py-1 px-[70px] rounded-lg shadow-xl bg-[#adadb167] text-white "
               {...register("firstname", { required: true })}
               placeholder="First Name"
+              defaultValue={getInfoArtist?.firstname}
             />
 
             <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
@@ -152,14 +174,15 @@ export default function SignAsRestaurant() {
 
           <div>
             <div>
-              <lebel className="text-red-700">Last Name*</lebel>
+              <label className="text-red-700">Last Name*</label>
             </div>
             <input
               type="text"
               name="lastname"
-              className="border-2 py-1 px-[70px] placeholder:text-center border-black  rounded-lg shadow-xl"
+              className="border-2 py-1 px-[70px] placeholder:text-center border-indigo-400 rounded-lg shadow-xl bg-[#adadb167] text-white"
               {...register("lastname", { required: true })}
               placeholder="Last Name"
+              defaultValue={getInfoArtist?.lastname}
             />
             <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
               {errors.lastname?.type === "required" && "Must Provide Last Name"}
@@ -169,14 +192,15 @@ export default function SignAsRestaurant() {
         <div className="flex justify-center mt-9 gap-10">
           <div>
             <div>
-              <lebel className="text-red-700">Phone Number*</lebel>
+              <label className="text-red-700">Phone Number*</label>
             </div>
             <input
               type="number"
               name="phonenumber"
-              className="border-2 py-1 px-[70px] placeholder:text-center border-black  rounded-lg shadow-xl "
+              className="border-2 py-1 px-[70px] placeholder:text-center border-indigo-400  rounded-lg shadow-xl bg-[#adadb167] text-white "
               {...register("phonenumber", { required: true })}
               placeholder="Phone Number"
+              defaultValue={getInfoArtist?.phonenumber}
             />
             <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
               {errors.phonenumber?.type === "required" &&
@@ -185,15 +209,17 @@ export default function SignAsRestaurant() {
           </div>
           <div>
             <div>
-              <lebel className="text-red-700">Address*</lebel>
+              <label className="text-red-700">Address*</label>
             </div>
             <input
               type="text"
               name="address"
-              className="border-2 py-1 px-[70px] placeholder:text-center border-black  rounded-lg shadow-xl "
+              className="border-2 py-1 px-[70px] placeholder:text-center border-indigo-400  rounded-lg shadow-xl bg-[#adadb167] text-white "
               {...register("address", { required: true })}
               placeholder="Address"
+              defaultValue={getInfoArtist?.address}
             />
+
             <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
               {errors.address?.type === "required" && "Must Provide Address "}
             </span>
@@ -203,50 +229,42 @@ export default function SignAsRestaurant() {
         <div className="flex justify-center mt-9 gap-10">
           <div>
             <div>
-              <lebel className="text-red-700">Date Of Birth*</lebel>
+              <label className="text-red-700">Date Of Birth*</label>
             </div>
             <input
               type="date"
               name="date"
-              className="border-2 py-1 px-[90px] placeholder:text-center border-black  rounded-lg shadow-xl"
-              {...register("date", { required: true })}
-              placeholder="Address"
+              className="border-2 py-1 px-[90px] placeholder:text-center border-indigo-400  rounded-lg shadow-xl bg-[#adadb167] text-white"
+              readOnly
             />
-            <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
-              {errors.date?.type === "required" && "Must Provide Birth Date"}
-            </span>
           </div>
           <div>
             <div>
-              <lebel className="text-red-700">Gender*</lebel>
+              <label className="text-red-700">Gender*</label>
             </div>
             <select
               type="text"
               name="gender"
-              className="border-2 py-1 px-[125px] placeholder:text-center border-black  rounded-lg shadow-xl"
-              {...register("gender", { required: true })}
+              className="border-2 py-1 px-[125px] placeholder:text-center border-indigo-400  rounded-lg shadow-xl bg-[#adadb167] text-white"
               placeholder="Gender"
+              disabled
             >
-              <option value="" selected></option>
-              <option value="1">male</option>
-              <option value="2">female</option>
-              <option value="3">others</option>
+              <option defaultValue={getInfoArtist?.gender}></option>
+              <option value="male">male</option>
+              <option value="female">female</option>
+              <option value="others">others</option>
             </select>
-            <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
-              {errors.gender?.type === "required" && "Must Select Gender"}
-            </span>
           </div>
         </div>
-
         <div className="flex justify-center mt-9 gap-10">
           <div>
             <div>
-              <lebel className="text-red-700">Social Media Link*</lebel>
+              <label className="text-red-700">Social Media Link*</label>
             </div>
             <input
               type="url"
               name="socialmedia"
-              className="border-2 border-black  py-1 px-[30px] rounded-lg shadow-xl"
+              className="border-2 border-indigo-400  py-1 px-[30px] rounded-lg shadow-xl bg-[#adadb167] text-white"
               placeholder="Social Media URL Link"
               {...register("socialmedia", { required: true })}
             />
@@ -259,12 +277,12 @@ export default function SignAsRestaurant() {
         </div>
         <div className="mt-10">
           <div>
-            <lebel className="text-red-700">Bio*</lebel>
+            <label className="text-red-700">Bio*</label>
           </div>
           <textarea
             name="bio"
             {...register("bio", { required: true })}
-            className="border-2  border-black w-[40%] pb-[10%] "
+            className="border-2  border-indigo-400 w-[40%] pb-[10%] bg-[#adadb167] text-white "
           ></textarea>
           <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
             {errors.bio?.type === "required" &&
@@ -274,11 +292,12 @@ export default function SignAsRestaurant() {
 
         <button
           type="submit"
-          className=" mt-5 pt-[2px] pb-[2px] pl-[8px] pr-[8px] text-[14px] bg-transparent border-2 border-blue-300 hover:border-indigo-400 hover:bg-orange-300 font-semibold hover:drop-shadow-2xl  rounded-lg te drop-shadow-lg duration-500"
+          className=" mt-5 pt-[2px] pb-[2px] pl-[8px] pr-[8px] text-[14px] bg-transparent border-2 border-white text-orange-300 hover:text-black  hover:border-indigo-400  hover:bg-orange-300  font-semibold hover:drop-shadow-2xl  rounded-lg te drop-shadow-lg duration-500"
         >
           Let's Finish
         </button>
       </form>
+
       <div className="flex justify-between mt-[110px] pt-3 pb-3 bg-[#E3EDEE] ">
         <div className=" ml-4 flex gap-6">
           <p className="text-[12px] flex gap-1 font-semibold cursor-pointer hover:text-[#A75D5D]">

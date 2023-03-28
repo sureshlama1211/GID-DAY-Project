@@ -103,7 +103,10 @@ export default function SignAsArtist() {
         PROFILE SETUP FOR ARTIST
       </h1>
       <hr className="border-2 border-black" />
-      <form onSubmit={handleSubmit(updateprofileofartist)}>
+      <form
+        onSubmit={handleSubmit(updateprofileofartist)}
+        encType="multer/form-data"
+      >
         <div className="flex justify-center mt-9 gap-10">
           <div>
             <div>
