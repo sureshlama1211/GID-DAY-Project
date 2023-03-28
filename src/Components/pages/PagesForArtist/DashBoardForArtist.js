@@ -25,14 +25,15 @@ export default function DashBoardForArtist() {
   const [notificationCount, setNotificationCount] = useState(0);
   const getmybooking = async (user) => {
     const MyBooking = await axios.get(
-      `http://localhost:5000/api/mybooking/${user._id}?role=${user.role}`
+      `http://localhost:5000/api/mybooking/${user.id}?role=${user.role}`
     );
-    setNotifications(MyBooking);
-    setNotificationCount(MyBooking.length);
+    console.log(MyBooking, "sanchai chu");
+    setNotifications(MyBooking.data);
+    setNotificationCount(MyBooking.data.length || 0);
   };
   useEffect(() => {
-    getmybooking(user._id);
-  });
+    getmybooking(user);
+  }, []);
   /// testing
 
   const menu = (
@@ -72,7 +73,7 @@ export default function DashBoardForArtist() {
         <div className="flex text-center text-white gap-6 items-center">
           <div>
             <MdNotificationsActive className="text-[25px] hover:text-[#7F669D]" />
-            <span>{notificationCount}</span>
+            <span>{notificationCount} </span>
           </div>
 
           <div style={{ position: "relative" }}>

@@ -24,7 +24,7 @@ export default function SignAsViewer() {
   const onSubmit = (data) => console.log(data);
   //
   const updateprofileofviewer = async ({
-    profile,
+    profile_image,
     firstname,
     lastname,
     phonenumber,
@@ -37,7 +37,7 @@ export default function SignAsViewer() {
       const response = await axios.patch(
         `http://localhost:5000/api/loginasrestaurant/${email}`,
         {
-          profile: profile,
+          profile_image: profile_image,
           firstname: firstname,
           lastname: lastname,
           phonenumber: phonenumber,
@@ -112,13 +112,13 @@ export default function SignAsViewer() {
             </div>
             <input
               type="file"
-              name="profile"
+              name="profile_image"
               className="border-2 border-black  py-1 px-[30px] rounded-lg shadow-xl "
-              {...register("profile", { required: true })}
+              {...register("profile_image", { required: true })}
             />
 
             <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
-              {errors.profile?.type === "required" &&
+              {errors.profile_image?.type === "required" &&
                 "Profile Picture must be added"}
             </span>
           </div>

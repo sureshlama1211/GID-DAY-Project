@@ -23,6 +23,9 @@ import { useForm } from "react-hook-form";
 export default function FindArtist() {
   const user = useUser();
   const email = user.email;
+  // const id = user._id;
+  const [userId, setUser] = useState(user.id);
+  const [artistId, setArtistId] = useState("");
   //validation for checking the fields in gig-creation
   const {
     register,
@@ -35,6 +38,11 @@ export default function FindArtist() {
     handleSubmit: handleSubmit2,
     formState: { errors: errors2 },
   } = useForm();
+  //
+  const onBookClicked = (artist) => {
+    setArtistId(artist._id);
+    setShowBookModal(true);
+  };
   //to create gig
   const creatinggig = async ({
     gigProfile,
@@ -87,6 +95,8 @@ export default function FindArtist() {
       endingtime: endingtime,
       Address: Address,
       budget: budget,
+      bookedBy: userId,
+      bookedTo: artistId,
     });
     console.log(response, "k ayo ta ");
     setShowBookModal(false);
@@ -98,7 +108,6 @@ export default function FindArtist() {
     const ArtistData = await axios.get("http://localhost:5000/api/user");
     const data = ArtistData.data.checkfname;
     setGetArtist(data);
-    console.log(setGetArtist);
   };
   useEffect(() => {
     getAllArtist();
@@ -226,7 +235,7 @@ export default function FindArtist() {
                   </div>
                   <div className="">
                     <button
-                      onClick={() => setShowBookModal(true)}
+                      onClick={() => onBookClicked(artist)}
                       className=" relative top-10 border-2 px-2 rounded-lg bg-orange-600 hover:border-white border-black text-white hover:text-black"
                     >
                       Book Now

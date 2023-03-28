@@ -4,13 +4,13 @@ import { Link } from "react-router-dom";
 import { FcAbout, FcBusinessContact } from "react-icons/fc";
 import { SiTwitter, SiFacebook } from "react-icons/si";
 import { MdNotificationsActive } from "react-icons/md";
-import { useState } from "react";
+// import { useState } from "react";
 import { Dropdown, Menu } from "antd";
-import { useAuth0 } from "@auth0/auth0-react";
+// import { useAuth0 } from "@auth0/auth0-react";
 import useUser from "../../auth/useUser";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import useToken from "../../auth/useToken";
+// import useToken from "../../auth/useToken";
 
 export default function SignAsRestaurant() {
   const user = useUser();
@@ -19,17 +19,16 @@ export default function SignAsRestaurant() {
     register,
     formState: { errors },
     handleSubmit,
-    watch,
   } = useForm();
   //testing phase
-  const onSubmit = (data) => console.log(data);
+  // const onSubmit = (data) => console.log(data);
   //
-  const [token, setToken] = useToken();
+  // const [token, setToken] = useToken();
   const navigate = useNavigate();
 
   //
   const onupdateProfile = async ({
-    profile,
+    profile_image,
     firstname,
     lastname,
     phonenumber,
@@ -43,7 +42,7 @@ export default function SignAsRestaurant() {
       const response = await axios.patch(
         `http://localhost:5000/api/loginasrestaurant/${email}`,
         {
-          profile: profile,
+          profile_image: profile_image,
           firstname: firstname,
           lastname: lastname,
           phonenumber: phonenumber,
@@ -120,13 +119,13 @@ export default function SignAsRestaurant() {
             </div>
             <input
               type="file"
-              name="profile"
+              name="profile_image"
               className="border-2 border-black  py-1 px-[30px] rounded-lg shadow-xl "
-              {...register("profile", { required: true })}
+              {...register("profile_image", { required: true })}
             />
 
             <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
-              {errors.profile?.type === "required" &&
+              {errors.profile_image?.type === "required" &&
                 "Profile Picture must be added"}
             </span>
           </div>
