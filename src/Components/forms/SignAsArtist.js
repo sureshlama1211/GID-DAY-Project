@@ -37,24 +37,32 @@ export default function SignAsArtist() {
     bio,
   }) => {
     console.log(gender);
+    const formData = new FormData();
+    const isformfilled = true;
+    formData.append("profile_image", profile_image[0]);
+    formData.append("fname", firstname);
+    formData.append("lname", lastname);
+    formData.append("pnumber", phonenumber);
+    formData.append("address", address);
+    formData.append("date", date);
+    formData.append("gender", gender);
+    formData.append("band", band);
+    formData.append("skill", skill);
+    formData.append("genre", genre);
+    formData.append("experience", expereince);
+    formData.append("social", socialmedia);
+    formData.append("bio", bio);
+    formData.append("isformfilled", isformfilled.toString());
     try {
+      console.log(profile_image, "sapana");
       const response = await axios.patch(
         `http://localhost:5000/api/loginasrestaurant/${email}`,
+        formData,
+
         {
-          profile_image: profile_image,
-          firstname: firstname,
-          lastname: lastname,
-          phonenumber: phonenumber,
-          address: address,
-          gender: gender,
-          socialmedia: socialmedia,
-          bio: bio,
-          isformfilled: true,
-          date: date,
-          band: band,
-          skill: skill,
-          genre: genre,
-          expereince: expereince,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
       );
       console.log(response);
@@ -71,7 +79,7 @@ export default function SignAsArtist() {
     </Menu>
   );
   //testing phase
-  const onSubmit = (data) => console.log(data);
+
   return (
     <div className="text-center">
       <div className=" flex justify-between bg-white drop-shadow-xl">

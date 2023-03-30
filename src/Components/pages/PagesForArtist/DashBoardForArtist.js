@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FcAbout, FcBusinessContact } from "react-icons/fc";
 import { SiTwitter, SiFacebook } from "react-icons/si";
-import { MdNotificationsActive } from "react-icons/md";
+
 import axios from "axios";
 import { Dropdown, Menu } from "antd";
 import { SlCalender } from "react-icons/sl";
@@ -11,6 +11,7 @@ import { AiFillSetting } from "react-icons/ai";
 import { MdPassword } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 import useUser from "../../../auth/useUser";
+import NavigationPageForArtist from "./NavigationPageForArtist";
 
 export default function DashBoardForArtist() {
   const user = useUser();
@@ -21,72 +22,57 @@ export default function DashBoardForArtist() {
   //for collpsable setting
   const [show, setShow] = useState(false);
   //state for notification
-  const [notifications, setNotifications] = useState([]);
-  const [notificationCount, setNotificationCount] = useState(0);
-  const getmybooking = async (user) => {
-    const MyBooking = await axios.get(
-      `http://localhost:5000/api/mybooking/${user.id}?role=${user.role}`
-    );
-    console.log(MyBooking, "sanchai chu");
-    setNotifications(MyBooking.data);
-    setNotificationCount(MyBooking.data.length || 0);
+  // const [notifications, setNotifications] = useState([]);
+  // const [notificationCount, setNotificationCount] = useState(0);
+  // const getmybooking = async (user) => {
+  //   const MyBooking = await axios.get(
+  //     `http://localhost:5000/api/mybooking/${user.id}?role=${user.role}`
+  //   );
+  //   console.log(MyBooking, "sanchai chu");
+  //   setNotifications(MyBooking.data);
+  //   console.log(setNotifications, "happy mula");
+  //   setNotificationCount(MyBooking.data.length || 0);
+  // };
+  // useEffect(() => {
+  //   getmybooking(user);
+  // }, []);
+
+  //tedting
+  const [getInfoArtist, setGetInfoArtist] = useState();
+  const Artistinformation = async () => {
+    try {
+      const ArtistInfo = await axios.get(
+        `http://localhost:5000/api/profilebeforeedit/${email}`
+      );
+
+      console.log(ArtistInfo);
+      const data = ArtistInfo.data.getprofileinfo;
+      // console.log(data);
+      setGetInfoArtist(data);
+      // console.log(getInfoArtist);
+    } catch (error) {
+      console.log(error);
+    }
   };
+  // console.log(Artistinformation, "dai cha");
   useEffect(() => {
-    getmybooking(user);
+    Artistinformation();
   }, []);
+  // console.log(getInfoArtist, "sanibar");
   /// testing
 
-  const menu = (
-    <Menu>
-      <Menu.Item key="1">{email}</Menu.Item>
-      <Link to="/login">
-        <Menu.Item key="3">Logout</Menu.Item>
-      </Link>
-    </Menu>
-  );
+  // const menu = (
+  //   <Menu>
+  //     <Menu.Item key="1">{email}</Menu.Item>
+  //     <Link to="/login">
+  //       <Menu.Item key="3">Logout</Menu.Item>
+  //     </Link>
+  //   </Menu>
+  // );
 
   return (
     <div className="text-center bg-[#010101]">
-      <div className=" flex justify-between bg-[#adadb167]   drop-shadow-xl">
-        <div>
-          <Link to="/">
-            <img
-              className="h-[14vh] w-[14vh] relative left-6  pointer-cursor "
-              alt="logo "
-              src={require("../../../Images/gig.png")}
-            />
-          </Link>
-        </div>
-        <div className="flex mt-[28px]">
-          <button className=" w-[90px] h-[35px] border-transparent mt-[-5px] rounded-2xl  border-2 hover:border-[#A7727D] font-bold text-[15px]  items-center text-center text-white mr-[40px] ">
-            DashBoard
-          </button>
-          {/* gig */}
-          <Link to="/applyforgig">
-            <button className=" w-[150px] h-[35px] pt-1 mt-[-5px]  border-transparent rounded-2xl  font-bold text-[15px] hover:border-[#A7727D] border-2 text-center text-white mr-[40px] ">
-              Apply For Gig
-            </button>
-          </Link>
-          {/*  */}
-        </div>
-
-        <div className="flex text-center text-white gap-6 items-center">
-          <div>
-            <MdNotificationsActive className="text-[25px] hover:text-[#7F669D]" />
-            <span>{notificationCount} </span>
-          </div>
-
-          <div style={{ position: "relative" }}>
-            <Dropdown overlay={menu} trigger={["click"]}>
-              <img
-                src={require("../../../Images/profile.png")}
-                alt="profile"
-                className="w-[7vh] h-[7vh] rounded-[25px]  mr-5 "
-              />
-            </Dropdown>
-          </div>
-        </div>
-      </div>
+      <NavigationPageForArtist />
       {/* sidebar for dashboard */}
       <div className="flex justify-between">
         <div className="bg-[#adadb12a]  pb-[270px]  drop-shadow-2xl ">

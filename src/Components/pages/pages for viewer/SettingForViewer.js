@@ -48,6 +48,7 @@ export default function SettingForViewer() {
 
   /// calling the update(patch) method
   const updateprofile = async ({
+    profile_image,
     firstname,
     lastname,
     phonenumber,
@@ -57,6 +58,8 @@ export default function SettingForViewer() {
     profile,
   }) => {
     try {
+      const formData = new FormData();
+      formData.append("profile_image", profile_image[0]);
       const response = await axios.patch(
         `http://localhost:5000/api/editprofile/${email}`,
         {
@@ -141,13 +144,13 @@ export default function SettingForViewer() {
 
             <input
               type="file"
-              name="profile"
+              name="profile_image"
               className="border-2   py-1 px-[30px] rounded-lg shadow-xl border-indigo-400 opacity-30  "
-              {...register("profile", { required: true })}
+              {...register("profile_image", { required: true })}
             />
 
             <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
-              {errors.profile?.type === "required" &&
+              {errors.profile_image?.type === "required" &&
                 "Profile Picture must be added"}
             </span>
           </div>

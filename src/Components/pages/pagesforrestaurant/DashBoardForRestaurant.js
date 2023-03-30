@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import { FcAbout, FcBusinessContact } from "react-icons/fc";
 import { SiTwitter, SiFacebook } from "react-icons/si";
 import { MdNotificationsActive } from "react-icons/md";
-
+import { useEffect } from "react";
+import axios from "axios";
 import { Dropdown, Menu } from "antd";
 
 import useUser from "../../../auth/useUser";
@@ -25,7 +26,26 @@ export default function DashBoardForRestaurant() {
   //for collapsable on setting
   const [show, setShow] = useState(false);
 
-  //
+  //check
+  const [getInfoArtist, setGetInfoArtist] = useState();
+  const Artistinformation = async () => {
+    try {
+      const ArtistInfo = await axios.get(
+        `http://localhost:5000/api/profilebeforeedit/${email}`
+      );
+
+      console.log(ArtistInfo);
+      const data = ArtistInfo.data.getprofileinfo;
+      console.log(data);
+      setGetInfoArtist(data);
+      console.log(getInfoArtist);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    Artistinformation();
+  }, []);
 
   /// testing
 

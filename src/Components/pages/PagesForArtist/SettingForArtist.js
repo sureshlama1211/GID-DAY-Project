@@ -12,6 +12,7 @@ import useUser from "../../../auth/useUser";
 import { useNavigate } from "react-router-dom";
 //
 import axios from "axios";
+import NavigationPageForArtist from "./NavigationPageForArtist";
 
 export default function SettingForArtist() {
   const user = useUser();
@@ -82,49 +83,13 @@ export default function SettingForArtist() {
       </Link>
     </Menu>
   );
+
+  // const Notificationdata =(
+
+  // )
   return (
     <div className="text-center bg-[#010101]">
-      <div className=" flex justify-between bg-[#adadb167]  drop-shadow-xl">
-        <div>
-          <Link to="/">
-            <img
-              className="h-[14vh] w-[14vh] relative left-6  pointer-cursor "
-              alt="logo "
-              src={require("../../../Images/gig.png")}
-            />
-          </Link>
-        </div>
-        <div className="flex mt-[28px]">
-          <Link to="/dashboardforartist">
-            <button className=" w-[90px] h-[35px] border-transparent mt-[-5px] rounded-2xl  border-2 hover:border-[#A7727D] font-bold text-[15px]  items-center text-center text-white mr-[40px] ">
-              DashBoard
-            </button>
-          </Link>
-          {/* gig */}
-          <Link to="/applyforgig">
-            <button className=" w-[150px] h-[35px] pt-1 mt-[-5px]  border-transparent rounded-2xl  font-bold text-[15px] hover:border-[#A7727D] border-2 text-center text-white mr-[40px] ">
-              Apply For Gig
-            </button>
-          </Link>
-          {/*  */}
-        </div>
-
-        <div className="flex text-center gap-6 items-center">
-          <div>
-            <MdNotificationsActive className="text-[25px] hover:text-[#7F669D] text-white" />
-          </div>
-
-          <div style={{ position: "relative" }}>
-            <Dropdown overlay={menu} trigger={["click"]}>
-              <img
-                src={require("../../../Images/profile.png")}
-                alt="profile"
-                className="w-[7vh] h-[7vh] rounded-[25px]  mr-5 "
-              />
-            </Dropdown>
-          </div>
-        </div>
-      </div>
+      <NavigationPageForArtist />
       <h1 className="text-orange-500 font-bold text-[30px] ">
         Edit Your Profile
       </h1>

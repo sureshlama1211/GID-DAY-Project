@@ -107,12 +107,14 @@ export default function FindArtist() {
   const getAllArtist = async () => {
     const ArtistData = await axios.get("http://localhost:5000/api/user");
     const data = ArtistData.data.checkfname;
+    console.log(data, "hait");
     setGetArtist(data);
   };
   useEffect(() => {
     getAllArtist();
   }, []);
 
+  console.log(getArtist, "j cha ");
   //
 
   /// testing
@@ -210,9 +212,9 @@ export default function FindArtist() {
                 >
                   <div>
                     <img
-                      className="w-5vh h-5vh rounded-lg"
+                      className="w-[35vh] h-[25vh] rounded-lg mt-2 mb-2 ml-2"
                       alt="naruto"
-                      src="https://play.google.com/store/apps/details?id=com.bandainamcoent.ninjavoltage_app&hl=en_US"
+                      src={`http://localhost:5000/${artist.profile_image}`}
                     />
                   </div>
 
