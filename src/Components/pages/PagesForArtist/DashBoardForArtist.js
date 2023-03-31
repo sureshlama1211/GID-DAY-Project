@@ -72,10 +72,10 @@ export default function DashBoardForArtist() {
 
   return (
     <div className="text-center bg-[#010101]">
-      <NavigationPageForArtist />
+      <NavigationPageForArtist className="fixed inset-0 bg-black opacity-80 backdrop-blur-3xl flex justify-center pt-[20px]" />
       {/* sidebar for dashboard */}
       <div className="flex justify-between">
-        <div className="bg-[#adadb12a]  pb-[270px]  drop-shadow-2xl ">
+        <div className="bg-[#adadb12a]  pb-[270px] ">
           <h1 className="mt-5  pt-[10px] font-bold  animate-pulse pl-5 pr-2 text-white">
             {role}
           </h1>
@@ -120,7 +120,7 @@ export default function DashBoardForArtist() {
           )}
         </div>
         <div>
-          <div className="pr-[400px] text-orange-700 pt-[140px]  font-extrabold  text-[30px] animate-bounce">
+          <div className="pr-[400px] text-orange-700 pt-[140px]  font-extrabold  text-[30px] ">
             WELCOME TO THE DASHBOARD
           </div>
         </div>

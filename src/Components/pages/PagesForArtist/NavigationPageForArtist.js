@@ -5,12 +5,15 @@ import { Link } from "react-router-dom";
 import { MdNotificationsActive } from "react-icons/md";
 import axios from "axios";
 import { Dropdown, Menu } from "antd";
-
+import MyModal3 from "../modals/ModalForArtist";
 import useUser from "../../../auth/useUser";
 
 export default function NavigationPageForArtist() {
   const user = useUser();
   const email = user.email;
+
+  //stae for modal
+  const [visibleModal, setVisibleModal] = useState(false);
 
   const role = user.role;
   // console.log(user);
@@ -27,10 +30,10 @@ export default function NavigationPageForArtist() {
     // console.log(MyBooking, "sanchai chu");
     setNotifications(MyBooking.data);
     const data = MyBooking.data;
-    console.log(data, "ghar jwai ho");
+    // console.log(data, "ghar jwai ho");
     setNotiArray(data);
-    console.log(notiArray, "sachi ho ta");
-    console.log(MyBooking, "jamana kharab cha");
+    // console.log(notiArray, "sachi ho ta");
+    // console.log(MyBooking, "jamana kharab cha");
     setNotificationCount(MyBooking.data.length || 0);
   };
   useEffect(() => {
@@ -74,7 +77,11 @@ export default function NavigationPageForArtist() {
       {notiArray.map((array, i) => {
         return (
           <div key={i}>
-            <Menu.Item key="1" className=" border-2 border-black rounded-2xl">
+            <Menu.Item
+              key="1"
+              className=" border-2 border-black rounded-2xl"
+              onClick={() => setVisibleModal(true)}
+            >
               {array.bookedBy.firstname} is trying to book you
             </Menu.Item>
           </div>
@@ -82,6 +89,8 @@ export default function NavigationPageForArtist() {
       })}
     </Menu>
   );
+  //for date
+  const dateOptions = { day: "numeric", month: "long", year: "numeric" };
 
   return (
     <div className="text-center bg-[#010101]">
@@ -130,6 +139,69 @@ export default function NavigationPageForArtist() {
         </div>
       </div>
       {/* sidebar for dashboard */}
+      <MyModal3
+        isvisible={visibleModal}
+        onClose={() => setVisibleModal(false)}
+        className="pt-[2000px]"
+      >
+        {/* contents here */}
+        {notiArray.map((array, i) => {
+          //for converting the date in suitable format
+          var startDateTime = new Date(array.date);
+          const newStartDate = startDateTime.toLocaleDateString(
+            "en-US",
+            dateOptions
+          );
+
+          return (
+            <div key={i}>
+              <div>
+                <div>
+                  <h1 className="font-bold text-[25px] text-transform: uppercase animate-bounce">
+                    {array.gigname}
+                  </h1>
+                  <div className="flex justify-center gap-[25%] mt-5">
+                    <h1 className="font-bold text-[15px] ">
+                      <p className="text-blue-500 text-[20px] ">Genre</p>
+                      {array.gigtype}
+                    </h1>
+                    <h1 className="font-bold text-[15px]">
+                      <p className="text-blue-500 text-[20px] ">Date</p>
+                      {newStartDate}
+                    </h1>
+                  </div>
+                </div>
+                <div className="flex justify-center gap-[25%] mt-2">
+                  <h1 className="font-bold text-[15px] ">
+                    <p className="text-blue-500 text-[20px] ">payment Type</p>
+                    {array.showtype}
+                  </h1>
+                  <h1 className="font-bold text-[15px]">
+                    <p className="text-blue-500 text-[20px] ">Address</p>
+                    {array.Address}
+                  </h1>
+                </div>
+                <div className="flex justify-center gap-[25%] mt-2">
+                  <h1 className="font-bold text-[15px] ">
+                    <p className="text-blue-500 text-[20px] ">Start Time</p>
+                    {array.startingtime}
+                  </h1>
+                  <h1 className="font-bold text-[15px]">
+                    <p className="text-blue-500 text-[20px] ">End Time</p>
+                    {array.endingtime}
+                  </h1>
+                </div>
+                <div className="flex justify-center">
+                  <h1 className="font-bold text-[15px]">
+                    <p className="text-blue-500 text-[20px] ">Budget</p>
+                    {array.budget}
+                  </h1>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </MyModal3>
     </div>
   );
 }
