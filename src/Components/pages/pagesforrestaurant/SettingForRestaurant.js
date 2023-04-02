@@ -12,6 +12,7 @@ import useUser from "../../../auth/useUser";
 import { useNavigate } from "react-router-dom";
 //
 import axios from "axios";
+import NavbarForRestaurant from "./NavbarForRestaurant";
 
 export default function SettingForRestaurant() {
   const user = useUser();
@@ -26,8 +27,8 @@ export default function SettingForRestaurant() {
   } = useForm();
 
   //for getting the previous profile set up info
-  const [getInfoArtist, setGetInfoArtist] = useState();
-  const Artistinformation = async () => {
+  const [getInfoRestaurant, setGetInfoRestaurant] = useState();
+  const Restaurantinformation = async () => {
     try {
       const ArtistInfo = await axios.get(
         `http://localhost:5000/api/profilebeforeedit/${email}`
@@ -35,38 +36,50 @@ export default function SettingForRestaurant() {
 
       console.log(ArtistInfo);
       const data = ArtistInfo.data.getprofileinfo;
-      console.log(data);
-      setGetInfoArtist(data);
-      console.log(getInfoArtist);
+      console.log(data, "k hudai cha");
+      setGetInfoRestaurant(data);
+      console.log(getInfoRestaurant);
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
-    Artistinformation();
+    Restaurantinformation();
+    //for image
   }, []);
 
   /// calling the update(patch) method
   const updateprofile = async ({
+    profile_image,
     firstname,
     lastname,
     phonenumber,
     address,
+    gender,
     socialmedia,
     bio,
-    profile,
+    date,
   }) => {
     try {
+      const formData = new FormData();
+
+      formData.append("profile_image", profile_image[0]);
+      formData.append("firstname", firstname);
+      formData.append("lastname", lastname);
+      formData.append("phonenumber", phonenumber);
+      formData.append("address", address);
+      formData.append("date", date);
+      formData.append("gender", gender);
+      formData.append("socialmedia", socialmedia);
+      formData.append("bio", bio);
       const response = await axios.patch(
         `http://localhost:5000/api/editprofile/${email}`,
+        formData,
+
         {
-          profile: profile,
-          firstname: firstname,
-          lastname: lastname,
-          phonenumber: phonenumber,
-          address: address,
-          socialmedia: socialmedia,
-          bio: bio,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
       );
       console.log(response);
@@ -74,59 +87,14 @@ export default function SettingForRestaurant() {
     } catch (error) {}
   };
 
-  const menu = (
-    <Menu>
-      <Menu.Item key="1">{email}</Menu.Item>
-      <Link to="/login">
-        <Menu.Item key="3">Logout</Menu.Item>
-      </Link>
-    </Menu>
-  );
+  //for hte correct value of the date
+  const dateOptions = { day: "numeric", month: "long", year: "numeric" };
+  var startDateTime = new Date(getInfoRestaurant?.date);
+  const newStartDate = startDateTime.toLocaleDateString("en-US", dateOptions);
+
   return (
     <div className="text-center bg-[#010101]">
-      <div className=" flex justify-between bg-[#adadb167]  drop-shadow-xl">
-        <div>
-          <Link to="/">
-            <img
-              className="h-[14vh] w-[14vh] relative left-6  pointer-cursor "
-              alt="logo "
-              src={require("../../../Images/gig.png")}
-            />
-          </Link>
-        </div>
-        <div className="flex mt-[28px]">
-          <Link to="/dashboardforrestaurant">
-            <button className=" w-[90px] h-[35px] mt-[-5px] border-transparent rounded-2xl  border-2 hover:border-[#A7727D] font-bold text-[15px]  items-center text-center text-white mr-[40px] ">
-              DashBoard
-            </button>
-          </Link>
-          <Link to="/findartist">
-            <button className=" w-[90px] h-[35px] pt-1 mt-[-5px] border-transparent rounded-2xl  font-bold text-[15px] hover:border-[#A7727D] border-2 text-center text-white mr-[40px] ">
-              Find Artists
-            </button>
-          </Link>
-          <button className=" w-[100px] h-[40px] font-bold text-[15px] border-transparent border-2 rounded-md hover:border-[#A7727D] mt-[-7px]    text-center text-white  mr-[20px] ml-[20px]">
-            + Create Gig
-          </button>
-          {/*  */}
-        </div>
-
-        <div className="flex text-center gap-6 items-center">
-          <div>
-            <MdNotificationsActive className="text-[25px] hover:text-[#7F669D] text-white" />
-          </div>
-
-          <div style={{ position: "relative" }}>
-            <Dropdown overlay={menu} trigger={["click"]}>
-              <img
-                src={require("../../../Images/profile.png")}
-                alt="profile"
-                className="w-[7vh] h-[7vh] rounded-[25px]  mr-5 "
-              />
-            </Dropdown>
-          </div>
-        </div>
-      </div>
+      <NavbarForRestaurant />
       <h1 className="text-orange-500 font-bold text-[30px] ">
         Edit Your Profile
       </h1>
@@ -140,13 +108,13 @@ export default function SettingForRestaurant() {
 
             <input
               type="file"
-              name="profile"
+              name="profile_image"
               className="border-2   py-1 px-[30px] rounded-lg shadow-xl border-indigo-400 opacity-30  "
-              {...register("profile", { required: true })}
+              {...register("profile_image", { required: true })}
             />
 
             <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
-              {errors.profile?.type === "required" &&
+              {errors.profile_image?.type === "required" &&
                 "Profile Picture must be added"}
             </span>
           </div>
@@ -159,10 +127,10 @@ export default function SettingForRestaurant() {
             <input
               type="text"
               name="firstname"
-              className="border-2 border-indigo-400 placeholder:text-center py-1 px-[70px] rounded-lg shadow-xl bg-[#adadb167] text-white "
+              className="border-2 border-indigo-400 placeholder:text-center text-center py-1 px-[70px] rounded-lg shadow-xl bg-[#adadb167] text-white "
               {...register("firstname", { required: true })}
               placeholder="First Name"
-              defaultValue={getInfoArtist?.firstname}
+              defaultValue={getInfoRestaurant?.firstname}
             />
 
             <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
@@ -178,10 +146,10 @@ export default function SettingForRestaurant() {
             <input
               type="text"
               name="lastname"
-              className="border-2 py-1 px-[70px] placeholder:text-center border-indigo-400 rounded-lg shadow-xl bg-[#adadb167] text-white"
+              className="border-2 py-1 px-[70px] placeholder:text-center text-center border-indigo-400 rounded-lg shadow-xl bg-[#adadb167] text-white"
               {...register("lastname", { required: true })}
               placeholder="Last Name"
-              defaultValue={getInfoArtist?.lastname}
+              defaultValue={getInfoRestaurant?.lastname}
             />
             <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
               {errors.lastname?.type === "required" && "Must Provide Last Name"}
@@ -194,12 +162,12 @@ export default function SettingForRestaurant() {
               <label className="text-red-700">Phone Number*</label>
             </div>
             <input
-              type="number"
-              name="phonenumber"
-              className="border-2 py-1 px-[70px] placeholder:text-center border-indigo-400  rounded-lg shadow-xl bg-[#adadb167] text-white "
+              type=""
+              name="number"
+              className="border-2 py-1 px-[70px] placeholder:text-center text-center border-indigo-400  rounded-lg shadow-xl bg-[#adadb167] text-white "
               {...register("phonenumber", { required: true })}
               placeholder="Phone Number"
-              defaultValue={getInfoArtist?.phonenumber}
+              defaultValue={getInfoRestaurant?.phonenumber}
             />
             <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
               {errors.phonenumber?.type === "required" &&
@@ -213,10 +181,10 @@ export default function SettingForRestaurant() {
             <input
               type="text"
               name="address"
-              className="border-2 py-1 px-[70px] placeholder:text-center border-indigo-400  rounded-lg shadow-xl bg-[#adadb167] text-white "
+              className="border-2 py-1 px-[70px] placeholder:text-center text-center border-indigo-400  rounded-lg shadow-xl bg-[#adadb167] text-white "
               {...register("address", { required: true })}
               placeholder="Address"
-              defaultValue={getInfoArtist?.address}
+              defaultValue={getInfoRestaurant?.address}
             />
 
             <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
@@ -231,10 +199,11 @@ export default function SettingForRestaurant() {
               <label className="text-red-700">Date Of Birth*</label>
             </div>
             <input
-              type="date"
+              type="text"
               name="date"
-              className="border-2 py-1 px-[90px] placeholder:text-center border-indigo-400  rounded-lg shadow-xl bg-[#adadb167] text-white"
-              readOnly
+              className="border-2 py-1 px-[70px] text-center placeholder:text-center border-indigo-400  rounded-lg shadow-xl bg-[#adadb167] text-white"
+              value={newStartDate}
+              disabled
             />
           </div>
           <div>
@@ -244,11 +213,11 @@ export default function SettingForRestaurant() {
             <select
               type="text"
               name="gender"
-              className="border-2 py-1 px-[125px] placeholder:text-center border-indigo-400  rounded-lg shadow-xl bg-[#adadb167] text-white"
+              className="border-2 py-1 px-[125px] placeholder:text-center text-center border-indigo-400  rounded-lg shadow-xl bg-[#adadb167] text-white"
               placeholder="Gender"
               disabled
+              defaultValue={getInfoRestaurant?.gender?.toString()}
             >
-              <option defaultValue={getInfoArtist?.gender}></option>
               <option value="male">male</option>
               <option value="female">female</option>
               <option value="others">others</option>
@@ -266,6 +235,7 @@ export default function SettingForRestaurant() {
               className="border-2 border-indigo-400  py-1 px-[30px] rounded-lg shadow-xl bg-[#adadb167] text-white"
               placeholder="Social Media URL Link"
               {...register("socialmedia", { required: true })}
+              defaultValue={getInfoRestaurant?.socialmedia}
             />
 
             <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
@@ -282,6 +252,7 @@ export default function SettingForRestaurant() {
             name="bio"
             {...register("bio", { required: true })}
             className="border-2  border-indigo-400 w-[40%] pb-[10%] bg-[#adadb167] text-white "
+            defaultValue={getInfoRestaurant?.bio}
           ></textarea>
           <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
             {errors.bio?.type === "required" &&

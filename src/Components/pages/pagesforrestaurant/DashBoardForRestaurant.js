@@ -7,6 +7,7 @@ import { MdNotificationsActive } from "react-icons/md";
 import { useEffect } from "react";
 import axios from "axios";
 import { Dropdown, Menu } from "antd";
+import { FaRegSmileWink } from "react-icons/fa";
 
 import useUser from "../../../auth/useUser";
 //
@@ -15,36 +16,32 @@ import { SlCalender } from "react-icons/sl";
 import { IoIosMicrophone } from "react-icons/io";
 import { MdPassword } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
+import NavbarForRestaurant from "./NavbarForRestaurant";
 //
 
 export default function DashBoardForRestaurant() {
   const user = useUser();
   const email = user.email;
+  console.log(user, "k cha");
   const role = user.role;
 
   //
   //for collapsable on setting
   const [show, setShow] = useState(false);
 
-  //check
-  const [getInfoArtist, setGetInfoArtist] = useState();
-  const Artistinformation = async () => {
+  //to show the name of the user in dashboard
+  const [getRestaurantName, setGetRestaurantName] = useState();
+  const Restaurantinformation = async () => {
     try {
-      const ArtistInfo = await axios.get(
+      const RestaurantInfo = await axios.get(
         `http://localhost:5000/api/profilebeforeedit/${email}`
       );
-
-      console.log(ArtistInfo);
-      const data = ArtistInfo.data.getprofileinfo;
-      console.log(data);
-      setGetInfoArtist(data);
-      console.log(getInfoArtist);
-    } catch (error) {
-      console.log(error);
-    }
+      const data = RestaurantInfo.data.getprofileinfo;
+      setGetRestaurantName(data);
+    } catch (error) {}
   };
   useEffect(() => {
-    Artistinformation();
+    Restaurantinformation();
   }, []);
 
   /// testing
@@ -60,54 +57,18 @@ export default function DashBoardForRestaurant() {
 
   return (
     <div className="text-center bg-[#010101]">
-      <div className=" flex justify-between bg-[#adadb167]  drop-shadow-xl ">
-        <div>
-          <Link to="/">
-            <img
-              className="h-[14vh] w-[14vh] relative left-6  pointer-cursor "
-              alt="logo "
-              src={require("../../../Images/gig.png")}
-            />
-          </Link>
-        </div>
-        <div className="flex mt-[28px]">
-          <button className=" w-[90px] h-[35px] mt-[-5px] border-transparent rounded-2xl  border-2 hover:border-[#A7727D] font-bold text-[15px]  items-center text-center text-white mr-[40px] ">
-            DashBoard
-          </button>
-          <Link to="/findartist">
-            <button className=" w-[90px] h-[35px] pt-1 mt-[-5px] border-transparent rounded-2xl  font-bold text-[15px] hover:border-[#A7727D] border-2 text-center text-white mr-[40px] ">
-              Find Artists
-            </button>
-          </Link>
-          <button className=" w-[100px] h-[40px] font-bold text-[15px] border-transparent border-2 rounded-md hover:border-[#A7727D] mt-[-7px]    text-center text-white  mr-[20px] ml-[20px]">
-            + Create Gig
-          </button>
-          {/*  */}
-        </div>
-
-        <div className="flex text-center gap-6 items-center">
-          <div>
-            <MdNotificationsActive className="text-[25px] hover:text-[#7F669D] text-white" />
-          </div>
-
-          <div style={{ position: "relative" }}>
-            <Dropdown overlay={menu} trigger={["click"]}>
-              <img
-                src={require("../../../Images/profile.png")}
-                alt="profile"
-                className="w-[7vh] h-[7vh] rounded-[25px]  mr-5 "
-              />
-            </Dropdown>
-          </div>
-        </div>
-      </div>
+      <NavbarForRestaurant />
       {/* sidebar for dashboard */}
       <div className="flex justify-between ">
-        <div className="bg-[#adadb12a] pb-[270px]  drop-shadow-2xl border-r-2 border-r-white">
-          <h1 className="mt-5  pt-[10px] font-bold  animate-pulse pl-5 pr-2 text-white">
-            {role}
+        <div className="bg-[#adadb12a] pb-[270px]   border-r-2 border-r-white">
+          <h1 className="flex gap-2 mt-5 pt-[10px] font-bold animate-pulse   pl-5 pr-2 text-red-900">
+            Welcome
+            <FaRegSmileWink className="mt-1 animate-pulse" />
           </h1>
-          <hr className="mt-20" />
+          <h1 className=" pt-[10px] font-bold animate-pulse   pl-1 pr-2 text-[#BACDDB]">
+            {getRestaurantName?.firstname}_{getRestaurantName?.lastname}
+          </h1>
+          <hr className="mt-12" />
           <h1 className=" hover:bg-black font-medium cursor-pointer text-white flex gap-2  ">
             <SlCalender className="mt-1" />
             Booking Details
@@ -149,7 +110,7 @@ export default function DashBoardForRestaurant() {
           )}
         </div>
         <div>
-          <div className="pr-[400px] pt-[100px] font-extrabold text-[30px] animate-bounce text-orange-700">
+          <div className="pr-[400px] pt-[100px] font-extrabold text-[30px]  text-orange-700">
             WELCOME TO THE DASHBOARD
           </div>
         </div>

@@ -18,6 +18,7 @@ import MyModal from "../modals/ShowModel";
 import MyModal2 from "../modals/ModalContent";
 //useform hook for gig-drpdown
 import { useForm } from "react-hook-form";
+import NavbarForRestaurant from "./NavbarForRestaurant";
 //
 
 export default function FindArtist() {
@@ -27,11 +28,7 @@ export default function FindArtist() {
   const [userId, setUser] = useState(user.id);
   const [artistId, setArtistId] = useState("");
   //validation for checking the fields in gig-creation
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm();
+
   //for booking hte artist
   const {
     register: register2,
@@ -44,31 +41,6 @@ export default function FindArtist() {
     setShowBookModal(true);
   };
   //to create gig
-  const creatinggig = async ({
-    gigProfile,
-    gigName,
-    genreNeeded,
-    gigdate,
-    paymenttype,
-    starttime,
-    endtime,
-    address,
-    payment,
-  }) => {
-    const response = await axios.post("http://localhost:5000/api/gigs", {
-      gigProfile: gigProfile,
-      gigName: gigName,
-      genreNeeded: genreNeeded,
-      gigdate: gigdate,
-      paymenttype: paymenttype,
-      starttime: starttime,
-      endtime: endtime,
-      address: address,
-      payment: payment,
-    });
-    console.log(response);
-    setShowModal(false);
-  };
 
   //modal
   const [showModal, setShowModal] = useState(false);
@@ -119,64 +91,10 @@ export default function FindArtist() {
 
   /// testing
 
-  const menu = (
-    <Menu>
-      <Menu.Item key="1">{email}</Menu.Item>
-      <Link to="/login">
-        <Menu.Item key="3">Logout</Menu.Item>
-      </Link>
-    </Menu>
-  );
-
   return (
     <div className="text-center bg-[#010101] ">
-      <div className=" flex justify-between bg-[#adadb167] drop-shadow-xl">
-        <div>
-          <Link to="/">
-            <img
-              className="h-[14vh] w-[14vh] relative left-6  pointer-cursor "
-              alt="logo "
-              src={require("../../../Images/gig.png")}
-            />
-          </Link>
-        </div>
-        <div className="flex mt-[28px]">
-          <Link to="/dashboardforrestaurant">
-            <button className=" w-[90px] h-[35px] mt-[-5px] border-transparent rounded-2xl  border-2 hover:border-[#A7727D] font-bold text-[15px]  items-center text-center text-white mr-[40px] ">
-              DashBoard
-            </button>
-          </Link>
-          <button className=" w-[90px] h-[35px] pt-1 mt-[-5px] border-transparent rounded-2xl  font-bold text-[15px] hover:border-[#A7727D] border-2 text-center text-white mr-[40px] ">
-            Find Artists
-          </button>
-          <div>
-            <button
-              onClick={() => setShowModal(true)}
-              className=" w-[100px] h-[40px] font-bold text-[15px] border-transparent  border-2 rounded-md hover:border-[#A7727D] mt-[-10px]    text-center text-white  mr-[20px] ml-[20px]"
-            >
-              + Create Gig
-            </button>
-          </div>
-          {/*  */}
-        </div>
-
-        <div className="flex text-center gap-6 items-center">
-          <div>
-            <MdNotificationsActive className="text-[25px] hover:text-[#7F669D] text-white " />
-          </div>
-
-          <div style={{ position: "relative" }}>
-            <Dropdown overlay={menu} trigger={["click"]}>
-              <img
-                src={require("../../../Images/profile.png")}
-                alt="profile"
-                className="w-[7vh] h-[7vh] rounded-[25px]  mr-5 "
-              />
-            </Dropdown>
-          </div>
-        </div>
-      </div>
-      <div className="flex gap-10">
+      <NavbarForRestaurant />
+      <div className="flex gap-[10%]">
         <div className=" p-5 border-r-2 bg-[#adadb12a]  border-gray-300">
           <h1 className="text-white">FILTER BY</h1> <br />
           <hr className="w-[100px] " />
@@ -196,7 +114,7 @@ export default function FindArtist() {
         <div>
           <div>
             <input
-              className="relative top-[30px]  w-full px-[190px]  h-[30px] rounded-lg placeholder:text-center drop-shadow-2xl border-transparent border-gray-400 border-1"
+              className=" mt-[20px] w-full px-[190px]  h-[30px] rounded-lg placeholder:text-center  border-transparent border-gray-400 border-1"
               type="text"
               placeholder="Search Artist Here "
             ></input>
@@ -238,7 +156,7 @@ export default function FindArtist() {
                   <div className="">
                     <button
                       onClick={() => onBookClicked(artist)}
-                      className=" relative top-10 border-2 px-2 rounded-lg bg-orange-600 hover:border-white border-black text-white hover:text-black"
+                      className=" mt-[80px] border-2 px-2 rounded-lg bg-orange-600 hover:border-white border-black text-white hover:text-black"
                     >
                       Book Now
                     </button>
@@ -272,226 +190,7 @@ export default function FindArtist() {
         </div>
       </div>
       {/* for modal box */}
-      <MyModal isvisible={showModal} onClose={() => setShowModal(false)}>
-        {/* contents here */}
-        <form onSubmit={handleSubmit(creatinggig)}>
-          <div>
-            <h1 className="flex justify-center gap-2 font-bold text-[20px] text-orange-900 animate-bounce ">
-              <IoMdMicrophone className="mt-1" />
-              Apply for you Gig
-              <ImHappy2 className="mt-2" />
-            </h1>
-          </div>
-          <div className="flex justify-center mt-4 gap-5">
-            <div>
-              <div>
-                <label className="text-red-700  font-bold">Gig Picture*</label>
-              </div>
-            </div>
-            <input
-              type="file"
-              name="gigProfile"
-              className="border-2 border-black  rounded-lg shadow-xl "
-              {...register("gigProfile", { required: true })}
-            />
-            <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
-              {errors.gigProfile?.type === "required" &&
-                " Gig Profile Picture must be added"}
-            </span>
-          </div>
 
-          <div className="flex justify-center gap-6 mt-5">
-            <div>
-              <div>
-                <div>
-                  <label className="text-red-700  font-bold">Gig Name*</label>
-                </div>
-                <input
-                  type="text"
-                  name="gigName"
-                  className="border-2 border-black  rounded-lg shadow-xl "
-                  {...register("gigName", { required: true })}
-                />
-                <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
-                  {errors.gigName?.type === "required" &&
-                    " Gig Name must be added"}
-                </span>
-              </div>
-            </div>
-
-            <div>
-              <div>
-                <div>
-                  <label className="text-red-700  font-bold">Genre Type*</label>
-                </div>
-                <select
-                  type="text"
-                  name="genreNeeded"
-                  className="border-2  px-[50px] placeholder:text-center  border-black  rounded-lg shadow-xl"
-                  {...register("genreNeeded", { required: true })}
-                  placeholder="Genre"
-                >
-                  <option value=""></option>
-                  <option value="Classical">Classical</option>
-                  <option value="Lok Dohori">Lok Dohori</option>
-                  <option value="Pop">Pop</option>
-                  <option value="Rock">Rock</option>
-                  <option value="Hip Hop">Hip Hop</option>
-                </select>
-                <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
-                  {errors.genreNeeded?.type === "required" &&
-                    " Genre type  must be added"}
-                </span>
-              </div>
-            </div>
-            <div>
-              <div>
-                <div>
-                  <label className="text-red-700  font-bold">Gig Date*</label>
-                </div>
-                <input
-                  type="date"
-                  name="gigdate"
-                  className="border-2 px-5 border-black  rounded-lg shadow-xl "
-                  {...register("gigdate", { required: true })}
-                />
-                <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
-                  {errors.gigdate?.type === "required" &&
-                    " Gig Date must be added"}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex justify-center gap-6 mt-5">
-            <div>
-              <div>
-                <div>
-                  <label className="text-red-700  font-bold">
-                    Payment Type*
-                  </label>
-                </div>
-                <select
-                  type="text"
-                  name="paymenttype"
-                  className="border-2  px-[45px] placeholder:text-center  border-black  rounded-lg shadow-xl"
-                  {...register("paymenttype", { required: true })}
-                  placeholder="Genre"
-                >
-                  <option value=""></option>
-                  <option value="Hourly">Hourly</option>
-                  <option value="Full Show">Full Show</option>
-                </select>
-                <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
-                  {errors.paymenttype?.type === "required" &&
-                    " Genre type  must be added"}
-                </span>
-              </div>
-            </div>
-            <div>
-              <div>
-                <div>
-                  <label className="text-red-700  font-bold">
-                    Starting Time*
-                  </label>
-                </div>
-                <input
-                  type="time"
-                  name="starttime"
-                  className="border-2 px-[45px] border-black  rounded-lg shadow-xl "
-                  {...register("starttime", { required: true })}
-                />
-                <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
-                  {errors.starttime?.type === "required" &&
-                    " Starting time  must be added"}
-                </span>
-              </div>
-            </div>
-
-            <div>
-              <div>
-                <div>
-                  <label className="text-red-700  font-bold">
-                    Ending Time*
-                  </label>
-                </div>
-                <input
-                  type="time"
-                  name="endtime"
-                  className="border-2  px-[40px] placeholder:text-center  border-black  rounded-lg shadow-xl"
-                  {...register("endtime", { required: true })}
-                  placeholder="Genre"
-                />
-
-                <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
-                  {errors.endtime?.type === "required" &&
-                    " Endtime  must be added"}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex justify-start pl-8 gap-6 mt-5">
-            <div>
-              <div>
-                <div>
-                  <label className="text-red-700  font-bold">Address*</label>
-                </div>
-                <input
-                  type="text"
-                  name="address"
-                  className="border-2 px-2  border-black  rounded-lg shadow-xl "
-                  {...register("address", { required: true })}
-                />
-                <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
-                  {errors.address?.type === "required" &&
-                    "Venue Address must be added"}
-                </span>
-              </div>
-            </div>
-
-            <div>
-              <div>
-                <div>
-                  <label className="text-red-700  font-bold">Payment *</label>
-                </div>
-                <input
-                  type="number"
-                  name="payment"
-                  className="border-2  px-2 placeholder:text-center  border-black  rounded-lg shadow-xl"
-                  {...register("payment", { required: true })}
-                  placeholder="Genre"
-                />
-
-                <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
-                  {errors.payment?.type === "required" &&
-                    " Payment must be added"}
-                </span>
-              </div>
-            </div>
-          </div>
-          <div className="mt-3">
-            <div>
-              <label className="text-red-700">Bio*</label>
-            </div>
-            <textarea
-              name="bio"
-              {...register("bio", { required: true })}
-              className="border-2  border-black w-[60%] pb-[10%] "
-            ></textarea>
-            <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
-              {errors.bio?.type === "required" &&
-                "Must provide a short discription about an artist or band"}
-            </span>
-          </div>
-          <button
-            type="submit"
-            className="mt-7 border-black border-2 px-5 rounded-xl bg-orange-400"
-          >
-            Create
-          </button>
-        </form>
-      </MyModal>
       {/* for modal box */}
 
       {/* second modal for book artist */}

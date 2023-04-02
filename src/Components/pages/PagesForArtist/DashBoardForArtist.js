@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FcAbout, FcBusinessContact } from "react-icons/fc";
 import { SiTwitter, SiFacebook } from "react-icons/si";
-
+import { FaRegSmileWink } from "react-icons/fa";
 import axios from "axios";
 import { Dropdown, Menu } from "antd";
 import { SlCalender } from "react-icons/sl";
@@ -76,8 +76,12 @@ export default function DashBoardForArtist() {
       {/* sidebar for dashboard */}
       <div className="flex justify-between">
         <div className="bg-[#adadb12a]  pb-[270px] ">
-          <h1 className="mt-5  pt-[10px] font-bold  animate-pulse pl-5 pr-2 text-white">
-            {role}
+          <h1 className="flex gap-2 mt-5 pt-[10px] font-bold animate-pulse   pl-5 pr-2 text-red-900">
+            Welcome
+            <FaRegSmileWink className="mt-1 animate-pulse" />
+          </h1>
+          <h1 className=" pt-[10px] font-bold animate-pulse   pl-1 pr-2 text-[#BACDDB]">
+            {getInfoArtist?.firstname}_{getInfoArtist?.lastname}
           </h1>
           <hr className="mt-20 " />
           <h1 className=" hover:bg-black font-medium cursor-pointer text-white  ">

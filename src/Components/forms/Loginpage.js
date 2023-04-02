@@ -72,15 +72,17 @@ export default function Loginpage() {
   };
 
   return (
-    <div>
+    <div className="bg-[#D9CAB3]">
       <div className="bg-white drop-shadow-xl  ">
         <div className=" flex justify-between">
           <div className>
-            <img
-              alt="photooflanding"
-              className="h-[13vh] w-[13vh] relative left-6 "
-              src={require("../../Images/gig.png")}
-            />
+            <Link to="/">
+              <img
+                alt="photooflanding"
+                className="h-[13vh] w-[13vh] relative left-6 "
+                src={require("../../Images/gig.png")}
+              />
+            </Link>
           </div>
           <div className="flex  space-x-10 mr-[25px] mt-[28px]  ">
             <Link to="/login">
@@ -105,11 +107,11 @@ export default function Loginpage() {
 
       <div>
         <form
-          className="bg-zinc-400 ml-[38%] mr-[38%] rounded-[8px] relative top-[90px]"
+          className="bg-zinc-400 ml-[35%] mr-[35%] text-center rounded-[8px] mt-[120px] mb-[193px] "
           onSubmit={handleSubmit(onLogInClicked)}
         >
           <div>
-            <p className="text-center mt-11 pt-3 relative right-[10px] text-[25px] font-semibold text-[#D0FBD7] drop-shadow-md">
+            <p className="text-center mt-11 pt-3  text-[25px] font-semibold text-[#D0FBD7] drop-shadow-md">
               LOG IN
             </p>
           </div>
@@ -141,7 +143,7 @@ export default function Loginpage() {
           </div>
           <button
             type="submit"
-            className="relative left-[120px] mt-6 mb-5 rounded-[3px] pt-[1px] pb-[1px] pl-[5px] pr-[5px] text-[15px] bg-[#D1D0E3] drop-shadow-lg"
+            className="text-center mt-6 mb-5 rounded-[3px] pt-[1px] pb-[1px] pl-[5px] pr-[5px] text-[15px] bg-[#D1D0E3] drop-shadow-lg"
           >
             Join Now
           </button>
@@ -152,8 +154,9 @@ export default function Loginpage() {
           </Link>
         </form>
       </div>
+
       {/* Footer Secrion */}
-      <div className="flex justify-between mt-[260px] pt-3 pb-3 bg-[#E3EDEE] ">
+      <div className="flex justify-between  pt-3 pb-3 bg-[#E3EDEE] ">
         <div className=" ml-4 flex gap-6">
           <p className="text-[12px] flex gap-1 font-semibold cursor-pointer hover:text-[#A75D5D]">
             About Us

@@ -11,15 +11,15 @@ const MyModal3 = ({ isvisible, onClose, children }) => {
         id="wrapper"
         onClick={handleClose}
       >
-        <div className="w-[700px] flex flex-col">
-          <div className="bg-white p-2 rounded-lg ">
-            {children}
+        <div className="w-[500px] flex flex-col">
+          <div className="bg-[#FFF2CC] p-2 rounded-lg ">
             <button
               onClick={() => onClose()}
-              className="mt-2 border-2 px-5 border-black bg-red-500 rounded-xl"
+              className="px-2 relative left-[45%] border-2  border-transparent text-red-600 "
             >
-              Cancel
+              x
             </button>
+            {children}
           </div>
         </div>
       </div>

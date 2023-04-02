@@ -78,9 +78,9 @@ export default function ApplyForGig() {
                 >
                   <div>
                     <img
-                      className="w-5vh h-5vh rounded-lg"
+                      className="w-[25vh] h-[25vh] rounded-lg"
                       alt="naruto"
-                      src="https://play.google.com/store/apps/details?id=com.bandainamcoent.ninjavoltage_app&hl=en_US"
+                      src={`http://localhost:5000/${gig.gigProfile}`}
                     />
                   </div>
 
@@ -106,7 +106,7 @@ export default function ApplyForGig() {
                     </h1>
                   </div>
                   <div className="">
-                    <button className=" relative top-10 border-2 px-2 rounded-lg bg-orange-600 hover:border-white border-black hover:text-black text-white">
+                    <button className=" mt-[40px] border-2 px-2 rounded-lg bg-orange-600 hover:border-white border-black hover:text-black text-white">
                       Apply Now
                     </button>
                   </div>

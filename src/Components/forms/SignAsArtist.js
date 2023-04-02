@@ -40,17 +40,17 @@ export default function SignAsArtist() {
     const formData = new FormData();
     const isformfilled = true;
     formData.append("profile_image", profile_image[0]);
-    formData.append("fname", firstname);
-    formData.append("lname", lastname);
-    formData.append("pnumber", phonenumber);
+    formData.append("firstname", firstname);
+    formData.append("lastname", lastname);
+    formData.append("phonenumber", phonenumber);
     formData.append("address", address);
     formData.append("date", date);
     formData.append("gender", gender);
     formData.append("band", band);
     formData.append("skill", skill);
     formData.append("genre", genre);
-    formData.append("experience", expereince);
-    formData.append("social", socialmedia);
+    formData.append("expereince", expereince);
+    formData.append("socialmedia", socialmedia);
     formData.append("bio", bio);
     formData.append("isformfilled", isformfilled.toString());
     try {
@@ -252,7 +252,7 @@ export default function SignAsArtist() {
               placeholder="Gender"
             >
               <option value="" selected></option>
-              <option value="single">Single</option>
+              <option value="solo">solo</option>
               <option value="band">Band</option>
             </select>
             <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
@@ -312,16 +312,17 @@ export default function SignAsArtist() {
             </div>
             <select
               type="text"
-              name="experience"
+              name="expereince"
               className="border-2 py-1 px-[135px] placeholder:text-center border-black  rounded-lg shadow-xl"
               {...register("expereince", { required: true })}
               placeholder="Gender"
             >
               <option value="" selected></option>
               <option value="0">0</option>
-              <option value="0-5">0-5</option>
-              <option value="5-10">5-10</option>
-              <option value="10+">10+</option>
+              <option value="5 years">5 years</option>
+              <option value="10 years">10 years</option>
+              <option value="15 years">15 years</option>
+              <option value="more">More</option>
             </select>
             <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
               {errors.expereince?.type === "required" &&

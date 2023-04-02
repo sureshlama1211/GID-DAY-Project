@@ -27,13 +27,12 @@ export default function NavigationPageForArtist() {
     const MyBooking = await axios.get(
       `http://localhost:5000/api/mybooking/${user.id}?role=${user.role}`
     );
-    // console.log(MyBooking, "sanchai chu");
+
     setNotifications(MyBooking.data);
     const data = MyBooking.data;
-    // console.log(data, "ghar jwai ho");
+    console.log(notiArray, "ghar jwai ho");
     setNotiArray(data);
-    // console.log(notiArray, "sachi ho ta");
-    // console.log(MyBooking, "jamana kharab cha");
+
     setNotificationCount(MyBooking.data.length || 0);
   };
   useEffect(() => {
@@ -50,7 +49,7 @@ export default function NavigationPageForArtist() {
 
       // console.log(ArtistInfo);
       const data = ArtistInfo.data.getprofileinfo;
-      // console.log(data);
+
       setGetInfoArtist(data);
       // console.log(getInfoArtist);
     } catch (error) {
@@ -61,8 +60,23 @@ export default function NavigationPageForArtist() {
   useEffect(() => {
     Artistinformation();
   }, []);
-  // console.log(getInfoArtist, "sanibar");
-  /// testing
+
+  //for changin the status
+  const acceptHandler = async (id) => {
+    const response = await axios.put(
+      `http://localhost:5000/api/booking/${id}`,
+      {
+        status: "accepted",
+      }
+    );
+    setVisibleModal(false);
+  };
+  const deleteHandler = async (id) => {
+    const respond = await axios.put(`http://localhost:5000/api/booking/${id}`, {
+      status: "declined",
+    });
+    setVisibleModal(false);
+  };
 
   const menu = (
     <Menu>
@@ -75,17 +89,22 @@ export default function NavigationPageForArtist() {
   const NaviNotification = (
     <Menu>
       {notiArray.map((array, i) => {
-        return (
-          <div key={i}>
-            <Menu.Item
-              key="1"
-              className=" border-2 border-black rounded-2xl"
-              onClick={() => setVisibleModal(true)}
-            >
-              {array.bookedBy.firstname} is trying to book you
-            </Menu.Item>
-          </div>
-        );
+        console.log(array.status, "sai cha ta");
+        if (array.status === "accepted" || array.status === "declined") {
+          return <p>no notifications</p>;
+        } else {
+          return (
+            <div key={i}>
+              <Menu.Item
+                key="1"
+                className=" border-2 border-black rounded-2xl"
+                onClick={() => setVisibleModal(true)}
+              >
+                {array.bookedBy.firstname} is trying to book you
+              </Menu.Item>
+            </div>
+          );
+        }
       })}
     </Menu>
   );
@@ -140,6 +159,7 @@ export default function NavigationPageForArtist() {
       </div>
       {/* sidebar for dashboard */}
       <MyModal3
+        data
         isvisible={visibleModal}
         onClose={() => setVisibleModal(false)}
         className="pt-[2000px]"
@@ -160,42 +180,57 @@ export default function NavigationPageForArtist() {
                   <h1 className="font-bold text-[25px] text-transform: uppercase animate-bounce">
                     {array.gigname}
                   </h1>
-                  <div className="flex justify-center gap-[25%] mt-5">
+                  <div className="flex justify-between mt-5">
                     <h1 className="font-bold text-[15px] ">
-                      <p className="text-blue-500 text-[20px] ">Genre</p>
+                      <p className="text-red-900 text-[20px] ">Genre</p>
                       {array.gigtype}
                     </h1>
                     <h1 className="font-bold text-[15px]">
-                      <p className="text-blue-500 text-[20px] ">Date</p>
+                      <p className="text-red-900 text-[20px] ">Date</p>
                       {newStartDate}
                     </h1>
                   </div>
                 </div>
-                <div className="flex justify-center gap-[25%] mt-2">
+                <div className="flex justify-between mt-2">
                   <h1 className="font-bold text-[15px] ">
-                    <p className="text-blue-500 text-[20px] ">payment Type</p>
+                    <p className="text-red-900 text-[20px] ">payment Type</p>
                     {array.showtype}
                   </h1>
                   <h1 className="font-bold text-[15px]">
-                    <p className="text-blue-500 text-[20px] ">Address</p>
+                    <p className="text-red-900 text-[20px] ">Address</p>
                     {array.Address}
                   </h1>
                 </div>
-                <div className="flex justify-center gap-[25%] mt-2">
+                <div className="flex justify-between mt-2">
                   <h1 className="font-bold text-[15px] ">
-                    <p className="text-blue-500 text-[20px] ">Start Time</p>
+                    <p className="text-red-900 text-[20px] ">Start Time</p>
                     {array.startingtime}
                   </h1>
                   <h1 className="font-bold text-[15px]">
-                    <p className="text-blue-500 text-[20px] ">End Time</p>
+                    <p className="text-red-900 text-[20px] ">End Time</p>
                     {array.endingtime}
                   </h1>
                 </div>
                 <div className="flex justify-center">
                   <h1 className="font-bold text-[15px]">
-                    <p className="text-blue-500 text-[20px] ">Budget</p>
+                    <p className="text-red-900 text-[20px] ">Budget</p>
                     {array.budget}
                   </h1>
+                </div>
+                {/* {status === "pending" && ( */}
+                <div className="flex justify-center gap-[20%] mt-5">
+                  <button
+                    className="bg-blue-600 px-6 py-2 rounded-xl text-white hover:bg-orange-400"
+                    onClick={() => acceptHandler(array._id)}
+                  >
+                    Accept
+                  </button>
+                  <button
+                    onClick={() => deleteHandler(array._id)}
+                    className="bg-green-600 px-6 py-2 rounded-xl text-white hover:bg-purple-500"
+                  >
+                    Decline
+                  </button>
                 </div>
               </div>
             </div>

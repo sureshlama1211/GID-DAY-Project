@@ -157,7 +157,7 @@ export default function SettingForArtist() {
               <label className="text-red-700">Phone Number*</label>
             </div>
             <input
-              type="number"
+              type=""
               name="phonenumber"
               className="border-2 py-1 px-[70px] placeholder:text-center border-indigo-400  rounded-lg shadow-xl bg-[#adadb167] text-white "
               {...register("phonenumber", { required: true })}
@@ -194,10 +194,11 @@ export default function SettingForArtist() {
               <label className="text-red-700">Date Of Birth*</label>
             </div>
             <input
-              type="date"
+              type="text"
               name="date"
-              className="border-2 py-1 px-[90px] placeholder:text-center border-indigo-400  rounded-lg shadow-xl bg-[#adadb167] text-white"
+              className="border-2 py-1 px-[70px] placeholder:text-center border-indigo-400  rounded-lg shadow-xl bg-[#adadb167] text-white"
               readOnly
+              defaultValue={getInfoArtist?.date}
             />
           </div>
           <div>
@@ -210,8 +211,8 @@ export default function SettingForArtist() {
               className="border-2 py-1 px-[125px] placeholder:text-center border-indigo-400  rounded-lg shadow-xl bg-[#adadb167] text-white"
               placeholder="Gender"
               disabled
+              defaultValue={getInfoArtist?.gender?.toString()}
             >
-              <option defaultValue={getInfoArtist?.gender}></option>
               <option value="male">male</option>
               <option value="female">female</option>
               <option value="others">others</option>
@@ -229,6 +230,7 @@ export default function SettingForArtist() {
               className="border-2 border-indigo-400  py-1 px-[30px] rounded-lg shadow-xl bg-[#adadb167] text-white"
               placeholder="Social Media URL Link"
               {...register("socialmedia", { required: true })}
+              defaultValue={getInfoArtist?.socialmedia}
             />
 
             <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
@@ -245,6 +247,7 @@ export default function SettingForArtist() {
             name="bio"
             {...register("bio", { required: true })}
             className="border-2  border-indigo-400 w-[40%] pb-[10%] bg-[#adadb167] text-white "
+            defaultValue={getInfoArtist.bio}
           ></textarea>
           <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
             {errors.bio?.type === "required" &&

@@ -38,20 +38,27 @@ export default function SignAsRestaurant() {
     bio,
     date,
   }) => {
+    const formData = new FormData();
+    const isformfilled = true;
+    formData.append("profile_image", profile_image[0]);
+    formData.append("firstname", firstname);
+    formData.append("lastname", lastname);
+    formData.append("phonenumber", phonenumber);
+    formData.append("address", address);
+    formData.append("date", date);
+    formData.append("gender", gender);
+    formData.append("socialmedia", socialmedia);
+    formData.append("bio", bio);
+    formData.append("isformfilled", isformfilled.toString());
     try {
       const response = await axios.patch(
         `http://localhost:5000/api/loginasrestaurant/${email}`,
+        formData,
+
         {
-          profile_image: profile_image,
-          firstname: firstname,
-          lastname: lastname,
-          phonenumber: phonenumber,
-          address: address,
-          gender: gender,
-          socialmedia: socialmedia,
-          date: date,
-          bio: bio,
-          isformfilled: true,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
       );
       console.log(response);
@@ -226,10 +233,10 @@ export default function SignAsRestaurant() {
               {...register("gender", { required: true })}
               placeholder="Gender"
             >
-              <option value="" selected></option>
-              <option value="1">male</option>
-              <option value="2">female</option>
-              <option value="3">others</option>
+              <option value=""></option>
+              <option value="male">male</option>
+              <option value="female">female</option>
+              <option value="others">others</option>
             </select>
             <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
               {errors.gender?.type === "required" && "Must Select Gender"}

@@ -11,11 +11,13 @@ export default function Beforesignin() {
       <div className="bg-white drop-shadow-xl  ">
         <div className=" flex justify-between">
           <div className>
-            <img
-              alt="photooflanding"
-              className="h-[13vh] w-[13vh] relative left-6 "
-              src={require("../../Images/gig.png")}
-            />
+            <Link to="/">
+              <img
+                alt="photooflanding"
+                className="h-[13vh] w-[13vh] relative left-6 "
+                src={require("../../Images/gig.png")}
+              />
+            </Link>
           </div>
           <div className="flex mt-[28px]">
             <p className=" w-[90px] h-[55px]  font-bold text-[15px]  items-center text-center text-black mr-[40px] ">
