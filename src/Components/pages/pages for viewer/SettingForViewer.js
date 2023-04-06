@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import useUser from "../../../auth/useUser";
 //
 import { useNavigate } from "react-router-dom";
+import NavigationPageForViewer from "./NavigationPageForViewer";
 //
 import axios from "axios";
 
@@ -21,8 +22,6 @@ export default function SettingForViewer() {
     register,
     formState: { errors },
     handleSubmit,
-    watch,
-    setValue,
   } = useForm();
 
   //for getting the previous profile set up info
@@ -84,50 +83,7 @@ export default function SettingForViewer() {
   );
   return (
     <div className="text-center bg-[#010101]">
-      <div className=" flex justify-between bg-[#adadb167]  drop-shadow-xl">
-        <div>
-          <Link to="/">
-            <img
-              className="h-[14vh] w-[14vh] relative left-6  pointer-cursor "
-              alt="logo "
-              src={require("../../../Images/gig.png")}
-            />
-          </Link>
-        </div>
-        <div className="flex mt-[28px]">
-          <button className=" w-[90px] h-[35px] border-transparent mt-[-5px] rounded-2xl  border-2 hover:border-[#A7727D] font-bold text-[15px]  items-center text-center text-white mr-[40px] ">
-            DashBoard
-          </button>
-          <Link to="/findshows">
-            <button className=" w-[150px] h-[35px] pt-1 mt-[-5px]  border-transparent rounded-2xl  font-bold text-[15px] hover:border-[#A7727D] border-2 text-center text-white mr-[40px] ">
-              Find Shows
-            </button>
-          </Link>
-          {/* gig */}
-          <Link to="/viewartist">
-            <button className=" w-[150px] h-[35px] pt-1 mt-[-5px]  border-transparent rounded-2xl  font-bold text-[15px] hover:border-[#A7727D] border-2 text-center text-white mr-[40px] ">
-              View Artists
-            </button>
-          </Link>
-          {/*  */}
-        </div>
-
-        <div className="flex text-center gap-6 items-center">
-          <div>
-            <MdNotificationsActive className="text-[25px] hover:text-[#7F669D] text-white" />
-          </div>
-
-          <div style={{ position: "relative" }}>
-            <Dropdown overlay={menu} trigger={["click"]}>
-              <img
-                src={require("../../../Images/profile.png")}
-                alt="profile"
-                className="w-[7vh] h-[7vh] rounded-[25px]  mr-5 "
-              />
-            </Dropdown>
-          </div>
-        </div>
-      </div>
+      <NavigationPageForViewer />
       <h1 className="text-orange-500 font-bold text-[30px] ">
         Edit Your Profile
       </h1>
@@ -142,7 +98,7 @@ export default function SettingForViewer() {
             <input
               type="file"
               name="profile"
-              className="border-2   py-1 px-[30px] rounded-lg shadow-xl border-indigo-400 opacity-30  "
+              className="border-2   py-1 px-[30px] rounded-lg shadow-xl  opacity-30  "
               {...register("profile", { required: true })}
             />
 
@@ -160,7 +116,7 @@ export default function SettingForViewer() {
             <input
               type="text"
               name="firstname"
-              className="border-2 border-indigo-400 placeholder:text-center py-1 px-[70px] rounded-lg shadow-xl bg-[#adadb167] text-white "
+              className="border-2  placeholder:text-center py-1 px-[70px] rounded-lg shadow-xl bg-white text-black "
               {...register("firstname", { required: true })}
               placeholder="First Name"
               defaultValue={getInfoArtist?.firstname}
@@ -179,13 +135,30 @@ export default function SettingForViewer() {
             <input
               type="text"
               name="lastname"
-              className="border-2 py-1 px-[70px] placeholder:text-center border-indigo-400 rounded-lg shadow-xl bg-[#adadb167] text-white"
+              className="border-2 py-1 px-[70px] placeholder:text-center  rounded-lg shadow-xl bg-white text-black"
               {...register("lastname", { required: true })}
               placeholder="Last Name"
               defaultValue={getInfoArtist?.lastname}
             />
             <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
               {errors.lastname?.type === "required" && "Must Provide Last Name"}
+            </span>
+          </div>
+          <div>
+            <div>
+              <label className="text-red-700">Address*</label>
+            </div>
+            <input
+              type="text"
+              name="address"
+              className="border-2 py-1 px-[70px] placeholder:text-center   rounded-lg shadow-xl bg-white text-black "
+              {...register("address", { required: true })}
+              placeholder="Address"
+              defaultValue={getInfoArtist?.address}
+            />
+
+            <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
+              {errors.address?.type === "required" && "Must Provide Address "}
             </span>
           </div>
         </div>
@@ -197,7 +170,7 @@ export default function SettingForViewer() {
             <input
               type="number"
               name="phonenumber"
-              className="border-2 py-1 px-[70px] placeholder:text-center border-indigo-400  rounded-lg shadow-xl bg-[#adadb167] text-white "
+              className="border-2 py-1 px-[70px] placeholder:text-center   rounded-lg shadow-xl bg-white text-black "
               {...register("phonenumber", { required: true })}
               placeholder="Phone Number"
               defaultValue={getInfoArtist?.phonenumber}
@@ -209,32 +182,12 @@ export default function SettingForViewer() {
           </div>
           <div>
             <div>
-              <label className="text-red-700">Address*</label>
-            </div>
-            <input
-              type="text"
-              name="address"
-              className="border-2 py-1 px-[70px] placeholder:text-center border-indigo-400  rounded-lg shadow-xl bg-[#adadb167] text-white "
-              {...register("address", { required: true })}
-              placeholder="Address"
-              defaultValue={getInfoArtist?.address}
-            />
-
-            <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
-              {errors.address?.type === "required" && "Must Provide Address "}
-            </span>
-          </div>
-        </div>
-
-        <div className="flex justify-center mt-9 gap-10">
-          <div>
-            <div>
               <label className="text-red-700">Date Of Birth*</label>
             </div>
             <input
               type="date"
               name="date"
-              className="border-2 py-1 px-[90px] placeholder:text-center border-indigo-400  rounded-lg shadow-xl bg-[#adadb167] text-white"
+              className="border-2 py-1 px-[90px] placeholder:text-center  rounded-lg shadow-xl bg-white text-black"
               readOnly
             />
           </div>
@@ -245,7 +198,7 @@ export default function SettingForViewer() {
             <select
               type="text"
               name="gender"
-              className="border-2 py-1 px-[125px] placeholder:text-center border-indigo-400  rounded-lg shadow-xl bg-[#adadb167] text-white"
+              className="border-2 py-1 px-[125px] placeholder:text-center  rounded-lg shadow-xl bg-white text-black"
               placeholder="Gender"
               disabled
             >
@@ -264,7 +217,7 @@ export default function SettingForViewer() {
             <input
               type="url"
               name="socialmedia"
-              className="border-2 border-indigo-400  py-1 px-[30px] rounded-lg shadow-xl bg-[#adadb167] text-white"
+              className="border-2   py-1 px-[30px] rounded-lg shadow-xl bg-white text-black"
               placeholder="Social Media URL Link"
               {...register("socialmedia", { required: true })}
             />
@@ -282,7 +235,7 @@ export default function SettingForViewer() {
           <textarea
             name="bio"
             {...register("bio", { required: true })}
-            className="border-2  border-indigo-400 w-[40%] pb-[10%] bg-[#adadb167] text-white "
+            className="border-2  w-[40%] pb-[10%] bg-white text-black "
           ></textarea>
           <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
             {errors.bio?.type === "required" &&

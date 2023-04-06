@@ -12,12 +12,7 @@ import { useEffect, useState } from "react";
 
 import useUser from "../../../auth/useUser";
 import axios from "axios";
-
-import { IoMdMicrophone } from "react-icons/io";
-import MyModal from "../modals/ShowModel";
-import MyModal2 from "../modals/ModalContent";
-//useform hook for gig-drpdown
-import { useForm } from "react-hook-form";
+import NavigationPageForViewer from "./NavigationPageForViewer";
 
 export default function ViewArtist() {
   const user = useUser();
@@ -46,52 +41,7 @@ export default function ViewArtist() {
   );
   return (
     <div className="text-center bg-[#010101] ">
-      <div className=" flex justify-between bg-[#adadb167] drop-shadow-xl">
-        <div>
-          <Link to="/">
-            <img
-              className="h-[14vh] w-[14vh] relative left-6  pointer-cursor "
-              alt="logo "
-              src={require("../../../Images/gig.png")}
-            />
-          </Link>
-        </div>
-        <div className="flex mt-[28px]">
-          <Link to="/dashboardforviewer">
-            <button className=" w-[90px] h-[35px] border-transparent mt-[-5px] rounded-2xl  border-2 hover:border-[#A7727D] font-bold text-[15px]  items-center text-center text-white mr-[40px] ">
-              DashBoard
-            </button>
-          </Link>
-          <Link to="/findshows">
-            <button className=" w-[150px] h-[35px] pt-1 mt-[-5px]  border-transparent rounded-2xl  font-bold text-[15px] hover:border-[#A7727D] border-2 text-center text-white mr-[40px] ">
-              Find Shows
-            </button>
-          </Link>
-          {/* gig */}
-
-          <button className=" w-[150px] h-[35px] pt-1 mt-[-5px]  border-transparent rounded-2xl  font-bold text-[15px] hover:border-[#A7727D] border-2 text-center text-white mr-[40px] ">
-            View Artists
-          </button>
-
-          {/*  */}
-        </div>
-
-        <div className="flex text-center gap-6 items-center">
-          <div>
-            <MdNotificationsActive className="text-[25px] hover:text-[#7F669D] text-white " />
-          </div>
-
-          <div style={{ position: "relative" }}>
-            <Dropdown overlay={menu} trigger={["click"]}>
-              <img
-                src={require("../../../Images/profile.png")}
-                alt="profile"
-                className="w-[7vh] h-[7vh] rounded-[25px]  mr-5 "
-              />
-            </Dropdown>
-          </div>
-        </div>
-      </div>
+      <NavigationPageForViewer />
       <div className="flex justify-center gap-10">
         <div>
           <div>
@@ -108,13 +58,13 @@ export default function ViewArtist() {
               return (
                 <div
                   key={i}
-                  className=" flex justify-between pr-5 mt-[80px]  rounded-lg bg-[#adadb167] "
+                  className=" flex justify-around py-2 mt-[80px]  rounded-lg bg-[#adadb167] "
                 >
                   <div>
                     <img
-                      className="w-5vh h-5vh rounded-lg"
+                      className="w-[20vh] h-[20vh] rounded-lg"
                       alt="naruto"
-                      src="https://play.google.com/store/apps/details?id=com.bandainamcoent.ninjavoltage_app&hl=en_US"
+                      src={`http://localhost:5000/${artist.profile_image}`}
                     />
                   </div>
 

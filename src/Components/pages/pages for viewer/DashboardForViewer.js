@@ -11,6 +11,7 @@ import { AiFillSetting } from "react-icons/ai";
 import { MdPassword } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 import useUser from "../../../auth/useUser";
+import NavigationPageForViewer from "./NavigationPageForViewer";
 
 export default function DashBoardForViewer() {
   const user = useUser();
@@ -35,50 +36,7 @@ export default function DashBoardForViewer() {
 
   return (
     <div className="text-center bg-[#010101]">
-      <div className=" flex justify-between bg-[#adadb167]   drop-shadow-xl">
-        <div>
-          <Link to="/">
-            <img
-              className="h-[14vh] w-[14vh] relative left-6  pointer-cursor "
-              alt="logo "
-              src={require("../../../Images/gig.png")}
-            />
-          </Link>
-        </div>
-        <div className="flex mt-[28px]">
-          <button className=" w-[90px] h-[35px] border-transparent mt-[-5px] rounded-2xl  border-2 hover:border-[#A7727D] font-bold text-[15px]  items-center text-center text-white mr-[40px] ">
-            DashBoard
-          </button>
-          <Link to="/findshows">
-            <button className=" w-[150px] h-[35px] pt-1 mt-[-5px]  border-transparent rounded-2xl  font-bold text-[15px] hover:border-[#A7727D] border-2 text-center text-white mr-[40px] ">
-              Find Shows
-            </button>
-          </Link>
-          {/* gig */}
-          <Link to="/viewartist">
-            <button className=" w-[150px] h-[35px] pt-1 mt-[-5px]  border-transparent rounded-2xl  font-bold text-[15px] hover:border-[#A7727D] border-2 text-center text-white mr-[40px] ">
-              View Artists
-            </button>
-          </Link>
-          {/*  */}
-        </div>
-
-        <div className="flex text-center text-white gap-6 items-center">
-          <div>
-            <MdNotificationsActive className="text-[25px] hover:text-[#7F669D]" />
-          </div>
-
-          <div style={{ position: "relative" }}>
-            <Dropdown overlay={menu} trigger={["click"]}>
-              <img
-                src={require("../../../Images/profile.png")}
-                alt="profile"
-                className="w-[7vh] h-[7vh] rounded-[25px]  mr-5 "
-              />
-            </Dropdown>
-          </div>
-        </div>
-      </div>
+      <NavigationPageForViewer />
       {/* sidebar for dashboard */}
       <div className="flex justify-between">
         <div className="bg-[#adadb12a]  pb-[352px]  drop-shadow-2xl ">
@@ -115,7 +73,7 @@ export default function DashBoardForViewer() {
           )}
         </div>
         <div>
-          <div className="pr-[400px] text-orange-700 pt-[140px]  font-extrabold  text-[30px] animate-bounce">
+          <div className="pr-[400px] text-orange-700 pt-[140px]  font-extrabold  text-[30px] ">
             WELCOME TO THE DASHBOARD
           </div>
         </div>

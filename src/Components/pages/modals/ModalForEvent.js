@@ -1,4 +1,4 @@
-const MyModal = ({ isvisible, onClose, children }) => {
+const MyModal4 = ({ isvisible, onClose, children }) => {
   if (!isvisible) return null;
   //drps the modal if the user preses outside of the modal
   const handleClose = (e) => {
@@ -26,4 +26,4 @@ const MyModal = ({ isvisible, onClose, children }) => {
     </>
   );
 };
-export default MyModal;
+export default MyModal4;

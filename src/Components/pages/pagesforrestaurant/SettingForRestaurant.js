@@ -109,7 +109,7 @@ export default function SettingForRestaurant() {
             <input
               type="file"
               name="profile_image"
-              className="border-2   py-1 px-[30px] rounded-lg shadow-xl border-indigo-400 opacity-30  "
+              className="border-2   py-1 px-[30px] rounded-lg shadow-xl bg-white text-black opacity-30  "
               {...register("profile_image", { required: true })}
             />
 
@@ -127,7 +127,7 @@ export default function SettingForRestaurant() {
             <input
               type="text"
               name="firstname"
-              className="border-2 border-indigo-400 placeholder:text-center text-center py-1 px-[70px] rounded-lg shadow-xl bg-[#adadb167] text-white "
+              className="border-2 placeholder:text-center text-center py-1 px-[70px] rounded-lg shadow-xl bg-white text-black "
               {...register("firstname", { required: true })}
               placeholder="First Name"
               defaultValue={getInfoRestaurant?.firstname}
@@ -146,13 +146,30 @@ export default function SettingForRestaurant() {
             <input
               type="text"
               name="lastname"
-              className="border-2 py-1 px-[70px] placeholder:text-center text-center border-indigo-400 rounded-lg shadow-xl bg-[#adadb167] text-white"
+              className="border-2 py-1 px-[70px] placeholder:text-center text-center border-indigo-400 rounded-lg shadow-xl bg-white text-black"
               {...register("lastname", { required: true })}
               placeholder="Last Name"
               defaultValue={getInfoRestaurant?.lastname}
             />
             <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
               {errors.lastname?.type === "required" && "Must Provide Last Name"}
+            </span>
+          </div>
+          <div>
+            <div>
+              <label className="text-red-700">Address*</label>
+            </div>
+            <input
+              type="text"
+              name="address"
+              className="border-2 py-1 px-[70px] placeholder:text-center text-center border-indigo-400  rounded-lg shadow-xl bg-white text-black "
+              {...register("address", { required: true })}
+              placeholder="Address"
+              defaultValue={getInfoRestaurant?.address}
+            />
+
+            <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
+              {errors.address?.type === "required" && "Must Provide Address "}
             </span>
           </div>
         </div>
@@ -164,7 +181,7 @@ export default function SettingForRestaurant() {
             <input
               type=""
               name="number"
-              className="border-2 py-1 px-[70px] placeholder:text-center text-center border-indigo-400  rounded-lg shadow-xl bg-[#adadb167] text-white "
+              className="border-2 py-1 px-[70px] placeholder:text-center text-center border-indigo-400  rounded-lg shadow-xl bg-white text-black "
               {...register("phonenumber", { required: true })}
               placeholder="Phone Number"
               defaultValue={getInfoRestaurant?.phonenumber}
@@ -176,32 +193,12 @@ export default function SettingForRestaurant() {
           </div>
           <div>
             <div>
-              <label className="text-red-700">Address*</label>
-            </div>
-            <input
-              type="text"
-              name="address"
-              className="border-2 py-1 px-[70px] placeholder:text-center text-center border-indigo-400  rounded-lg shadow-xl bg-[#adadb167] text-white "
-              {...register("address", { required: true })}
-              placeholder="Address"
-              defaultValue={getInfoRestaurant?.address}
-            />
-
-            <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">
-              {errors.address?.type === "required" && "Must Provide Address "}
-            </span>
-          </div>
-        </div>
-
-        <div className="flex justify-center mt-9 gap-10">
-          <div>
-            <div>
               <label className="text-red-700">Date Of Birth*</label>
             </div>
             <input
               type="text"
               name="date"
-              className="border-2 py-1 px-[70px] text-center placeholder:text-center border-indigo-400  rounded-lg shadow-xl bg-[#adadb167] text-white"
+              className="border-2 py-1 px-[70px] text-center placeholder:text-center border-indigo-400  rounded-lg shadow-xl bg-white text-black"
               value={newStartDate}
               disabled
             />
@@ -213,7 +210,7 @@ export default function SettingForRestaurant() {
             <select
               type="text"
               name="gender"
-              className="border-2 py-1 px-[125px] placeholder:text-center text-center border-indigo-400  rounded-lg shadow-xl bg-[#adadb167] text-white"
+              className="border-2 py-1 px-[125px] placeholder:text-center text-center border-indigo-400  rounded-lg shadow-xl bg-white text-black"
               placeholder="Gender"
               disabled
               defaultValue={getInfoRestaurant?.gender?.toString()}
@@ -232,7 +229,7 @@ export default function SettingForRestaurant() {
             <input
               type="url"
               name="socialmedia"
-              className="border-2 border-indigo-400  py-1 px-[30px] rounded-lg shadow-xl bg-[#adadb167] text-white"
+              className="border-2 border-indigo-400  py-1 px-[30px] rounded-lg shadow-xl bg-white text-black"
               placeholder="Social Media URL Link"
               {...register("socialmedia", { required: true })}
               defaultValue={getInfoRestaurant?.socialmedia}
@@ -251,7 +248,7 @@ export default function SettingForRestaurant() {
           <textarea
             name="bio"
             {...register("bio", { required: true })}
-            className="border-2  border-indigo-400 w-[40%] pb-[10%] bg-[#adadb167] text-white "
+            className="border-2  border-indigo-400 w-[40%] pb-[10%] bg-white text-black "
             defaultValue={getInfoRestaurant?.bio}
           ></textarea>
           <span className="flex justify-center text-red-600 mb-[-10px] text-xs ">

@@ -33,20 +33,28 @@ export default function SignAsViewer() {
     gender,
   }) => {
     console.log(gender);
+    const formData = new FormData();
+    const isformfilled = true;
+    formData.append("profile_image", profile_image[0]);
+    formData.append("firstname", firstname);
+    formData.append("lastname", lastname);
+    formData.append("phonenumber", phonenumber);
+    formData.append("address", address);
+    formData.append("date", date);
+    formData.append("gender", gender);
+    formData.append("isformfilled", isformfilled.toString());
     try {
       const response = await axios.patch(
         `http://localhost:5000/api/loginasrestaurant/${email}`,
+        formData,
+
         {
-          profile_image: profile_image,
-          firstname: firstname,
-          lastname: lastname,
-          phonenumber: phonenumber,
-          address: address,
-          gender: gender,
-          isformfilled: true,
-          date: date,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
       );
+
       console.log(response);
       navigate("/dashboardforviewer");
     } catch (error) {}

@@ -201,11 +201,16 @@ export default function FindArtist() {
       >
         {/* contents here */}
         <form onSubmit={handleSubmit2(Booking)}>
+          <div>
+            <h1 className="font-bold text-[30px] font-mono text-orange-600 ">
+              Book Artist
+            </h1>
+          </div>
           <div className="flex justify-center gap-6 mt-5">
             <div>
               <div>
                 <div>
-                  <label className="text-red-700  font-bold">Gig Name*</label>
+                  <label className="font-bold">Gig Name</label>
                 </div>
                 <input
                   type="text"
@@ -223,7 +228,7 @@ export default function FindArtist() {
             <div>
               <div>
                 <div>
-                  <label className="text-red-700  font-bold">Genre Type*</label>
+                  <label className=" font-bold">Genre Type</label>
                 </div>
                 <select
                   type="text"
@@ -247,7 +252,7 @@ export default function FindArtist() {
             <div>
               <div>
                 <div>
-                  <label className="text-red-700  font-bold">Gig Date*</label>
+                  <label className=" font-bold">Gig Date</label>
                 </div>
                 <input
                   type="date"
@@ -267,9 +272,7 @@ export default function FindArtist() {
             <div>
               <div>
                 <div>
-                  <label className="text-red-700  font-bold">
-                    Payment Type*
-                  </label>
+                  <label className="  font-bold">Payment Type</label>
                 </div>
                 <select
                   type="text"
@@ -290,9 +293,7 @@ export default function FindArtist() {
             <div>
               <div>
                 <div>
-                  <label className="text-red-700  font-bold">
-                    Starting Time*
-                  </label>
+                  <label className=" font-bold">Starting Time</label>
                 </div>
                 <input
                   type="time"
@@ -310,9 +311,7 @@ export default function FindArtist() {
             <div>
               <div>
                 <div>
-                  <label className="text-red-700  font-bold">
-                    Ending Time*
-                  </label>
+                  <label className=" font-bold">Ending Time</label>
                 </div>
                 <input
                   type="time"
@@ -334,7 +333,7 @@ export default function FindArtist() {
             <div>
               <div>
                 <div>
-                  <label className="text-red-700  font-bold">Address*</label>
+                  <label className="  font-bold">Address</label>
                 </div>
                 <input
                   type="text"
@@ -352,7 +351,7 @@ export default function FindArtist() {
             <div>
               <div>
                 <div>
-                  <label className="text-red-700  font-bold">Payment *</label>
+                  <label className="  font-bold">Payment </label>
                 </div>
                 <input
                   type="number"
@@ -370,7 +369,7 @@ export default function FindArtist() {
           </div>
           <div className="mt-3">
             <div>
-              <label className="text-red-700">Bio*</label>
+              <label className="font-bold">Description</label>
             </div>
             <textarea
               name="description"
@@ -384,7 +383,7 @@ export default function FindArtist() {
           </div>
           <button
             type="submit"
-            className="mt-7 border-black border-2 px-5 rounded-xl bg-orange-400"
+            className="mt-7 border-black border-2 px-5  rounded-xl bg-orange-400"
           >
             Create
           </button>
