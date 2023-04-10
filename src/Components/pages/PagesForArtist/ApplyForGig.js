@@ -1,9 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { FcAbout, FcBusinessContact } from "react-icons/fc";
 import { SiTwitter, SiFacebook } from "react-icons/si";
-import { MdNotificationsActive } from "react-icons/md";
-import { Dropdown, Menu } from "antd";
 import useUser from "../../../auth/useUser";
 import { useState, useEffect } from "react";
 import NavigationPageForArtist from "./NavigationPageForArtist";
@@ -11,10 +8,9 @@ import NavigationPageForArtist from "./NavigationPageForArtist";
 import { ImLocation2, ImHeadphones } from "react-icons/im";
 import { BiTimeFive } from "react-icons/bi";
 import { SlCalender } from "react-icons/sl";
-import { MdLocationOn } from "react-icons/md";
-import { FaHeadphonesAlt } from "react-icons/fa";
-
 import axios from "axios";
+import MyModal5 from "../modals/ModalForEachInformation";
+
 export default function ApplyForGig() {
   const user = useUser();
   const email = user.email;
@@ -30,19 +26,29 @@ export default function ApplyForGig() {
   useEffect(() => {
     getAllGig();
   }, []);
-
+  //for single gig
+  const [singleGig, setSingleGig] = useState([]);
+  const handleClic = async (id) => {
+    const singlegigdat = await axios.get(
+      `http://localhost:5000/api/gigs/${id}`
+    );
+    console.log(singlegigdat, "happy birthday");
+    const data = singlegigdat.data.gig;
+    setSingleGig(data);
+    setShowDetials(true);
+  };
+  console.log(singleGig, "happy birthday");
   //
 
-  /// testing
+  //usestate for each model
+  const [showDetails, setShowDetials] = useState(false);
 
-  const menu = (
-    <Menu>
-      <Menu.Item key="1">{email}</Menu.Item>
-      <Link to="/login">
-        <Menu.Item key="3">Logout</Menu.Item>
-      </Link>
-    </Menu>
-  );
+  //for date
+  //for date
+  const dateOptions = { day: "numeric", month: "long", year: "numeric" };
+  //for single data
+  var startDateTime = new Date(singleGig.gigdate);
+  const newStartDate1 = startDateTime.toLocaleDateString("en-US", dateOptions);
 
   return (
     <div className="text-center bg-[#010101]">
@@ -68,13 +74,20 @@ export default function ApplyForGig() {
         </div>
         <div>
           {/* getall artist registered */}
-          <div className="pb-10">
+          <div className="pb-10 cursor-pointer">
             {/* mapping  */}
             {getGig.map((gig, i) => {
+              //for date conversion
+              var startDateTime = new Date(gig.gigdate);
+              const newStartDate = startDateTime.toLocaleDateString(
+                "en-US",
+                dateOptions
+              );
               return (
                 <div
                   key={i}
                   className=" flex gap-20 justify-between px-8 py-4 mt-[80px] bg-[#adadb167] rounded-lg"
+                  onClick={() => handleClic(gig._id)}
                 >
                   <div>
                     <img
@@ -90,7 +103,7 @@ export default function ApplyForGig() {
                     </h1>
                     <h1 className="text-[15px] font-medium flex gap-2  text-white ">
                       <SlCalender className="mt-1" />
-                      {gig.gigdate}
+                      {newStartDate}
                     </h1>
                     <h1 className="flex justify-center gap-2 text-white ">
                       <BiTimeFive className="mt-1 text-white" />
@@ -139,6 +152,45 @@ export default function ApplyForGig() {
           </p>
         </div>
       </div>
+      <MyModal5 isvisible={showDetails} onClose={() => setShowDetials(false)}>
+        <div>
+          <div className=" flex justify-around gap-[20px] text-center rounded-lg">
+            <div>
+              <img
+                className="w-auto h-[55vh]  rounded-lg"
+                alt="naruto"
+                src={`http://localhost:5000/${singleGig.gigProfile}`}
+              />
+            </div>
+            <div className="mt-[20px]">
+              <h1 className="text-center font-bold text-[28px] text-black">
+                {singleGig.gigName}
+              </h1>
+              <h1 className="text-[15px] justify-center flex gap-1 text-black ">
+                <p className="text-[18px] mt-[-3px] font-medium ">GigDate:</p>
+                {newStartDate1}
+              </h1>
+              <h1 className="text-[15px] justify-center  flex gap-1 text-black ">
+                <p className="text-[18px] mt-[-3px] font-medium">Time:</p>
+                {singleGig.starttime}-{singleGig.endtime}
+              </h1>
+              <h1 className="text-[15px] justify-center  flex gap-1 text-black ">
+                <p className="text-[18px] mt-[-3px] font-medium">Genre:</p>
+                {singleGig.genreNeeded}
+              </h1>
+              <h1 className=" text-[15px] justify-center  flex gap-1 text-black ">
+                <p className="text-[18px] mt-[-3px] font-medium">Address:</p>
+                {singleGig.address}
+              </h1>
+              <hr className="border-2"></hr>
+              <h1 className=" text-[15px]  text-black">
+                <p className="text-[20px]  font-medium">Description</p>
+                {singleGig.description}
+              </h1>
+            </div>
+          </div>
+        </div>
+      </MyModal5>
     </div>
   );
 }

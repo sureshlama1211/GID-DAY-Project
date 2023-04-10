@@ -75,15 +75,6 @@ export default function SettingForArtist() {
     } catch (error) {}
   };
 
-  const menu = (
-    <Menu>
-      <Menu.Item key="1">{email}</Menu.Item>
-      <Link to="/login">
-        <Menu.Item key="3">Logout</Menu.Item>
-      </Link>
-    </Menu>
-  );
-
   // const Notificationdata =(
 
   // )

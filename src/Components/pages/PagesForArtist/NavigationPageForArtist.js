@@ -112,7 +112,7 @@ export default function NavigationPageForArtist() {
   const dateOptions = { day: "numeric", month: "long", year: "numeric" };
 
   return (
-    <div className="text-center bg-[#010101]">
+    <div className="text-center bg-[#010101] sticky top-0">
       <div className=" flex justify-between bg-[#adadb167]   drop-shadow-xl">
         <div>
           <Link to="/">
@@ -162,7 +162,7 @@ export default function NavigationPageForArtist() {
         data
         isvisible={visibleModal}
         onClose={() => setVisibleModal(false)}
-        className="pt-[2000px]"
+        className="pt-[200px]"
       >
         {/* contents here */}
         {notiArray.map((array, i) => {

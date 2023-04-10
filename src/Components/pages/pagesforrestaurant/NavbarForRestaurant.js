@@ -138,59 +138,61 @@ export default function NavbarForRestaurant() {
     </Menu>
   );
   return (
-    <div className=" flex justify-between bg-[#adadb167] drop-shadow-xl">
-      <div>
-        <Link to="/">
-          <img
-            className="h-[14vh] w-[14vh] relative left-6  pointer-cursor "
-            alt="logo "
-            src={require("../../../Images/gig.png")}
-          />
-        </Link>
-      </div>
-      <div className="flex mt-[28px]">
-        <Link to="/dashboardforrestaurant">
-          <button className=" w-[90px] h-[35px] mt-[-5px] border-transparent rounded-2xl  border-2 hover:border-[#A7727D] font-bold text-[15px]  items-center text-center text-white mr-[40px] ">
-            DashBoard
-          </button>
-        </Link>
-        <Link to="/findartist">
-          <button className=" w-[90px] h-[35px] pt-1 mt-[-5px] border-transparent rounded-2xl  font-bold text-[15px] hover:border-[#A7727D] border-2 text-center text-white mr-[40px] ">
-            Find Artists
-          </button>
-        </Link>
+    <div className="  bg-black  sticky top-0">
+      <div className=" flex justify-between bg-[#adadb167]   drop-shadow-xl">
         <div>
-          <button
-            onClick={() => setShowModal(true)}
-            className=" w-[100px] h-[40px] font-bold text-[15px] border-transparent  border-2 rounded-md hover:border-[#A7727D] mt-[-10px]    text-center text-white  mr-[20px] ml-[20px]"
-          >
-            + Create Gig
-          </button>
-        </div>
-        <div>
-          <button
-            onClick={() => setEventModal(true)}
-            className=" w-[120px] h-[40px] font-bold text-[15px] border-transparent  border-2 rounded-md hover:border-[#A7727D] mt-[-10px]    text-center text-white  mr-[20px] ml-[20px]"
-          >
-            + Create Events
-          </button>
-        </div>
-        {/*  */}
-      </div>
-
-      <div className="flex text-center gap-6 items-center">
-        <div>
-          <MdNotificationsActive className="text-[25px] hover:text-[#7F669D] text-white " />
-        </div>
-
-        <div style={{ position: "relative" }}>
-          <Dropdown overlay={menu} trigger={["click"]}>
+          <Link to="/">
             <img
-              src={`http://localhost:5000/${getInfoRestaurant?.profile_image}`}
-              alt="profile"
-              className="w-[7vh] h-[7vh] rounded-[25px]  mr-5 "
+              className="h-[14vh] w-[14vh] relative left-6  pointer-cursor "
+              alt="logo "
+              src={require("../../../Images/gig.png")}
             />
-          </Dropdown>
+          </Link>
+        </div>
+        <div className="flex mt-[28px]">
+          <Link to="/dashboardforrestaurant">
+            <button className=" w-[90px] h-[35px] mt-[-5px] border-transparent rounded-2xl  border-2 hover:border-[#A7727D] font-bold text-[15px]  items-center text-center text-white mr-[40px] ">
+              DashBoard
+            </button>
+          </Link>
+          <Link to="/findartist">
+            <button className=" w-[90px] h-[35px] pt-1 mt-[-5px] border-transparent rounded-2xl  font-bold text-[15px] hover:border-[#A7727D] border-2 text-center text-white mr-[40px] ">
+              Find Artists
+            </button>
+          </Link>
+          <div>
+            <button
+              onClick={() => setShowModal(true)}
+              className=" w-[100px] h-[40px] font-bold text-[15px] border-transparent  border-2 rounded-md hover:border-[#A7727D] mt-[-10px]    text-center text-white  mr-[20px] ml-[20px]"
+            >
+              + Create Gig
+            </button>
+          </div>
+          <div>
+            <button
+              onClick={() => setEventModal(true)}
+              className=" w-[120px] h-[40px] font-bold text-[15px] border-transparent  border-2 rounded-md hover:border-[#A7727D] mt-[-10px]    text-center text-white  mr-[20px] ml-[20px]"
+            >
+              + Create Events
+            </button>
+          </div>
+          {/*  */}
+        </div>
+
+        <div className="flex text-center gap-6 items-center">
+          <div>
+            <MdNotificationsActive className="text-[25px] hover:text-[#7F669D] text-white " />
+          </div>
+
+          <div style={{ position: "relative" }}>
+            <Dropdown overlay={menu} trigger={["click"]}>
+              <img
+                src={`http://localhost:5000/${getInfoRestaurant?.profile_image}`}
+                alt="profile"
+                className="w-[7vh] h-[7vh] rounded-[25px]  mr-5 "
+              />
+            </Dropdown>
+          </div>
         </div>
       </div>
       <MyModal isvisible={showModal} onClose={() => setShowModal(false)}>

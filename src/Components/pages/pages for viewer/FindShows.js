@@ -1,20 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { FcAbout, FcBusinessContact } from "react-icons/fc";
 import { SiTwitter, SiFacebook } from "react-icons/si";
-import { MdNotificationsActive } from "react-icons/md";
-import { Dropdown, Menu } from "antd";
 import useUser from "../../../auth/useUser";
 import { useState, useEffect } from "react";
 //
 import { ImLocation2, ImHeadphones } from "react-icons/im";
-import { BiTimeFive } from "react-icons/bi";
 import { SlCalender } from "react-icons/sl";
-import { MdLocationOn } from "react-icons/md";
-import { FaHeadphonesAlt } from "react-icons/fa";
 import NavigationPageForViewer from "./NavigationPageForViewer";
-import BsArrowUpCircle from "react-icons/bs";
-
 import axios from "axios";
 export default function FindShows() {
   const user = useUser();
@@ -32,25 +24,9 @@ export default function FindShows() {
     getAllEvents();
   }, []);
 
-  //
-
-  /// testing
-
-  const menu = (
-    <Menu>
-      <Menu.Item key="1">{email}</Menu.Item>
-      <Link to="/login">
-        <Menu.Item key="3">Logout</Menu.Item>
-      </Link>
-    </Menu>
-  );
-
   return (
     <div className="text-center bg-[#010101]">
       <NavigationPageForViewer />
-
-      {/* sidebar for dashboard */}
-      {/* contents */}
       <div className="flex gap-[200px]  ">
         <div className=" p-5 border-r-2 border-b-1 border-w-[20px] border-gray-300 bg-[#adadb12a] pb-[249px]">
           <h1 className="text-white">FILTER BY</h1> <br />

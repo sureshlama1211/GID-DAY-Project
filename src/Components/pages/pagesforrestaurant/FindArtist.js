@@ -19,6 +19,8 @@ import MyModal2 from "../modals/ModalContent";
 //useform hook for gig-drpdown
 import { useForm } from "react-hook-form";
 import NavbarForRestaurant from "./NavbarForRestaurant";
+import MyModal5 from "../modals/ModalForEachInformation";
+import MyModal6 from "../modals/ModalForEachUser";
 //
 
 export default function FindArtist() {
@@ -89,7 +91,18 @@ export default function FindArtist() {
   console.log(getArtist, "j cha ");
   //
 
-  /// testing
+  //for single user
+
+  const [showArtist, setShowArtist] = useState([]);
+  const getSingleArtist = async (email) => {
+    const singleArtist = await axios.get(
+      `http://localhost:5000/api/singleuser/${email}`
+    );
+    const data = singleArtist.data.artist;
+    setShowArtist(data);
+    setArtistDetials(true);
+  };
+  const [artistdetails, setArtistDetials] = useState(false);
 
   return (
     <div className="text-center bg-[#010101] ">
@@ -127,6 +140,7 @@ export default function FindArtist() {
                 <div
                   key={i}
                   className=" flex justify-between pr-5 mt-[80px]  rounded-lg bg-[#adadb167] "
+                  onClick={() => getSingleArtist(artist.email)}
                 >
                   <div>
                     <img
@@ -389,7 +403,70 @@ export default function FindArtist() {
           </button>
         </form>
       </MyModal2>
-      {/* for modal box */}
+
+      {/* for single user view */}
+      <MyModal6
+        isvisible={artistdetails}
+        onClose={() => setArtistDetials(false)}
+      >
+        <div className="flex justify-around">
+          <div>
+            <img
+              className="w-auto h-[40vh]  rounded-lg"
+              alt="naruto"
+              src={`http://localhost:5000/${showArtist.profile_image}`}
+            />
+          </div>
+          <div>
+            <h1 className="text-center font-bold text-[28px] text-black">
+              {showArtist.firstname} {showArtist.lastname}
+            </h1>
+            <div className="flex gap-4 justify-center">
+              <h1 className="uppercase text-[14px] font-medium">
+                {showArtist.gender}
+              </h1>
+              <h1 className="uppercase text-[14px] font-medium">
+                {showArtist.address}
+              </h1>
+              <h1 className="uppercase text-[14px] font-medium">
+                {showArtist.phonenumber}
+              </h1>
+            </div>
+            <div>
+              <h1 className=" flex justify-center gap-2">
+                <p className="uppercase text-[14px] font-medium mt-0.5 ">
+                  Artist Type:
+                </p>
+                {showArtist.band}
+              </h1>
+              <h1 className="flex justify-center gap-1">
+                <p className="uppercase text-[14px] font-medium mt-0.5 ">
+                  Artist Genre:
+                </p>
+                {showArtist.genre}
+              </h1>
+              <h1 className="flex justify-center">
+                <p className="uppercase text-[14px] font-medium mt-0.5 ">
+                  Artist Skill:
+                </p>
+                {showArtist.skill}
+              </h1>
+              <h1 className="flex justify-center">
+                <p className="uppercase text-[14px] font-medium mt-0.5 ">
+                  Exereince Level:
+                </p>
+                {showArtist.expereince}
+              </h1>
+              <h1 className="text-center mt-5">
+                <p className="uppercase text-[14px] font-medium mt-0.5 ">
+                  Artist Description
+                </p>
+                {showArtist.bio}
+              </h1>
+            </div>
+          </div>
+        </div>
+      </MyModal6>
     </div>
   );
 }

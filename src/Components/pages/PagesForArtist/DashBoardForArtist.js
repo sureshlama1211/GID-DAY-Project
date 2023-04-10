@@ -5,7 +5,7 @@ import { FcAbout, FcBusinessContact } from "react-icons/fc";
 import { SiTwitter, SiFacebook } from "react-icons/si";
 import { FaRegSmileWink } from "react-icons/fa";
 import axios from "axios";
-import { Dropdown, Menu } from "antd";
+
 import { SlCalender } from "react-icons/sl";
 import { AiFillSetting } from "react-icons/ai";
 import { MdPassword } from "react-icons/md";
