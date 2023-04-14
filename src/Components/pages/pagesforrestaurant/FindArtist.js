@@ -5,21 +5,16 @@ import { FcAbout, FcBusinessContact } from "react-icons/fc";
 import { SiTwitter, SiFacebook } from "react-icons/si";
 import { MdNotificationsActive, MdLocationOn } from "react-icons/md";
 import { FaHeadphonesAlt } from "react-icons/fa";
-import { ImHappy2 } from "react-icons/im";
 
-import { Dropdown, Menu } from "antd";
 import { useEffect, useState } from "react";
 
 import useUser from "../../../auth/useUser";
 import axios from "axios";
 
-import { IoMdMicrophone } from "react-icons/io";
-import MyModal from "../modals/ShowModel";
 import MyModal2 from "../modals/ModalContent";
 //useform hook for gig-drpdown
 import { useForm } from "react-hook-form";
 import NavbarForRestaurant from "./NavbarForRestaurant";
-import MyModal5 from "../modals/ModalForEachInformation";
 import MyModal6 from "../modals/ModalForEachUser";
 //
 
@@ -43,9 +38,6 @@ export default function FindArtist() {
     setShowBookModal(true);
   };
   //to create gig
-
-  //modal
-  const [showModal, setShowModal] = useState(false);
 
   const [showBookModal, setShowBookModal] = useState(false);
 
@@ -108,7 +100,7 @@ export default function FindArtist() {
     <div className="text-center bg-[#010101] ">
       <NavbarForRestaurant />
       <div className="flex gap-[10%]">
-        <div className=" p-5 border-r-2 bg-[#adadb12a]  border-gray-300">
+        <div className=" p-5 border-r-2 bg-[#adadb12a]  border-gray-300 ">
           <h1 className="text-white">FILTER BY</h1> <br />
           <hr className="w-[100px] " />
           <h2 className="mt-5 text-white ">Genre +</h2>
@@ -180,6 +172,13 @@ export default function FindArtist() {
             })}
           </div>
         </div>
+        <div>
+          <select className="mt-5 rounded-lg">
+            <option value="sort by">Sort By</option>
+            <option value="new comming artist">Latest Enrolled artist</option>
+            <option value="top rated artist">Top Rated Artist</option>
+          </select>
+        </div>
       </div>
       <div className="flex justify-between  pt-3 pb-3 bg-[#E3EDEE] ">
         <div className=" ml-4 flex gap-6">
@@ -203,12 +202,7 @@ export default function FindArtist() {
           </p>
         </div>
       </div>
-      {/* for modal box */}
 
-      {/* for modal box */}
-
-      {/* second modal for book artist */}
-      {/* for modal box */}
       <MyModal2
         isvisible={showBookModal}
         onClose={() => setShowBookModal(false)}

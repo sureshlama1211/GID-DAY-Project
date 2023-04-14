@@ -8,6 +8,7 @@ import { ImLocation2, ImHeadphones } from "react-icons/im";
 import { SlCalender } from "react-icons/sl";
 import NavigationPageForViewer from "./NavigationPageForViewer";
 import axios from "axios";
+import MyModal6 from "../modals/ModalForEachUser";
 export default function FindShows() {
   const user = useUser();
   const email = user.email;
@@ -24,6 +25,21 @@ export default function FindShows() {
     getAllEvents();
   }, []);
 
+  const [showeventdetails, setShowEventDetials] = useState(false);
+  const [storeevent, setStoreEvent] = useState([]);
+  const clicksingle = async (id) => {
+    const singleevent = await axios.get(
+      `http://localhost:5000/api/singleevent/${id}`
+    );
+    const data = singleevent.data.allevent;
+    setStoreEvent(data);
+    setShowEventDetials(true);
+  };
+  //for correct date format
+  const dateOptions = { day: "numeric", month: "long", year: "numeric" };
+  //for single data
+  var startDateTime = new Date(storeevent.eventdate);
+  const newStartDate1 = startDateTime.toLocaleDateString("en-US", dateOptions);
   return (
     <div className="text-center bg-[#010101]">
       <NavigationPageForViewer />
@@ -53,6 +69,7 @@ export default function FindShows() {
                 <div
                   key={i}
                   className=" flex gap-20 justify-between px-8 py-4 mt-[80px] bg-[#adadb167] rounded-lg"
+                  onClick={() => clicksingle(event._id)}
                 >
                   <div>
                     <img
@@ -116,6 +133,58 @@ export default function FindShows() {
           </p>
         </div>
       </div>
+      <MyModal6
+        isvisible={showeventdetails}
+        onClose={() => setShowEventDetials(false)}
+      >
+        <div>
+          <div className=" flex justify-around gap-[25px] text-center rounded-lg">
+            <div>
+              <img
+                className="w-auto h-[55vh]  rounded-lg"
+                alt="naruto"
+                src={`http://localhost:5000/${storeevent.EventPic}`}
+              />
+              <h1 className=" text-[15px]   flex justify-center gap-1 text-black ">
+                <p className="text-[18px] mt-[-3px] font-medium">Address:</p>
+                {storeevent.eventaddress}
+              </h1>
+            </div>
+            <div className="mt-[20px]">
+              <h1 className="text-center font-bold text-[28px] text-black">
+                {storeevent.eventName}
+              </h1>
+              <h1 className="text-[15px] justify-center flex gap-1 text-black ">
+                <p className="text-[16px] mt-[-3px] font-medium ">GigDate:</p>
+                {newStartDate1}
+              </h1>
+              <h1 className="text-[15px] justify-center  flex gap-1 text-black ">
+                <p className="text-[16px] mt-[-3px] font-medium">Time:</p>
+                {storeevent.startingtime}-{storeevent.endingtime}
+              </h1>
+              <h1 className="text-[15px] justify-center  flex gap-1 text-black ">
+                <p className="text-[16px] mt-[-3px] font-medium">Genre:</p>
+                {storeevent.TypeofEvent}
+              </h1>
+
+              <h1 className="font-medium justify-center  flex gap-1 text-orange-600">
+                {storeevent.ArtistName}
+              </h1>
+              <hr className="border-2"></hr>
+              <h1 className=" text-[15px]  text-black">
+                <p className="text-[20px]  font-medium">Description</p>
+                {storeevent.description}
+              </h1>
+              <h1 className=" text-[15px]   text-green-700">
+                <p className="text-[20px]  font-medium text-green-700">
+                  Ticket Price
+                </p>
+                {storeevent.ticketprice}
+              </h1>
+            </div>
+          </div>
+        </div>
+      </MyModal6>
     </div>
   );
 }

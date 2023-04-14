@@ -18,8 +18,8 @@ export default function NavigationPageForViewer() {
 
   const role = user.role;
   console.log(user);
-  //for collpsable setting
-  const [show, setShow] = useState(false);
+  //getting user ID
+  const [userId, setUser] = useState(user.id);
   //state for notification
 
   /// testing

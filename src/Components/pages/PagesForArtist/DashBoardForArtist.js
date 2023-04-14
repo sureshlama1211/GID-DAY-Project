@@ -21,23 +21,8 @@ export default function DashBoardForArtist() {
   console.log(user);
   //for collpsable setting
   const [show, setShow] = useState(false);
-  //state for notification
-  // const [notifications, setNotifications] = useState([]);
-  // const [notificationCount, setNotificationCount] = useState(0);
-  // const getmybooking = async (user) => {
-  //   const MyBooking = await axios.get(
-  //     `http://localhost:5000/api/mybooking/${user.id}?role=${user.role}`
-  //   );
-  //   console.log(MyBooking, "sanchai chu");
-  //   setNotifications(MyBooking.data);
-  //   console.log(setNotifications, "happy mula");
-  //   setNotificationCount(MyBooking.data.length || 0);
-  // };
-  // useEffect(() => {
-  //   getmybooking(user);
-  // }, []);
+  //for cheking the booking request
 
-  //tedting
   const [getInfoArtist, setGetInfoArtist] = useState();
   const Artistinformation = async () => {
     try {

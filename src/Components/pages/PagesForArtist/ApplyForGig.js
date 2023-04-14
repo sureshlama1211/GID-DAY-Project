@@ -10,12 +10,37 @@ import { BiTimeFive } from "react-icons/bi";
 import { SlCalender } from "react-icons/sl";
 import axios from "axios";
 import MyModal5 from "../modals/ModalForEachInformation";
+import MyModal8 from "../modals/ModalForApplyGig";
 
 export default function ApplyForGig() {
   const user = useUser();
   const email = user.email;
+  //state to get gig id
+  const [gigId, setGidId] = useState("");
+  //state to get user id
+  const [userId, setUser] = useState(user.id);
+  const [createdBy, setCreatedBy] = useState("");
+  const onApply = (gig) => {
+    setGidId(gig._id);
+    setCreatedBy(gig.createdBy);
+    console.log(createdBy, "samaya");
+    setShowModal(true);
+  };
 
-  //
+  //funtion for apply
+  const applynow = async (gig) => {
+    const applyresponse = await axios.post(
+      "http://localhost:5000/api/applygig",
+      {
+        appliedGig: gigId,
+        appliedBy: userId,
+        createdBy: createdBy,
+      }
+    );
+    console.log(applyresponse, "sai cha ta");
+    setShowModal(false);
+  };
+
   const [getGig, setGetGig] = useState([]);
   const getAllGig = async () => {
     const GigData = await axios.get("http://localhost:5000/api/allgigs");
@@ -32,43 +57,44 @@ export default function ApplyForGig() {
     const singlegigdat = await axios.get(
       `http://localhost:5000/api/gigs/${id}`
     );
-    console.log(singlegigdat, "happy birthday");
     const data = singlegigdat.data.gig;
     setSingleGig(data);
     setShowDetials(true);
   };
-  console.log(singleGig, "happy birthday");
+
   //
 
   //usestate for each model
   const [showDetails, setShowDetials] = useState(false);
 
   //for date
-  //for date
   const dateOptions = { day: "numeric", month: "long", year: "numeric" };
   //for single data
   var startDateTime = new Date(singleGig.gigdate);
   const newStartDate1 = startDateTime.toLocaleDateString("en-US", dateOptions);
+
+  //for apply gig modal
+  const [showModal, setShowModal] = useState(false);
 
   return (
     <div className="text-center bg-[#010101]">
       <NavigationPageForArtist />
       {/* sidebar for dashboard */}
       {/* contents */}
-      <div className="flex gap-[200px]  ">
-        <div className=" p-5 border-r-2 border-b-1 border-w-[20px] border-gray-300 bg-[#adadb12a] pb-[222px]">
+      <div className="flex gap-[180px]  ">
+        <div className=" p-5 border-r-2 border-b-1 border-w-[20px] border-gray-300 bg-[#adadb12a] pb-[222px] ">
           <h1 className="text-white">FILTER BY</h1> <br />
           <hr className="w-[100px] " />
           <h2 className="mt-5 text-white">Genre +</h2>
           <br />
           <h2 className="text-white">Band Type +</h2>
           <br />
-          <button className="border-2 border-transparent bg-orange-600 w-full rounded-2xl drop-shadow-2xl">
+          <button className="border-2 border-transparent bg-orange-600 w-full rounded-2xl ">
             Apply
           </button>
           <br />
           <br />
-          <button className="border-2 border-transparent bg-orange-600 w-full rounded-2xl drop-shadow-2xl">
+          <button className="border-2 border-transparent bg-orange-600 w-full rounded-2xl ">
             Reset
           </button>
         </div>
@@ -77,6 +103,7 @@ export default function ApplyForGig() {
           <div className="pb-10 cursor-pointer">
             {/* mapping  */}
             {getGig.map((gig, i) => {
+              console.log(gig, "sai ho");
               //for date conversion
               var startDateTime = new Date(gig.gigdate);
               const newStartDate = startDateTime.toLocaleDateString(
@@ -86,40 +113,47 @@ export default function ApplyForGig() {
               return (
                 <div
                   key={i}
-                  className=" flex gap-20 justify-between px-8 py-4 mt-[80px] bg-[#adadb167] rounded-lg"
-                  onClick={() => handleClic(gig._id)}
+                  className=" flex gap-20 justify-between px-8 py-4 mt-[30px] bg-[#adadb167] rounded-lg"
                 >
-                  <div>
-                    <img
-                      className="w-[25vh] h-[25vh] rounded-lg"
-                      alt="naruto"
-                      src={`http://localhost:5000/${gig.gigProfile}`}
-                    />
-                  </div>
+                  <div
+                    onClick={() => handleClic(gig._id)}
+                    className="flex gap-20"
+                  >
+                    <div>
+                      <img
+                        className="w-[25vh] h-[25vh] rounded-lg"
+                        alt="naruto"
+                        src={`http://localhost:5000/${gig.gigProfile}`}
+                      />
+                    </div>
 
-                  <div>
-                    <h1 className="font-bold text-[18px] text-white">
-                      {gig.gigName}
-                    </h1>
-                    <h1 className="text-[15px] font-medium flex gap-2  text-white ">
-                      <SlCalender className="mt-1" />
-                      {newStartDate}
-                    </h1>
-                    <h1 className="flex justify-center gap-2 text-white ">
-                      <BiTimeFive className="mt-1 text-white" />
-                      {gig.starttime}-{gig.endtime}
-                    </h1>
-                    <h1 className="flex justify-center gap-1 text-white">
-                      <ImHeadphones className="mt-1 text-white" />{" "}
-                      {gig.genreNeeded}
-                    </h1>
-                    <h1 className=" flex  justify-center gap-1 text-[18] text-white">
-                      <ImLocation2 className="mt-1 text-white" />
-                      {gig.address}
-                    </h1>
+                    <div>
+                      <h1 className="font-bold text-[18px] text-white">
+                        {gig.gigName}
+                      </h1>
+                      <h1 className="text-[15px] font-medium flex gap-2  text-white ">
+                        <SlCalender className="mt-1" />
+                        {newStartDate}
+                      </h1>
+                      <h1 className="flex justify-center gap-2 text-white ">
+                        <BiTimeFive className="mt-1 text-white" />
+                        {gig.starttime}-{gig.endtime}
+                      </h1>
+                      <h1 className="flex justify-center gap-1 text-white">
+                        <ImHeadphones className="mt-1 text-white" />{" "}
+                        {gig.genreNeeded}
+                      </h1>
+                      <h1 className=" flex  justify-center gap-1 text-[18] text-white">
+                        <ImLocation2 className="mt-1 text-white" />
+                        {gig.address}
+                      </h1>
+                    </div>
                   </div>
-                  <div className="">
-                    <button className=" mt-[40px] border-2 px-2 rounded-lg bg-orange-600 hover:border-white border-black hover:text-black text-white">
+                  <div>
+                    <button
+                      onClick={() => onApply(gig)}
+                      className=" mt-[40px] border-2 px-2 rounded-lg bg-orange-600 hover:border-white border-black hover:text-black text-white"
+                    >
                       Apply Now
                     </button>
                   </div>
@@ -191,6 +225,18 @@ export default function ApplyForGig() {
           </div>
         </div>
       </MyModal5>
+      {/*  */}
+      <MyModal8 isvisible={showModal} onClose={() => setShowModal(false)}>
+        <h1 className="font-bold text-orange-700">Are You sure to Apply?</h1>
+        <div className=" mt-5 ">
+          <button
+            onClick={applynow}
+            className=" border-2 px-2 rounded-lg bg-green-600 hover:border-white border-black hover:text-black text-white"
+          >
+            Yes
+          </button>
+        </div>
+      </MyModal8>
     </div>
   );
 }

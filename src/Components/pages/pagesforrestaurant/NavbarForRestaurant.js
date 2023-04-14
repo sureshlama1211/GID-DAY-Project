@@ -10,12 +10,13 @@ import MyModal from "../modals/ShowModel";
 import { ImHappy2 } from "react-icons/im";
 import { IoMdMicrophone } from "react-icons/io";
 import MyModal4 from "../modals/ModalForEvent";
+import MyModal9 from "../modals/ModalForApplyFirGig";
 
 export default function NavbarForRestaurant() {
   const user = useUser();
   const email = user.email;
-  //usestate for modal
-
+  //usestate for getting user ID
+  const [userId, setUser] = useState(user.id);
   //validation for checking the fields in gig-creation
   const {
     register,
@@ -77,6 +78,7 @@ export default function NavbarForRestaurant() {
     formData.append("address", address);
     formData.append("payment", payment);
     formData.append("description", bio);
+    formData.append("createdBy", userId);
     const response = await axios.post(
       "http://localhost:5000/api/gigs",
       formData,
@@ -128,6 +130,25 @@ export default function NavbarForRestaurant() {
     );
     setEventModal(false);
   };
+  //notifiation on gig applied
+  const [notifiation, setNotification] = useState([]);
+  const [countNotification, setCountNotification] = useState(0);
+  const [arrayNoti, setArrayNoti] = useState([]);
+  const getapplygig = async (user) => {
+    const MyGig = await axios.get(
+      `http://localhost:5000/api/mygig/${user.id}?role=${user.role}`
+    );
+    setNotification(MyGig.data);
+    const data = MyGig.data;
+    setArrayNoti(data);
+    setCountNotification(MyGig.data.length || 0);
+  };
+  console.log(arrayNoti, "chaaaaa");
+  useEffect(() => {
+    getapplygig(user);
+  }, []);
+  //stae for notification modal
+  const [visibleModal, setVisibleModal] = useState(false);
 
   const menu = (
     <Menu>
@@ -137,6 +158,51 @@ export default function NavbarForRestaurant() {
       </Link>
     </Menu>
   );
+
+  //dropdown notifiction for gig apply
+  const NaviNotification = (
+    <Menu>
+      {arrayNoti.map((array, i) => {
+        console.log(array.status, "sai cha ta");
+        if (array.status === "accepted" || array.status === "declined") {
+          return <p>no notifications</p>;
+        } else {
+          return (
+            <div key={i}>
+              <Menu.Item
+                key="1"
+                className=" border-2 border-black rounded-2xl"
+                onClick={() => setVisibleModal(true)}
+              >
+                {array.appliedBy.firstname} is trying to apply on your ("
+                {array.appliedGig.gigName}") Gig
+              </Menu.Item>
+            </div>
+          );
+        }
+      })}
+    </Menu>
+  );
+  //for changing gig status
+  //for changin the status
+  const acceptHandler = async (id) => {
+    const response = await axios.put(
+      `http://localhost:5000/api/gigapply/${id}`,
+      {
+        status: "accepted",
+      }
+    );
+    setVisibleModal(false);
+  };
+  const deleteHandler = async (id) => {
+    const respond = await axios.put(
+      `http://localhost:5000//api/gigapply/${id}`,
+      {
+        status: "declined",
+      }
+    );
+    setVisibleModal(false);
+  };
   return (
     <div className="  bg-black  sticky top-0">
       <div className=" flex justify-between bg-[#adadb167]   drop-shadow-xl">
@@ -181,7 +247,10 @@ export default function NavbarForRestaurant() {
 
         <div className="flex text-center gap-6 items-center">
           <div>
-            <MdNotificationsActive className="text-[25px] hover:text-[#7F669D] text-white " />
+            <Dropdown overlay={NaviNotification} trigger={["click"]}>
+              <MdNotificationsActive className="text-[25px] mt-5 hover:text-[#7F669D]" />
+            </Dropdown>
+            <span>{countNotification} </span>
           </div>
 
           <div style={{ position: "relative" }}>
@@ -617,6 +686,90 @@ export default function NavbarForRestaurant() {
           </button>
         </form>
       </MyModal4>
+      {/* modal for gig apply */}
+      <MyModal9 isvisible={visibleModal} onClose={() => setVisibleModal(false)}>
+        {/* contents here */}
+        {arrayNoti.map((array, i) => {
+          return (
+            <div key={i}>
+              <div>
+                <div className="flex justify-around">
+                  <div>
+                    <img
+                      className="w-auto h-[40vh]  rounded-lg"
+                      alt="naruto"
+                      src={`http://localhost:5000/${array.appliedBy.profile_image}`}
+                    />
+                  </div>
+                  <div>
+                    <h1 className="text-center font-bold text-[28px] text-black">
+                      {array.appliedBy.firstname} {array.appliedBy.lastname}
+                    </h1>
+                    <div className="flex gap-4 justify-center">
+                      <h1 className="uppercase text-[14px] font-medium">
+                        {array.appliedBy.gender}
+                      </h1>
+                      <h1 className="uppercase text-[14px] font-medium">
+                        {array.appliedBy.address}
+                      </h1>
+                      <h1 className="uppercase text-[14px] font-medium">
+                        {array.appliedBy.phonenumber}
+                      </h1>
+                    </div>
+                    <div>
+                      <h1 className=" flex justify-center gap-2">
+                        <p className="uppercase text-[14px] font-medium mt-0.5 ">
+                          Artist Type:
+                        </p>
+                        {array.appliedBy.band}
+                      </h1>
+                      <h1 className="flex justify-center gap-1">
+                        <p className="uppercase text-[14px] font-medium mt-0.5 ">
+                          Artist Genre:
+                        </p>
+                        {array.appliedBy.genre}
+                      </h1>
+                      <h1 className="flex justify-center">
+                        <p className="uppercase text-[14px] font-medium mt-0.5 ">
+                          Artist Skill:
+                        </p>
+                        {array.appliedBy.skill}
+                      </h1>
+                      <h1 className="flex justify-center">
+                        <p className="uppercase text-[14px] font-medium mt-0.5 ">
+                          Exereince Level:
+                        </p>
+                        {array.appliedBy.expereince}
+                      </h1>
+                      <h1 className="text-center mt-5">
+                        <p className="uppercase text-[14px] font-medium mt-0.5 ">
+                          Artist Description
+                        </p>
+                        {array.appliedBy.bio}
+                      </h1>
+                    </div>
+                  </div>
+                </div>
+                {/* {status === "pending" && ( */}
+                <div className="flex justify-center gap-[20%] mt-5">
+                  <button
+                    className="bg-blue-600 px-6 py-2 rounded-xl text-white hover:bg-orange-400"
+                    onClick={() => acceptHandler(array._id)}
+                  >
+                    Accept
+                  </button>
+                  <button
+                    onClick={() => deleteHandler(array._id)}
+                    className="bg-green-600 px-6 py-2 rounded-xl text-white hover:bg-purple-500"
+                  >
+                    Decline
+                  </button>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </MyModal9>
     </div>
   );
 }

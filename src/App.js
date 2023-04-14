@@ -21,6 +21,7 @@ import FindShows from "./Components/pages/pages for viewer/FindShows";
 import ViewArtist from "./Components/pages/pages for viewer/ViewArtist";
 import SettingForArtist from "./Components/pages/PagesForArtist/SettingForArtist";
 import SettingForViewer from "./Components/pages/pages for viewer/SettingForViewer";
+import BookingDetails from "./Components/pages/pagesforrestaurant/BookingDetails";
 function App() {
   return (
     <BrowserRouter>
@@ -60,6 +61,8 @@ function App() {
         <Route path="/findshows" element={<FindShows />} />
         <Route path="/viewartist" element={<ViewArtist />} />
         <Route path="/settingforviewer" element={<SettingForViewer />} />
+        {/* booking details */}
+        <Route path="/bookingdetails" element={<BookingDetails />} />
       </Routes>
       {/* for artist */}
     </BrowserRouter>
