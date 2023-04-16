@@ -9,10 +9,15 @@ import { SlCalender } from "react-icons/sl";
 import NavigationPageForViewer from "./NavigationPageForViewer";
 import axios from "axios";
 import MyModal6 from "../modals/ModalForEachUser";
+import KhaltiCheckout from "khalti-checkout-web";
+import { Config } from "../Khalti/khaltiConfig.js";
+
 export default function FindShows() {
   const user = useUser();
   const email = user.email;
 
+  //initialize khalti
+  let checkout = new KhaltiCheckout(Config);
   //
   const [getEvent, setGetEvent] = useState([]);
   const getAllEvents = async () => {
@@ -69,9 +74,8 @@ export default function FindShows() {
                 <div
                   key={i}
                   className=" flex gap-20 justify-between px-8 py-4 mt-[80px] bg-[#adadb167] rounded-lg"
-                  onClick={() => clicksingle(event._id)}
                 >
-                  <div>
+                  <div onClick={() => clicksingle(event._id)}>
                     <img
                       className="w-[20vh] h-[20vh] rounded-lg"
                       alt="naruto"
@@ -100,7 +104,10 @@ export default function FindShows() {
                     </h1>
                   </div>
                   <div className="">
-                    <button className=" relative top-10 border-2 px-2 rounded-lg bg-orange-600 hover:border-white border-black hover:text-black text-white">
+                    <button
+                      className=" relative top-10 border-2 px-2 rounded-lg bg-orange-600 hover:border-white border-black hover:text-black text-white"
+                      onClick={() => checkout.show({ amount: 1000 })}
+                    >
                       Buy Tickets Now
                     </button>
                   </div>

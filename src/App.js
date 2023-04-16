@@ -22,6 +22,7 @@ import ViewArtist from "./Components/pages/pages for viewer/ViewArtist";
 import SettingForArtist from "./Components/pages/PagesForArtist/SettingForArtist";
 import SettingForViewer from "./Components/pages/pages for viewer/SettingForViewer";
 import BookingDetails from "./Components/pages/pagesforrestaurant/BookingDetails";
+import CreatedGigDetails from "./Components/pages/pagesforrestaurant/CreatedGigDetails";
 function App() {
   return (
     <BrowserRouter>
@@ -63,6 +64,7 @@ function App() {
         <Route path="/settingforviewer" element={<SettingForViewer />} />
         {/* booking details */}
         <Route path="/bookingdetails" element={<BookingDetails />} />
+        <Route path="/gigdetails" element={<CreatedGigDetails />} />
       </Routes>
       {/* for artist */}
     </BrowserRouter>

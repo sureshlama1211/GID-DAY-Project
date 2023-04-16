@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FcAbout, FcBusinessContact } from "react-icons/fc";
 import { SiTwitter, SiFacebook } from "react-icons/si";
-import { MdNotificationsActive } from "react-icons/md";
 import { useEffect } from "react";
 import axios from "axios";
 import { Table } from "antd";
@@ -18,10 +17,9 @@ import { MdPassword } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 import NavbarForRestaurant from "./NavbarForRestaurant";
 
-export default function BookingDetails() {
+export default function CreatedGigDetails() {
   const user = useUser();
   const email = user.email;
-  console.log(user, "k cha");
   const role = user.role;
 
   //
@@ -43,19 +41,18 @@ export default function BookingDetails() {
     Restaurantinformation();
   }, []);
 
-  // for getting the booking details
-  const [bookingArray, setBookingArray] = useState([]);
-  const bookingdetails = async (user) => {
-    const bookingdetail = await axios.get(
-      `http://localhost:5000/api/bookingdetail/${user.id}`
+  // for getting the created details
+  const [gigArray, setGigArray] = useState([]);
+  const gigdetails = async (user) => {
+    const gigdetail = await axios.get(
+      `http://localhost:5000/api/createdgig/${user.id}`
     );
-    const data = bookingdetail.data.book;
-    console.log(data, "sathi ho");
-    setBookingArray(data);
+    const data = gigdetail.data.gig;
+    setGigArray(data);
   };
-  console.log(bookingArray, "dami ma");
+  console.log(gigArray, "dami ma maaaa");
   useEffect(() => {
-    bookingdetails(user);
+    gigdetails(user);
   }, []);
 
   //for date
@@ -66,11 +63,9 @@ export default function BookingDetails() {
     //
 
     {
-      title: "Booked To",
-
-      dataIndex: "bookedTo",
-      key: "bookedTo",
-
+      title: "Gig Name",
+      dataIndex: "gigname",
+      key: "gigname",
       width: "auto",
     },
     {
@@ -93,13 +88,12 @@ export default function BookingDetails() {
     },
   ];
   const data = [];
-  for (let i = 0; i < bookingArray.length; i++) {
+  for (let i = 0; i < gigArray.length; i++) {
     data.push({
       key: i,
-      bookedTo: bookingArray[i].bookedTo.firstname,
-      date: bookingArray[i].date,
-      gigtype: bookingArray[i].gigtype,
-      status: bookingArray[i].status,
+      gigname: gigArray[i].gigName,
+      date: gigArray[i].gigdate,
+      gigtype: gigArray[i].genreNeeded,
     });
   }
 
@@ -117,18 +111,18 @@ export default function BookingDetails() {
             {getRestaurantName?.firstname}_{getRestaurantName?.lastname}
           </h1>
           <hr className="mt-12" />
-          <h1 className=" hover:bg-black font-medium cursor-pointer text-white flex gap-2  ">
-            <SlCalender className="mt-1" />
-            Booking Details
-          </h1>
-          <hr />
-          <hr className="mt-4" />
-          <Link to="/gigdetails">
-            <h1 className=" hover:bg-black font-medium cursor-pointer  text-white  flex  gap-2">
-              <IoIosMicrophone className="mt-1" />
-              Created Gigs
+          <Link to="/bookingdetails">
+            <h1 className=" hover:bg-black font-medium cursor-pointer text-white flex gap-2  ">
+              <SlCalender className="mt-1" />
+              Booking Details
             </h1>
           </Link>
+          <hr />
+          <hr className="mt-4" />
+          <h1 className=" hover:bg-black font-medium cursor-pointer  text-white  flex  gap-2">
+            <IoIosMicrophone className="mt-1" />
+            Created Gigs
+          </h1>
           <hr />
           <hr className="mt-4" />
           <div className="flex gap-4 hover:bg-black ">
@@ -160,7 +154,9 @@ export default function BookingDetails() {
           )}
         </div>
         <div className="mt-5  ml-5">
-          <h1 className="text-white font-bold text-[30px]">Booking Details</h1>
+          <h1 className="text-white font-bold text-[30px]">
+            Created Gig Details
+          </h1>
           <Table
             columns={columns}
             dataSource={data}
