@@ -4,9 +4,7 @@ import { Link } from "react-router-dom";
 import { FcAbout, FcBusinessContact } from "react-icons/fc";
 import { SiTwitter, SiFacebook } from "react-icons/si";
 import { MdNotificationsActive } from "react-icons/md";
-import { useState } from "react";
 import { Dropdown, Menu } from "antd";
-import { useAuth0 } from "@auth0/auth0-react";
 import useUser from "../../auth/useUser";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +16,6 @@ export default function SignAsViewer() {
     register,
     formState: { errors },
     handleSubmit,
-    watch,
   } = useForm();
   //testing phase
   const onSubmit = (data) => console.log(data);

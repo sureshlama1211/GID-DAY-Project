@@ -19,17 +19,7 @@ export default function Beforesignin() {
               />
             </Link>
           </div>
-          <div className="flex mt-[28px]">
-            <p className=" w-[90px] h-[55px]  font-bold text-[15px]  items-center text-center text-black mr-[40px] ">
-              Find Artists
-            </p>
-            <p className=" w-[80px] h-[63px] font-bold text-[15px]   items-center text-center text-black  mr-[20px] ml-[20px]">
-              Find Gigs
-            </p>
-            <p className=" w-[80px] h-[63px]  font-bold text-[15px]  items-center text-center text-black ml-[40px] ">
-              Find Shows
-            </p>
-          </div>
+
           <div className="flex  space-x-10 mr-[25px] mt-[28px]  ">
             <Link to="/login">
               <Button

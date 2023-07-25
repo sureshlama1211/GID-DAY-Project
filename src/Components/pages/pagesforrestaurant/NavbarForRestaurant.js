@@ -11,7 +11,9 @@ import { ImHappy2 } from "react-icons/im";
 import { IoMdMicrophone } from "react-icons/io";
 import MyModal4 from "../modals/ModalForEvent";
 import MyModal9 from "../modals/ModalForApplyFirGig";
-
+//
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export default function NavbarForRestaurant() {
   const user = useUser();
   const email = user.email;
@@ -79,9 +81,11 @@ export default function NavbarForRestaurant() {
     formData.append("payment", payment);
     formData.append("description", bio);
     formData.append("createdBy", userId);
+
     const response = await axios.post(
       "http://localhost:5000/api/gigs",
       formData,
+
       {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -90,6 +94,10 @@ export default function NavbarForRestaurant() {
     );
     console.log(response);
     setShowModal(false);
+    toast.success("Gig Created Successfully", {
+      position: "bottom-right",
+      autoClose: 5000,
+    });
   };
 
   //
@@ -129,6 +137,10 @@ export default function NavbarForRestaurant() {
       }
     );
     setEventModal(false);
+    toast.success("Event Created Successfully", {
+      position: "bottom-right",
+      autoClose: 5000,
+    });
   };
   //notifiation on gig applied
   const [notifiation, setNotification] = useState([]);
@@ -159,11 +171,16 @@ export default function NavbarForRestaurant() {
     </Menu>
   );
 
+  const [applierID, setApplierID] = useState();
+
+  const showGigApplier = (id) => {
+    setVisibleModal(true);
+    setApplierID(id);
+  };
   //dropdown notifiction for gig apply
   const NaviNotification = (
     <Menu>
       {arrayNoti.map((array, i) => {
-        console.log(array.status, "sai cha ta");
         if (array.status === "accepted" || array.status === "declined") {
           return <p>no notifications</p>;
         } else {
@@ -172,7 +189,7 @@ export default function NavbarForRestaurant() {
               <Menu.Item
                 key="1"
                 className=" border-2 border-black rounded-2xl"
-                onClick={() => setVisibleModal(true)}
+                onClick={() => showGigApplier(array._id)}
               >
                 {array.appliedBy.firstname} is trying to apply on your ("
                 {array.appliedGig.gigName}") Gig
@@ -185,23 +202,32 @@ export default function NavbarForRestaurant() {
   );
   //for changing gig status
   //for changin the status
-  const acceptHandler = async (id) => {
+  const acceptHandler = async (id, gig) => {
     const response = await axios.put(
       `http://localhost:5000/api/gigapply/${id}`,
       {
         status: "accepted",
+        appliedGig: gig,
       }
     );
     setVisibleModal(false);
+    toast.success("Accepted", {
+      position: "bottom-right",
+      autoClose: 5000,
+    });
   };
   const deleteHandler = async (id) => {
     const respond = await axios.put(
-      `http://localhost:5000//api/gigapply/${id}`,
+      `http://localhost:5000/api/gigapply/${id}`,
       {
         status: "declined",
       }
     );
     setVisibleModal(false);
+    toast.error("Declined", {
+      position: "bottom-right",
+      autoClose: 5000,
+    });
   };
   return (
     <div className="  bg-black  sticky top-0">
@@ -690,84 +716,86 @@ export default function NavbarForRestaurant() {
       <MyModal9 isvisible={visibleModal} onClose={() => setVisibleModal(false)}>
         {/* contents here */}
         {arrayNoti.map((array, i) => {
-          return (
-            <div key={i}>
-              <div>
-                <div className="flex justify-around">
-                  <div>
-                    <img
-                      className="w-auto h-[40vh]  rounded-lg"
-                      alt="naruto"
-                      src={`http://localhost:5000/${array.appliedBy.profile_image}`}
-                    />
-                  </div>
-                  <div>
-                    <h1 className="text-center font-bold text-[28px] text-black">
-                      {array.appliedBy.firstname} {array.appliedBy.lastname}
-                    </h1>
-                    <div className="flex gap-4 justify-center">
-                      <h1 className="uppercase text-[14px] font-medium">
-                        {array.appliedBy.gender}
-                      </h1>
-                      <h1 className="uppercase text-[14px] font-medium">
-                        {array.appliedBy.address}
-                      </h1>
-                      <h1 className="uppercase text-[14px] font-medium">
-                        {array.appliedBy.phonenumber}
-                      </h1>
+          if (array._id === applierID) {
+            return (
+              <div key={i}>
+                <div>
+                  <div className="flex justify-around">
+                    <div>
+                      <img
+                        className="w-auto h-[40vh]  rounded-lg"
+                        alt="naruto"
+                        src={`http://localhost:5000/${array.appliedBy?.profile_image}`}
+                      />
                     </div>
                     <div>
-                      <h1 className=" flex justify-center gap-2">
-                        <p className="uppercase text-[14px] font-medium mt-0.5 ">
-                          Artist Type:
-                        </p>
-                        {array.appliedBy.band}
+                      <h1 className="text-center font-bold text-[28px] text-black">
+                        {array.appliedBy?.firstname} {array.appliedBy?.lastname}
                       </h1>
-                      <h1 className="flex justify-center gap-1">
-                        <p className="uppercase text-[14px] font-medium mt-0.5 ">
-                          Artist Genre:
-                        </p>
-                        {array.appliedBy.genre}
-                      </h1>
-                      <h1 className="flex justify-center">
-                        <p className="uppercase text-[14px] font-medium mt-0.5 ">
-                          Artist Skill:
-                        </p>
-                        {array.appliedBy.skill}
-                      </h1>
-                      <h1 className="flex justify-center">
-                        <p className="uppercase text-[14px] font-medium mt-0.5 ">
-                          Exereince Level:
-                        </p>
-                        {array.appliedBy.expereince}
-                      </h1>
-                      <h1 className="text-center mt-5">
-                        <p className="uppercase text-[14px] font-medium mt-0.5 ">
-                          Artist Description
-                        </p>
-                        {array.appliedBy.bio}
-                      </h1>
+                      <div className="flex gap-4 justify-center">
+                        <h1 className="uppercase text-[14px] font-medium">
+                          {array.appliedBy?.gender}
+                        </h1>
+                        <h1 className="uppercase text-[14px] font-medium">
+                          {array.appliedBy?.address}
+                        </h1>
+                        <h1 className="uppercase text-[14px] font-medium">
+                          {array.appliedBy?.phonenumber}
+                        </h1>
+                      </div>
+                      <div>
+                        <h1 className=" flex justify-center gap-2">
+                          <p className="uppercase text-[14px] font-medium mt-0.5 ">
+                            Artist Type:
+                          </p>
+                          {array.appliedBy?.band}
+                        </h1>
+                        <h1 className="flex justify-center gap-1">
+                          <p className="uppercase text-[14px] font-medium mt-0.5 ">
+                            Artist Genre:
+                          </p>
+                          {array.appliedBy?.genre}
+                        </h1>
+                        <h1 className="flex justify-center">
+                          <p className="uppercase text-[14px] font-medium mt-0.5 ">
+                            Artist Skill:
+                          </p>
+                          {array.appliedBy?.skill}
+                        </h1>
+                        <h1 className="flex justify-center">
+                          <p className="uppercase text-[14px] font-medium mt-0.5 ">
+                            Exereince Level:
+                          </p>
+                          {array.appliedBy?.expereince}
+                        </h1>
+                        <h1 className="text-center mt-5">
+                          <p className="uppercase text-[14px] font-medium mt-0.5 ">
+                            Artist Description
+                          </p>
+                          {array.appliedBy?.bio}
+                        </h1>
+                      </div>
                     </div>
                   </div>
-                </div>
-                {/* {status === "pending" && ( */}
-                <div className="flex justify-center gap-[20%] mt-5">
-                  <button
-                    className="bg-blue-600 px-6 py-2 rounded-xl text-white hover:bg-orange-400"
-                    onClick={() => acceptHandler(array._id)}
-                  >
-                    Accept
-                  </button>
-                  <button
-                    onClick={() => deleteHandler(array._id)}
-                    className="bg-green-600 px-6 py-2 rounded-xl text-white hover:bg-purple-500"
-                  >
-                    Decline
-                  </button>
+                  {/* {status === "pending" && ( */}
+                  <div className="flex justify-center gap-[20%] mt-5">
+                    <button
+                      className="bg-blue-600 px-6 py-2 rounded-xl text-white hover:bg-orange-400"
+                      onClick={() => acceptHandler(array._id, array.appliedGig)}
+                    >
+                      Accept
+                    </button>
+                    <button
+                      onClick={() => deleteHandler(array._id)}
+                      className="bg-green-600 px-6 py-2 rounded-xl text-white hover:bg-purple-500"
+                    >
+                      Decline
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
+            );
+          }
         })}
       </MyModal9>
     </div>

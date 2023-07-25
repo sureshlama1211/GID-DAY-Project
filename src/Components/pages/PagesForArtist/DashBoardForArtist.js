@@ -12,6 +12,8 @@ import { MdPassword } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 import useUser from "../../../auth/useUser";
 import NavigationPageForArtist from "./NavigationPageForArtist";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function DashBoardForArtist() {
   const user = useUser();
@@ -43,17 +45,19 @@ export default function DashBoardForArtist() {
   useEffect(() => {
     Artistinformation();
   }, []);
-  // console.log(getInfoArtist, "sanibar");
-  /// testing
 
-  // const menu = (
-  //   <Menu>
-  //     <Menu.Item key="1">{email}</Menu.Item>
-  //     <Link to="/login">
-  //       <Menu.Item key="3">Logout</Menu.Item>
-  //     </Link>
-  //   </Menu>
-  // );
+  const available = async () => {
+    try {
+      const response = await axios.patch(
+        `http://localhost:5000/api/available/${email}`
+      );
+      toast.success("Your availability is set to true", {
+        position: "bottom-right",
+        autoClose: 5000,
+      });
+      console.log(response);
+    } catch (error) {}
+  };
 
   return (
     <div className="text-center bg-[#010101]">
@@ -69,16 +73,13 @@ export default function DashBoardForArtist() {
             {getInfoArtist?.firstname}_{getInfoArtist?.lastname}
           </h1>
           <hr className="mt-20 " />
-          <h1 className=" hover:bg-black font-medium cursor-pointer text-white  ">
-            Gig Applied Details
-          </h1>
+          <Link to="/appliedgigdetails">
+            <h1 className=" hover:bg-black font-medium cursor-pointer text-white  ">
+              Gig Applied Details
+            </h1>
+          </Link>
           <hr />
-          <hr className="mt-4" />
-          <h1 className=" hover:bg-black text-white font-medium cursor-pointer flex gap-2  ">
-            <SlCalender className="mt-1" />
-            Events Date
-          </h1>
-          <hr />
+
           <hr className="mt-4" />
           <div className="flex gap-4 hover:bg-black ">
             <h1
@@ -90,6 +91,13 @@ export default function DashBoardForArtist() {
             </h1>
             <p className="text-white text-bold ">{show ? "-" : "+"}</p>
           </div>
+          <br />
+          <button
+            className="bg-blue-600 hover:bg-orange-600 mt-2 ml-1 mr-1 rounded-lg "
+            onClick={available}
+          >
+            Make Me Available
+          </button>
           <hr />
           {show && (
             <>
@@ -99,11 +107,6 @@ export default function DashBoardForArtist() {
                   Edit Profile
                 </p>
               </Link>
-              <hr />
-              <p className="text-white  cursor-pointer hover:bg-black flex gap-2">
-                <MdPassword className="mt-1" />
-                Reset Password
-              </p>
               <hr />
             </>
           )}

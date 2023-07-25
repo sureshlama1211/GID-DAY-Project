@@ -85,10 +85,6 @@ export default function NavigationPageForViewer() {
         </div>
 
         <div className="flex text-center text-white gap-6 items-center">
-          <div>
-            <MdNotificationsActive className="text-[25px] hover:text-[#7F669D]" />
-          </div>
-
           <div style={{ position: "relative" }}>
             <Dropdown overlay={menu} trigger={["click"]}>
               <img

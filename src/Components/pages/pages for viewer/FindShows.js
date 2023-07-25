@@ -11,10 +11,13 @@ import axios from "axios";
 import MyModal6 from "../modals/ModalForEachUser";
 import KhaltiCheckout from "khalti-checkout-web";
 import { Config } from "../Khalti/khaltiConfig.js";
+import { useNavigate } from "react-router-dom";
 
 export default function FindShows() {
   const user = useUser();
   const email = user.email;
+
+  const navigate = useNavigate();
 
   //initialize khalti
   let checkout = new KhaltiCheckout(Config);
@@ -103,10 +106,11 @@ export default function FindShows() {
                       {event.eventaddress}
                     </h1>
                   </div>
+
                   <div className="">
                     <button
+                      onClick={() => navigate(`/ticket/${event._id}`)}
                       className=" relative top-10 border-2 px-2 rounded-lg bg-orange-600 hover:border-white border-black hover:text-black text-white"
-                      onClick={() => checkout.show({ amount: 1000 })}
                     >
                       Buy Tickets Now
                     </button>

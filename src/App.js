@@ -23,6 +23,12 @@ import SettingForArtist from "./Components/pages/PagesForArtist/SettingForArtist
 import SettingForViewer from "./Components/pages/pages for viewer/SettingForViewer";
 import BookingDetails from "./Components/pages/pagesforrestaurant/BookingDetails";
 import CreatedGigDetails from "./Components/pages/pagesforrestaurant/CreatedGigDetails";
+import TicketSummary from "./Components/pages/pages for viewer/TicketSummary";
+import DashBoardForAdmin from "./Components/pages/PagesForAdmin/DashBoardForAdmin";
+import DetailsOfRestaurant from "./Components/pages/PagesForAdmin/DetailsOfRestaurant";
+import DetailsOfMusicains from "./Components/pages/PagesForAdmin/DetailsOfMusicains";
+import DetailsOfViewers from "./Components/pages/PagesForAdmin/DetailsOfViewers";
+import AppliedGigDetails from "./Components/pages/PagesForArtist/AppliedGigDetails";
 function App() {
   return (
     <BrowserRouter>
@@ -37,6 +43,7 @@ function App() {
           path="/verify-email/:verificationString"
           element={<EmailVerificationLandingPage />}
         />
+        {/* route for artist */}
         <Route
           path="/signasartist"
           element={
@@ -45,26 +52,36 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/signasrestaurant" element={<SignAsRestaurant />}></Route>
+        <Route path="/appliedgigdetails" element={<AppliedGigDetails />} />
+
         <Route path="/error" element={<Error />}></Route>
         <Route path="/signasviewer" element={<SignAsViewer />}></Route>
+        <Route path="/dashboardforartist" element={<DashBoardForArtist />} />
+        <Route path="/settingforartist" element={<SettingForArtist />} />
+        <Route path="/applyforgig" element={<ApplyForGig />} />
+        {/* route for restaurant */}
         <Route path="/findartist" element={<FindArtist />}></Route>
         <Route
           path="/dashboardforrestaurant"
           element={<DashBoardForRestaurant />}
         ></Route>
-        <Route path="/dashboardforartist" element={<DashBoardForArtist />} />
-        <Route path="/settingforartist" element={<SettingForArtist />} />
-        <Route path="/applyforgig" element={<ApplyForGig />} />
+        <Route path="/signasrestaurant" element={<SignAsRestaurant />}></Route>
         <Route path="/prosetforres" element={<SettingForRestaurant />} />
         <Route path="/dashboardforviewer" element={<DashBoardForViewer />} />
+        <Route path="/bookingdetails" element={<BookingDetails />} />
+        <Route path="/gigdetails" element={<CreatedGigDetails />} />
         {/* pages for viewer */}
         <Route path="/findshows" element={<FindShows />} />
         <Route path="/viewartist" element={<ViewArtist />} />
         <Route path="/settingforviewer" element={<SettingForViewer />} />
+        <Route path="/ticket/:id" element={<TicketSummary />} />
         {/* booking details */}
-        <Route path="/bookingdetails" element={<BookingDetails />} />
-        <Route path="/gigdetails" element={<CreatedGigDetails />} />
+
+        {/* Navigation Page For Admin */}
+        <Route path="/dashadmin" element={<DashBoardForAdmin />} />
+        <Route path="/dres" element={<DetailsOfRestaurant />} />
+        <Route path="/dmes" element={<DetailsOfMusicains />} />
+        <Route path="/dves" element={<DetailsOfViewers />} />
       </Routes>
       {/* for artist */}
     </BrowserRouter>

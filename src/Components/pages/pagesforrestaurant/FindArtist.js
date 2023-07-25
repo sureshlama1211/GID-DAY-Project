@@ -5,7 +5,9 @@ import { FcAbout, FcBusinessContact } from "react-icons/fc";
 import { SiTwitter, SiFacebook } from "react-icons/si";
 import { MdNotificationsActive, MdLocationOn } from "react-icons/md";
 import { FaHeadphonesAlt } from "react-icons/fa";
-
+//
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
 
 import useUser from "../../../auth/useUser";
@@ -66,25 +68,55 @@ export default function FindArtist() {
     });
     console.log(response, "k ayo ta ");
     setShowBookModal(false);
+    toast.success("Booking Request Sent", {
+      position: "bottom-right",
+      theme: "dark",
+      autoClose: 5000,
+    });
   };
 
   //to get the list of artist from get method
   const [getArtist, setGetArtist] = useState([]);
+  //for search
+  const [searchQuery, setSearcQuery] = useState("");
+  const [sortValue, setSortValue] = useState("");
+  const handleSelectChange = (event) => {
+    setSortValue(event.target.value);
+  };
+  //
+
+  //
+  const [products, setProducts] = useState([]);
+  const getProducts = async () => {
+    const productsData = await axios.get(
+      `http://localhost:5000/api/searchuser?sort=${sortValue}`
+    );
+
+    const data = await productsData.data.artistuser;
+    setProducts(data);
+    setGetArtist(data);
+    console.log("getProducts", data);
+  };
+  useEffect(() => {
+    getProducts();
+  }, [sortValue]);
+
   const getAllArtist = async () => {
-    const ArtistData = await axios.get("http://localhost:5000/api/user");
-    const data = ArtistData.data.checkfname;
-    console.log(data, "hait");
+    const ArtistData = await axios.get("http://localhost:5000/api/searchuser", {
+      params: {
+        firstname: searchQuery,
+      },
+    });
+    const data = ArtistData.data.artistuser;
+
     setGetArtist(data);
   };
   useEffect(() => {
     getAllArtist();
   }, []);
-
-  console.log(getArtist, "j cha ");
-  //
+  //for sort
 
   //for single user
-
   const [showArtist, setShowArtist] = useState([]);
   const getSingleArtist = async (email) => {
     const singleArtist = await axios.get(
@@ -96,18 +128,132 @@ export default function FindArtist() {
   };
   const [artistdetails, setArtistDetials] = useState(false);
 
+  //state for filter
+  const [show, setShow] = useState(false);
+  const [view, setView] = useState(false);
   return (
     <div className="text-center bg-[#010101] ">
       <NavbarForRestaurant />
       <div className="flex gap-[10%]">
-        <div className=" p-5 border-r-2 bg-[#adadb12a]  border-gray-300 ">
-          <h1 className="text-white">FILTER BY</h1> <br />
+        <div className=" p-5 border-r-2 bg-[#adadb12a]  border-gray-300 pb-[220px] ">
+          <h1 className="text-white">FILTER BY</h1>
+          <br />
           <hr className="w-[100px] " />
-          <h2 className="mt-5 text-white ">Genre +</h2>
+          <div>
+            <h2
+              onClick={() => setShow(!show)}
+              className="mt-5 text-white  flex justify-center gap-[4px]  "
+            >
+              Genre
+              <p className="text-white text-bold ">{show ? "-" : "+"}</p>
+            </h2>
+
+            {show && (
+              <>
+                <div>
+                  <div className="flex justify-start">
+                    <input
+                      type="checkbox"
+                      id="Classical"
+                      name="Classical"
+                      value="Classical"
+                      // checked={genreFilters.includes("Classical")}
+                      // onChange={handleGenreFilterChange}
+                    />
+                    <label for="classical" className="text-white">
+                      Classcial
+                    </label>
+                  </div>
+                  <div className="flex justify-start">
+                    <input
+                      type="checkbox"
+                      id="Lok Dohori"
+                      name="Lok Dohori"
+                      value="Lok Dohori"
+                      // checked={genreFilters.includes("Lok Dohori")}
+                      // onChange={handleGenreFilterChange}
+                    />
+                    <label for="Lok Dohori" className="text-white">
+                      Lok Dohori
+                    </label>
+                  </div>
+                  <div className="flex justify-start">
+                    <input
+                      type="checkbox"
+                      id="Pop"
+                      name="Pop"
+                      value="Pop"
+                      // checked={genreFilters.includes("Pop")}
+                      // onChange={handleGenreFilterChange}
+                    />
+                    <label for="Pop" className="text-white">
+                      Pop
+                    </label>
+                  </div>
+
+                  <div className="flex justify-start">
+                    <input
+                      type="checkbox"
+                      id="Rock"
+                      name="Rock"
+                      value="Rock"
+                      // checked={genreFilters.includes("Rock")}
+                      // onChange={handleGenreFilterChange}
+                    />
+                    <label for="Rock" className="text-white">
+                      Rock
+                    </label>
+                  </div>
+                  <div className="flex justify-start">
+                    <input
+                      type="checkbox"
+                      id="HipHop"
+                      name="HipHop"
+                      value="HipHop"
+                      // checked={genreFilters.includes("Hip Hop")}
+                      // onChange={handleGenreFilterChange}
+                    />
+                    <label for="HipHop" className="text-white">
+                      HipHop
+                    </label>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
           <br />
-          <h2 className="text-white ">Band Type +</h2>
+          <div>
+            <h2
+              onClick={() => setView(!view)}
+              className="text-white flex gap-[3px] cursor-pointer"
+            >
+              Band Type
+              <p className="text-white text-bold ">{view ? "-" : "+"}</p>
+            </h2>
+            {view && (
+              <>
+                <div>
+                  <div className="flex justify-start">
+                    <input type="checkbox" id="Band" name="Band" value="Band" />
+                    <label for="Band" className="text-white">
+                      Band
+                    </label>
+                  </div>
+                  <div className="flex justify-start">
+                    <input type="checkbox" id="Solo" name="Solo" value="Solo" />
+                    <label for="Solo" className="text-white">
+                      Solo
+                    </label>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
           <br />
-          <button className="border-2 border-transparent bg-orange-600 w-full rounded-2xl text-white drop-shadow-2xl">
+          <button
+            onClick={getAllArtist}
+            className="border-2 border-transparent bg-orange-600 w-full rounded-2xl text-white drop-shadow-2xl"
+          >
             Apply
           </button>
           <br />
@@ -117,66 +263,89 @@ export default function FindArtist() {
           </button>
         </div>
         <div>
-          <div>
+          <div className="flex gap-2">
             <input
-              className=" mt-[20px] w-full px-[190px]  h-[30px] rounded-lg placeholder:text-center  border-transparent border-gray-400 border-1"
+              className=" mt-[20px] w-full px-[190px] outline-none  h-[30px] rounded-lg placeholder:text-center  border-transparent border-gray-400 border-1"
               type="text"
               placeholder="Search Artist Here "
+              value={searchQuery}
+              onChange={(e) => setSearcQuery(e.target.value)}
             ></input>
+            <button
+              onClick={getAllArtist}
+              className="bg-orange-600 mt-4 rounded-xl px-3  text-[13px] hover:bg-white hover:text-orange-600"
+            >
+              Search
+            </button>
           </div>
           {/* getall artist registered */}
           <div className="pb-20">
             {/* mapping  */}
             {getArtist.map((artist, i) => {
               return (
-                <div
-                  key={i}
-                  className=" flex justify-between pr-5 mt-[80px]  rounded-lg bg-[#adadb167] "
-                  onClick={() => getSingleArtist(artist.email)}
-                >
-                  <div>
-                    <img
-                      className="w-[35vh] h-[25vh] rounded-lg mt-2 mb-2 ml-2"
-                      alt="naruto"
-                      src={`http://localhost:5000/${artist.profile_image}`}
-                    />
-                  </div>
-
-                  <div>
-                    <h1 className="font-bold text-[18px] text-white">
-                      {artist.firstname}_{artist.lastname}
-                    </h1>
-                    <h1 className="text-[15px] font-medium text-white">
-                      {artist.band}
-                    </h1>
-                    <h1 className="text-[18] text-white">{artist.skill}</h1>
-                    <h1 className="flex justify-center gap-1 text-white">
-                      <FaHeadphonesAlt className="mt-1 text-white" />
-                      {artist.genre}
-                    </h1>
-                    <h1 className="flex justify-center gap-1 text-white">
-                      <MdLocationOn className="mt-1" />
-                      {artist.address}
-                    </h1>
-                  </div>
-                  <div className="">
-                    <button
-                      onClick={() => onBookClicked(artist)}
-                      className=" mt-[80px] border-2 px-2 rounded-lg bg-orange-600 hover:border-white border-black text-white hover:text-black"
+                <>
+                  {!artist.isbooked && (
+                    <div
+                      key={i}
+                      className=" flex justify-between pr-5 mt-[80px]  rounded-lg bg-[#adadb167] "
                     >
-                      Book Now
-                    </button>
-                  </div>
-                </div>
+                      <div
+                        onClick={() => getSingleArtist(artist.email)}
+                        className="flex gap-20"
+                      >
+                        <div>
+                          <img
+                            className="w-[35vh] h-[25vh] rounded-lg mt-2 mb-2 ml-2"
+                            alt="naruto"
+                            src={`http://localhost:5000/${artist.profile_image}`}
+                          />
+                        </div>
+
+                        <div>
+                          <h1 className="font-bold text-[18px] text-white">
+                            {artist.firstname}_{artist.lastname}
+                          </h1>
+                          <h1 className="text-[15px] font-medium text-white">
+                            {artist.band}
+                          </h1>
+                          <h1 className="text-[18] text-white">
+                            {artist.skill}
+                          </h1>
+                          <h1 className="flex justify-center gap-1 text-white">
+                            <FaHeadphonesAlt className="mt-1 text-white" />
+                            {artist.genre}
+                          </h1>
+                          <h1 className="flex justify-center gap-1 text-white">
+                            <MdLocationOn className="mt-1" />
+                            {artist.address}
+                          </h1>
+                        </div>
+                      </div>
+                      <div className="">
+                        <button
+                          onClick={() => onBookClicked(artist)}
+                          className=" mt-[80px] border-2 px-2 rounded-lg bg-orange-600 hover:border-white border-black text-white hover:text-black"
+                        >
+                          Book Now
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </>
               );
             })}
           </div>
         </div>
         <div>
-          <select className="mt-5 rounded-lg">
-            <option value="sort by">Sort By</option>
-            <option value="new comming artist">Latest Enrolled artist</option>
-            <option value="top rated artist">Top Rated Artist</option>
+          <select
+            className="mt-5 rounded-lg"
+            onChange={handleSelectChange}
+            value={sortValue}
+          >
+            <option value="">Sort By</option>
+            <option value="latestEnrolledArtist">Latest Enrolled artist</option>
+            <option value="A-Z">A-Z</option>
+            <option value="Z-A">Z-A</option>
           </select>
         </div>
       </div>
@@ -393,7 +562,7 @@ export default function FindArtist() {
             type="submit"
             className="mt-7 border-black border-2 px-5  rounded-xl bg-orange-400"
           >
-            Create
+            Send Booking
           </button>
         </form>
       </MyModal2>

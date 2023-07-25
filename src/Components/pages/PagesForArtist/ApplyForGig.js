@@ -4,7 +4,9 @@ import { SiTwitter, SiFacebook } from "react-icons/si";
 import useUser from "../../../auth/useUser";
 import { useState, useEffect } from "react";
 import NavigationPageForArtist from "./NavigationPageForArtist";
-//
+//toastify
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { ImLocation2, ImHeadphones } from "react-icons/im";
 import { BiTimeFive } from "react-icons/bi";
 import { SlCalender } from "react-icons/sl";
@@ -39,6 +41,12 @@ export default function ApplyForGig() {
     );
     console.log(applyresponse, "sai cha ta");
     setShowModal(false);
+    //
+    toast.success("Gig Applied Sucessfully", {
+      position: "bottom-right",
+      theme: "dark",
+      autoClose: 5000,
+    });
   };
 
   const [getGig, setGetGig] = useState([]);
@@ -111,53 +119,57 @@ export default function ApplyForGig() {
                 dateOptions
               );
               return (
-                <div
-                  key={i}
-                  className=" flex gap-20 justify-between px-8 py-4 mt-[30px] bg-[#adadb167] rounded-lg"
-                >
-                  <div
-                    onClick={() => handleClic(gig._id)}
-                    className="flex gap-20"
-                  >
-                    <div>
-                      <img
-                        className="w-[25vh] h-[25vh] rounded-lg"
-                        alt="naruto"
-                        src={`http://localhost:5000/${gig.gigProfile}`}
-                      />
-                    </div>
-
-                    <div>
-                      <h1 className="font-bold text-[18px] text-white">
-                        {gig.gigName}
-                      </h1>
-                      <h1 className="text-[15px] font-medium flex gap-2  text-white ">
-                        <SlCalender className="mt-1" />
-                        {newStartDate}
-                      </h1>
-                      <h1 className="flex justify-center gap-2 text-white ">
-                        <BiTimeFive className="mt-1 text-white" />
-                        {gig.starttime}-{gig.endtime}
-                      </h1>
-                      <h1 className="flex justify-center gap-1 text-white">
-                        <ImHeadphones className="mt-1 text-white" />{" "}
-                        {gig.genreNeeded}
-                      </h1>
-                      <h1 className=" flex  justify-center gap-1 text-[18] text-white">
-                        <ImLocation2 className="mt-1 text-white" />
-                        {gig.address}
-                      </h1>
-                    </div>
-                  </div>
-                  <div>
-                    <button
-                      onClick={() => onApply(gig)}
-                      className=" mt-[40px] border-2 px-2 rounded-lg bg-orange-600 hover:border-white border-black hover:text-black text-white"
+                <>
+                  {!gig.isapplied && (
+                    <div
+                      key={i}
+                      className=" flex gap-20 justify-between px-8 py-4 mt-[30px] bg-[#adadb167] rounded-lg"
                     >
-                      Apply Now
-                    </button>
-                  </div>
-                </div>
+                      <div
+                        onClick={() => handleClic(gig._id)}
+                        className="flex gap-20"
+                      >
+                        <div>
+                          <img
+                            className="w-[25vh] h-[25vh] rounded-lg"
+                            alt="naruto"
+                            src={`http://localhost:5000/${gig.gigProfile}`}
+                          />
+                        </div>
+
+                        <div>
+                          <h1 className="font-bold text-[18px] text-white">
+                            {gig.gigName}
+                          </h1>
+                          <h1 className="text-[15px] font-medium flex gap-2  text-white ">
+                            <SlCalender className="mt-1" />
+                            {newStartDate}
+                          </h1>
+                          <h1 className="flex justify-center gap-2 text-white ">
+                            <BiTimeFive className="mt-1 text-white" />
+                            {gig.starttime}-{gig.endtime}
+                          </h1>
+                          <h1 className="flex justify-center gap-1 text-white">
+                            <ImHeadphones className="mt-1 text-white" />{" "}
+                            {gig.genreNeeded}
+                          </h1>
+                          <h1 className=" flex  justify-center gap-1 text-[18] text-white">
+                            <ImLocation2 className="mt-1 text-white" />
+                            {gig.address}
+                          </h1>
+                        </div>
+                      </div>
+                      <div>
+                        <button
+                          onClick={() => onApply(gig)}
+                          className=" mt-[40px] border-2 px-2 rounded-lg bg-orange-600 hover:border-white border-black hover:text-black text-white"
+                        >
+                          Apply Now
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </>
               );
             })}
           </div>

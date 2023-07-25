@@ -107,11 +107,6 @@ export default function DashBoardForRestaurant() {
                 </p>
               </Link>
               <hr />
-              <p className="text-white  cursor-pointer hover:bg-black flex gap-2">
-                <MdPassword className="mt-1" />
-                Reset Password
-              </p>
-              <hr />
             </>
           )}
         </div>

@@ -12,6 +12,7 @@ import axios from "axios";
 import useToken from "../../auth/useToken";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import backgroundpic from "../../Images/backgroundlog.jpg";
 
 export default function Loginpage() {
   const {
@@ -55,6 +56,8 @@ export default function Loginpage() {
         } else {
           navigate("/dashboardforviewer");
         }
+      } else if (decoded.role === "admin") {
+        navigate("/dashadmin");
       }
 
       // extract role from token
@@ -72,7 +75,14 @@ export default function Loginpage() {
   };
 
   return (
-    <div className="bg-[#D9CAB3]">
+    <div
+      style={{
+        backgroundImage: `url(${backgroundpic})`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        height: "100vh",
+      }}
+    >
       <div className="bg-white drop-shadow-xl  ">
         <div className=" flex justify-between">
           <div className>
@@ -121,7 +131,7 @@ export default function Loginpage() {
               name="email"
               {...register("email", { required: true })}
               placeholder="Email"
-              className=" placeholder-black  city  w-[250px] h-7 rounded-[8px] border-solid border-white border-[2px]  bg-zinc-400 drop-shadow-md "
+              className=" placeholder-black outline-none  city  w-[250px] h-7 rounded-[8px] border-solid border-white border-[2px]  bg-zinc-400 drop-shadow-md "
             />
             <span className="flex justify-center text-red-600 mb-[-10px] text-sm ">
               {errors.email?.type === "required" && "Email is required"}
@@ -134,7 +144,7 @@ export default function Loginpage() {
               {...register("password", { required: true })}
               id="password"
               placeholder="Password"
-              className="placeholder-black w-[250px] h-7 rounded-[8px] border-solid border-white border-[2px] bg-zinc-400 drop-shadow-md"
+              className="placeholder-black outline-none w-[250px] h-7 rounded-[8px] border-solid border-white border-[2px] bg-zinc-400 drop-shadow-md"
             />
             {/* Message for an error */}
             <span className="flex justify-center text-red-600 mb-[-10px] text-sm ">

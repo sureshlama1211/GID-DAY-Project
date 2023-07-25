@@ -11,6 +11,9 @@ import useUser from "../../auth/useUser";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 // import useToken from "../../auth/useToken";
+//toast import
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function SignAsRestaurant() {
   const user = useUser();
@@ -62,7 +65,11 @@ export default function SignAsRestaurant() {
         }
       );
       console.log(response);
-      navigate("/findartist");
+      navigate("/dashboardforrestaurant");
+      toast.success("Profile setup successful as Restaurant", {
+        position: "bottom-right",
+        autoClose: 5000,
+      });
     } catch (error) {}
   };
 
@@ -87,17 +94,7 @@ export default function SignAsRestaurant() {
             />
           </Link>
         </div>
-        <div className="flex mt-[28px]">
-          <button className=" w-[90px] h-[35px] mt-[-5px] rounded-2xl  border-2 hover:border-[#A7727D] font-bold text-[15px]  items-center text-center text-black mr-[40px] ">
-            DashBoard
-          </button>
-          <button className=" w-[90px] h-[35px] pt-1 mt-[-5px]  rounded-2xl  font-bold text-[15px] hover:border-[#A7727D] border-2 text-center text-black mr-[40px] ">
-            Find Artists
-          </button>
-          <button className=" w-[100px] h-[40px] font-bold text-[15px]  border-2 rounded-md hover:border-[#A7727D] mt-[-10px]    text-center text-black  mr-[20px] ml-[20px]">
-            + Create Gig
-          </button>
-        </div>
+
         <div className="flex text-center gap-6 items-center">
           <div>
             <MdNotificationsActive className="text-[25px] hover:text-[#7F669D]" />

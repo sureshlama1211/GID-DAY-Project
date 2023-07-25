@@ -7,7 +7,9 @@ import axios from "axios";
 import { Dropdown, Menu } from "antd";
 import MyModal3 from "../modals/ModalForArtist";
 import useUser from "../../../auth/useUser";
-
+//
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export default function NavigationPageForArtist() {
   const user = useUser();
   const email = user.email;
@@ -62,20 +64,29 @@ export default function NavigationPageForArtist() {
   }, []);
 
   //for changin the status
-  const acceptHandler = async (id) => {
+  const acceptHandler = async (id, bookedTo) => {
     const response = await axios.put(
       `http://localhost:5000/api/booking/${id}`,
       {
         status: "accepted",
+        bookedTo: bookedTo,
       }
     );
     setVisibleModal(false);
+    toast.success("Booking Accpeted", {
+      position: "bottom-right",
+      autoClose: 5000,
+    });
   };
   const deleteHandler = async (id) => {
     const respond = await axios.put(`http://localhost:5000/api/booking/${id}`, {
       status: "declined",
     });
     setVisibleModal(false);
+    toast.error("Booking Declined", {
+      position: "bottom-right",
+      autoClose: 5000,
+    });
   };
 
   const menu = (
@@ -98,7 +109,7 @@ export default function NavigationPageForArtist() {
               <Menu.Item
                 key="1"
                 className=" border-2 border-black rounded-2xl"
-                onClick={() => setVisibleModal(true)}
+                onClick={() => showBooker(array._id)}
               >
                 {array.bookedBy.firstname} is trying to book you
               </Menu.Item>
@@ -110,7 +121,13 @@ export default function NavigationPageForArtist() {
   );
   //for date
   const dateOptions = { day: "numeric", month: "long", year: "numeric" };
+  //
+  const [bookerID, setBookerID] = useState();
 
+  const showBooker = (id) => {
+    setVisibleModal(true);
+    setBookerID(id);
+  };
   return (
     <div className="text-center bg-[#010101] sticky top-0">
       <div className=" flex justify-between bg-[#adadb167]   drop-shadow-xl">
@@ -166,75 +183,77 @@ export default function NavigationPageForArtist() {
       >
         {/* contents here */}
         {notiArray.map((array, i) => {
-          //for converting the date in suitable format
-          var startDateTime = new Date(array.date);
-          const newStartDate = startDateTime.toLocaleDateString(
-            "en-US",
-            dateOptions
-          );
+          if (array._id === bookerID) {
+            //for converting the date in suitable format
+            var startDateTime = new Date(array.date);
+            const newStartDate = startDateTime.toLocaleDateString(
+              "en-US",
+              dateOptions
+            );
 
-          return (
-            <div key={i}>
-              <div>
+            return (
+              <div key={i}>
                 <div>
-                  <h1 className="font-bold text-[25px] text-transform: uppercase animate-bounce">
-                    {array.gigname}
-                  </h1>
-                  <div className="flex justify-between mt-5">
+                  <div>
+                    <h1 className="font-bold text-[25px] text-transform: uppercase animate-bounce">
+                      {array.gigname}
+                    </h1>
+                    <div className="flex justify-between mt-5">
+                      <h1 className="font-bold text-[15px] ">
+                        <p className="text-red-900 text-[20px] ">Genre</p>
+                        {array.gigtype}
+                      </h1>
+                      <h1 className="font-bold text-[15px]">
+                        <p className="text-red-900 text-[20px] ">Date</p>
+                        {newStartDate}
+                      </h1>
+                    </div>
+                  </div>
+                  <div className="flex justify-between mt-2">
                     <h1 className="font-bold text-[15px] ">
-                      <p className="text-red-900 text-[20px] ">Genre</p>
-                      {array.gigtype}
+                      <p className="text-red-900 text-[20px] ">payment Type</p>
+                      {array.showtype}
                     </h1>
                     <h1 className="font-bold text-[15px]">
-                      <p className="text-red-900 text-[20px] ">Date</p>
-                      {newStartDate}
+                      <p className="text-red-900 text-[20px] ">Address</p>
+                      {array.Address}
                     </h1>
                   </div>
-                </div>
-                <div className="flex justify-between mt-2">
-                  <h1 className="font-bold text-[15px] ">
-                    <p className="text-red-900 text-[20px] ">payment Type</p>
-                    {array.showtype}
-                  </h1>
-                  <h1 className="font-bold text-[15px]">
-                    <p className="text-red-900 text-[20px] ">Address</p>
-                    {array.Address}
-                  </h1>
-                </div>
-                <div className="flex justify-between mt-2">
-                  <h1 className="font-bold text-[15px] ">
-                    <p className="text-red-900 text-[20px] ">Start Time</p>
-                    {array.startingtime}
-                  </h1>
-                  <h1 className="font-bold text-[15px]">
-                    <p className="text-red-900 text-[20px] ">End Time</p>
-                    {array.endingtime}
-                  </h1>
-                </div>
-                <div className="flex justify-center">
-                  <h1 className="font-bold text-[15px]">
-                    <p className="text-red-900 text-[20px] ">Budget</p>
-                    {array.budget}
-                  </h1>
-                </div>
-                {/* {status === "pending" && ( */}
-                <div className="flex justify-center gap-[20%] mt-5">
-                  <button
-                    className="bg-blue-600 px-6 py-2 rounded-xl text-white hover:bg-orange-400"
-                    onClick={() => acceptHandler(array._id)}
-                  >
-                    Accept
-                  </button>
-                  <button
-                    onClick={() => deleteHandler(array._id)}
-                    className="bg-green-600 px-6 py-2 rounded-xl text-white hover:bg-purple-500"
-                  >
-                    Decline
-                  </button>
+                  <div className="flex justify-between mt-2">
+                    <h1 className="font-bold text-[15px] ">
+                      <p className="text-red-900 text-[20px] ">Start Time</p>
+                      {array.startingtime}
+                    </h1>
+                    <h1 className="font-bold text-[15px]">
+                      <p className="text-red-900 text-[20px] ">End Time</p>
+                      {array.endingtime}
+                    </h1>
+                  </div>
+                  <div className="flex justify-center">
+                    <h1 className="font-bold text-[15px]">
+                      <p className="text-red-900 text-[20px] ">Budget</p>
+                      {array.budget}
+                    </h1>
+                  </div>
+                  {/* {status === "pending" && ( */}
+                  <div className="flex justify-center gap-[20%] mt-5">
+                    <button
+                      className="bg-blue-600 px-6 py-2 rounded-xl text-white hover:bg-orange-400"
+                      onClick={() => acceptHandler(array._id, array.bookedTo)}
+                    >
+                      Accept
+                    </button>
+                    <button
+                      onClick={() => deleteHandler(array._id)}
+                      className="bg-green-600 px-6 py-2 rounded-xl text-white hover:bg-purple-500"
+                    >
+                      Decline
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
+            );
+          }
         })}
       </MyModal3>
     </div>

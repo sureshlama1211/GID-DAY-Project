@@ -10,7 +10,7 @@ import axios from "axios";
 import useToken from "../../auth/useToken";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import backgroundpic from "../../Images/backgroundlog.jpg";
 import { useNavigate } from "react-router-dom";
 //for search param
 import { useSearchParams } from "react-router-dom";
@@ -33,32 +33,7 @@ export default function Loginpage() {
   console.log(errors);
 
   const [token, setToken] = useToken();
-  // //signup function
-  // const signup = () =>{
-  //     const {email, password , passwordhai} = user
-  //     //validation for email password and re enter password
-  //     if(email && password && (password === passwordhai) ){
-  //          axios.post("http://localhost:9002/signup",user)
-  //          .then(res=>console.log(res))
-  //     }
-  //     else{
-  //         alert("invalid")
-  //     }
 
-  // }
-  // const[token ,setToken] = useToken();
-
-  // const onSignUpClicked = async ({
-  //     email, password
-  // })=>{
-  //     const response = await axios.post('/api/signup',{
-  //         email:email,
-  //         password:password
-
-  //     });
-  //     const {token} = response.data;
-  //     setToken(token);
-  //     navigate ('/')
   const onSignUpClicked = async ({ email, passwordhai }) => {
     try {
       console.log(assignrole);
@@ -94,7 +69,14 @@ export default function Loginpage() {
   };
 
   return (
-    <div className="bg-[#D9CAB3]">
+    <div
+      style={{
+        backgroundImage: `url(${backgroundpic})`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        height: "100vh",
+      }}
+    >
       <div className="bg-white drop-shadow-xl  ">
         <div className=" flex justify-between">
           <div className>
@@ -144,7 +126,7 @@ export default function Loginpage() {
               name="email"
               {...register("email", { required: true })}
               placeholder="Email"
-              className=" placeholder-black  city  w-[250px] h-7 rounded-[8px] border-solid border-white border-[2px]  bg-zinc-400 drop-shadow-md"
+              className=" placeholder-black outline-none  city  w-[250px] h-7 rounded-[8px] border-solid border-white border-[2px]  bg-zinc-400 drop-shadow-md"
             />
             <span className="flex justify-center text-red-600 mb-[-10px] text-sm ">
               {errors.email?.type === "required" && "Email is required"}
@@ -157,7 +139,7 @@ export default function Loginpage() {
               {...register("password", { required: true })}
               id="password"
               placeholder="Password"
-              className="placeholder-black w-[250px] h-7 rounded-[8px] border-solid border-white border-[2px] bg-zinc-400 drop-shadow-md"
+              className="placeholder-black outline-none w-[250px] h-7 rounded-[8px] border-solid border-white border-[2px] bg-zinc-400 drop-shadow-md"
             />
             <span className="flex justify-center text-red-600 mb-[-10px] text-sm ">
               {errors.password?.type === "required" && "Password  is required"}
@@ -174,7 +156,7 @@ export default function Loginpage() {
               )}
               id="password1"
               placeholder="Confirm Password"
-              className="placeholder-black w-[250px] h-7 rounded-[8px] border-solid border-white border-[2px] bg-zinc-400 drop-shadow-md"
+              className="placeholder-black outline-none w-[250px] h-7 rounded-[8px] border-solid border-white border-[2px] bg-zinc-400 drop-shadow-md"
             />
             <span className="flex justify-center text-red-600 mb-[-10px] text-sm">
               {errors.passwordhai?.type === "required" &&
@@ -183,7 +165,7 @@ export default function Loginpage() {
           </div>
           <button
             type="submit"
-            className="relative left-[150px] mt-5 rounded-[3px] pt-[1px] pb-[1px] pl-[5px] pr-[5px] text-[16px] bg-[#D1D0E3] drop-shadow-lg"
+            className="relative left-[150px]  mt-5 rounded-[3px] pt-[1px] pb-[1px] pl-[5px] pr-[5px] text-[16px] bg-[#D1D0E3] drop-shadow-lg"
           >
             Join Now
           </button>

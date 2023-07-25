@@ -10,12 +10,15 @@ import { FaRegSmileWink } from "react-icons/fa";
 
 import useUser from "../../../auth/useUser";
 //
+import Button from "antd";
 import { AiFillSetting } from "react-icons/ai";
 import { SlCalender } from "react-icons/sl";
 import { IoIosMicrophone } from "react-icons/io";
 import { MdPassword } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 import NavbarForRestaurant from "./NavbarForRestaurant";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function CreatedGigDetails() {
   const user = useUser();
@@ -54,6 +57,17 @@ export default function CreatedGigDetails() {
   useEffect(() => {
     gigdetails(user);
   }, []);
+  //api for delete gig
+
+  const deletegig = async (id) => {
+    const delgig = await axios.delete(`http://localhost:5000/api/dgigs/${id}`);
+    toast.info("Gig Deleted", {
+      position: "bottom-right",
+      theme: "dark",
+      autoClose: 5000,
+    });
+    gigdetails(user);
+  };
 
   //for date
   const dateOptions = { day: "numeric", month: "long", year: "numeric" };
@@ -80,12 +94,20 @@ export default function CreatedGigDetails() {
       key: "gigtype",
       width: "auto",
     },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      width: "auto",
-    },
+    // {
+    //   title: "Action",
+    //   key: "action",
+    //   render: (text, record) => (
+    //     <div className="flex justify-around">
+    //       <button
+    //         onClick={() => deletegig(record._id)}
+    //         className="py-1 px-2 bg-red-600 rounded-lg "
+    //       >
+    //         delete
+    //       </button>
+    //     </div>
+    //   ),
+    // },
   ];
   const data = [];
   for (let i = 0; i < gigArray.length; i++) {
@@ -144,11 +166,6 @@ export default function CreatedGigDetails() {
                   Edit Profile
                 </p>
               </Link>
-              <hr />
-              <p className="text-white  cursor-pointer hover:bg-black flex gap-2">
-                <MdPassword className="mt-1" />
-                Reset Password
-              </p>
               <hr />
             </>
           )}

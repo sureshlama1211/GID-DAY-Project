@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { FaRegSmileWink } from "react-icons/fa";
+
 import { Link } from "react-router-dom";
 import { FcAbout, FcBusinessContact } from "react-icons/fc";
 import { SiTwitter, SiFacebook } from "react-icons/si";
-import { MdNotificationsActive } from "react-icons/md";
+import { FaRegSmileWink } from "react-icons/fa";
 import axios from "axios";
-import { Dropdown, Menu } from "antd";
+
 import { SlCalender } from "react-icons/sl";
 import { AiFillSetting } from "react-icons/ai";
 import { MdPassword } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 import useUser from "../../../auth/useUser";
-import NavigationPageForViewer from "./NavigationPageForViewer";
-
-export default function DashBoardForViewer() {
+import NavigationPageForArtist from "./NavigationPageForArtist";
+import { Table } from "antd";
+export default function AppliedGigDetails() {
   const user = useUser();
   const email = user.email;
 
@@ -21,10 +21,8 @@ export default function DashBoardForViewer() {
   console.log(user);
   //for collpsable setting
   const [show, setShow] = useState(false);
-  //state for notification
+  //for cheking the booking request
 
-  /// testing
-  //get
   const [getInfoArtist, setGetInfoArtist] = useState();
   const Artistinformation = async () => {
     try {
@@ -41,25 +39,82 @@ export default function DashBoardForViewer() {
       console.log(error);
     }
   };
+
   useEffect(() => {
     Artistinformation();
   }, []);
 
-  const menu = (
-    <Menu>
-      <Menu.Item key="1">{email}</Menu.Item>
-      <Link to="/login">
-        <Menu.Item key="3">Logout</Menu.Item>
-      </Link>
-    </Menu>
-  );
+  //for getting applied gig details
+  // for getting the booking details
+  const [gigArray, setGigArray] = useState([]);
+  const gigdetails = async (user) => {
+    const gigdetail = await axios.get(
+      `http://localhost:5000/api/appliedgigdetail/${user.id}`
+    );
+    const data = gigdetail.data.gighai;
+    console.log(data, "sathi ho");
+    setGigArray(data);
+  };
+
+  useEffect(() => {
+    gigdetails(user);
+  }, []);
+
+  //
+  const columns = [
+    //
+
+    {
+      title: "Applied Gig Name",
+
+      dataIndex: "gigname",
+      key: "gigname",
+
+      width: "auto",
+    },
+    {
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
+      width: "auto",
+    },
+    {
+      title: "Genre",
+      dataIndex: "gigtype",
+      key: "gigtype",
+      width: "auto",
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      width: "auto",
+    },
+    {
+      title: "Vennue Provider's PhoneNumber",
+      dataIndex: "phone",
+      key: "phone",
+      width: "auto",
+    },
+  ];
+  const data = [];
+  for (let i = 0; i < gigArray.length; i++) {
+    data.push({
+      key: i,
+      gigname: gigArray[i].appliedGig?.gigName,
+      date: gigArray[i].appliedGig?.gigdate,
+      gigtype: gigArray[i].appliedGig?.genreNeeded,
+      status: gigArray[i]?.status,
+      phone: gigArray[i].createdBy?.phonenumber,
+    });
+  }
 
   return (
     <div className="text-center bg-[#010101]">
-      <NavigationPageForViewer />
+      <NavigationPageForArtist className="fixed inset-0 bg-black opacity-80 backdrop-blur-3xl flex justify-center pt-[20px]" />
       {/* sidebar for dashboard */}
       <div className="flex justify-between">
-        <div className="bg-[#adadb12a]  pb-[352px]  drop-shadow-2xl ">
+        <div className="bg-[#adadb12a]  pb-[270px] ">
           <h1 className="flex gap-2 mt-5 pt-[10px] font-bold animate-pulse   pl-5 pr-2 text-red-900">
             Welcome
             <FaRegSmileWink className="mt-1 animate-pulse" />
@@ -67,7 +122,13 @@ export default function DashBoardForViewer() {
           <h1 className=" pt-[10px] font-bold animate-pulse   pl-1 pr-2 text-[#BACDDB]">
             {getInfoArtist?.firstname}_{getInfoArtist?.lastname}
           </h1>
-          <hr className="mt-20" />
+          <hr className="mt-20 " />
+          <h1 className=" hover:bg-black font-medium cursor-pointer text-white  ">
+            Gig Applied Details
+          </h1>
+          <hr />
+
+          <hr className="mt-4" />
           <div className="flex gap-4 hover:bg-black ">
             <h1
               onClick={() => setShow(!show)}
@@ -81,7 +142,7 @@ export default function DashBoardForViewer() {
           <hr />
           {show && (
             <>
-              <Link to="/settingforviewer">
+              <Link to="/settingforartist">
                 <p className="text-white cursor-pointer hover:bg-black  flex gap-2">
                   <CgProfile className="mt-1" />
                   Edit Profile
@@ -91,10 +152,21 @@ export default function DashBoardForViewer() {
             </>
           )}
         </div>
-        <div>
-          <div className="pr-[400px] text-orange-700 pt-[140px]  font-extrabold  text-[30px] ">
-            WELCOME TO THE DASHBOARD
-          </div>
+        <div className="mt-5 ">
+          <h1 className="text-white font-bold text-[30px]">
+            Applied Gig Details
+          </h1>
+          <Table
+            columns={columns}
+            dataSource={data}
+            bordered={true}
+            scroll={{
+              x: 1000,
+            }}
+            pagination={{ pageSize: 6 }} // 4 rows per page
+            // onChange={onChange}
+            className="mr-10"
+          />
         </div>
       </div>
 

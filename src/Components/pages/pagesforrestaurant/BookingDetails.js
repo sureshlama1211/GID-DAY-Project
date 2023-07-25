@@ -91,15 +91,22 @@ export default function BookingDetails() {
       key: "status",
       width: "auto",
     },
+    {
+      title: "Artist's Phonenumber",
+      dataIndex: "pstatus",
+      key: "pstatus",
+      width: "auto",
+    },
   ];
   const data = [];
   for (let i = 0; i < bookingArray.length; i++) {
     data.push({
       key: i,
-      bookedTo: bookingArray[i].bookedTo.firstname,
-      date: bookingArray[i].date,
-      gigtype: bookingArray[i].gigtype,
-      status: bookingArray[i].status,
+      bookedTo: bookingArray[i].bookedTo?.firstname,
+      date: bookingArray[i]?.date,
+      gigtype: bookingArray[i]?.gigtype,
+      status: bookingArray[i]?.status,
+      pstatus: bookingArray[i]?.bookedTo?.phonenumber,
     });
   }
 
@@ -150,11 +157,6 @@ export default function BookingDetails() {
                   Edit Profile
                 </p>
               </Link>
-              <hr />
-              <p className="text-white  cursor-pointer hover:bg-black flex gap-2">
-                <MdPassword className="mt-1" />
-                Reset Password
-              </p>
               <hr />
             </>
           )}
