@@ -1,10 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import background from "../../Images/backgroundband.jpg";
 import background2 from "../../Images/download.webp";
-// import background3 from "../../Images/download1.webp";
-
 import { Link } from "react-router-dom";
 import { BsInstagram } from "react-icons/bs";
 import { SiTwitter, SiFacebook } from "react-icons/si";
@@ -12,6 +10,7 @@ import { useEffect } from "react";
 import ReactTyped from "react-typed";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/splide/dist/css/themes/splide-default.min.css";
+import Modal from "./modals/Modal";
 export default function Landingpage() {
   useEffect(() => {
     AOS.init({ duration: 1500 });
@@ -44,8 +43,8 @@ export default function Landingpage() {
   //
   const commonContent1 = (
     <div className="text-center pt-[15%]">
-      <p className="text-5xl font-kadwa font-bold text-black">GIG-DAY</p>
-      <p className="text-[23px] font-bold text-black">
+      <p className="text-5xl font-kadwa font-bold text-orange-700">GIG-DAY</p>
+      <p className="text-[23px] font-bold text-orange-700">
         <ReactTyped
           strings={["Book Musicians for live music In your Venue"]}
           typeSpeed={100}
@@ -54,40 +53,42 @@ export default function Landingpage() {
           showCursor={true}
         />
       </p>
-      <p className="text-[17px] font-bold text-black">
+      <p className="text-[17px] font-bold text-orange-700">
         Connect Restaurants and Musicians
       </p>
       <Link to="/beforesign">
-        <button className="mt-[20px] bg-white text-orange-600 rounded-xl px-4 py-2 hover:bg-black border-gray-400">
+        <button className="mt-[20px] bg-black text-orange-600 rounded-xl px-4 py-2 hover:bg-black border-gray-400">
           Join Now
         </button>
       </Link>
     </div>
   );
+  const [showModal, setShowModal] = useState(false);
+  const [showModal1, setShowModal1] = useState(false);
 
   return (
     <div className="bg-black ">
-      <div className=" flex justify-between sticky top-0 bg-gray-300 bg-opacity-90  z-10">
+      <div className=" flex justify-between sticky top-0 bg-black bg-opacity-90  z-10">
         <div>
           <img
             alt="photooflanding"
-            className="h-[12vh] w-auto  "
-            src={require("../../Images/gig.png")}
+            className="h-[10vh] w-auto  "
+            src={require("../../Images/footerlogo.png")}
           />
         </div>
         <div className="flex pt-[28px] gap-20">
           <Link to="/login">
-            <p className="  hover:border-orange-600 hover:border-b-2  cursor-pointer  font-bold text-[15px]  items-center text-center text-black ">
+            <p className="  hover:border-orange-600 hover:border-b-2  cursor-pointer  font-bold text-[15px]  items-center text-center text-white ">
               Find Artists
             </p>
           </Link>
           <Link to="/login">
-            <p className=" hover:border-orange-600 hover:border-b-2  cursor-pointer font-bold text-[15px]   items-center text-center text-black ">
+            <p className=" hover:border-orange-600 hover:border-b-2  cursor-pointer font-bold text-[15px]   items-center text-center text-white ">
               Find Gigs
             </p>
           </Link>
           <Link to="/login">
-            <p className="  hover:border-orange-600 hover:border-b-2  cursor-pointer  font-bold text-[15px]  items-center text-center text-black  ">
+            <p className="  hover:border-orange-600 hover:border-b-2  cursor-pointer  font-bold text-[15px]  items-center text-center text-white  ">
               Find Shows
             </p>
           </Link>
@@ -95,14 +96,14 @@ export default function Landingpage() {
         <div className="flex  space-x-10 items-center mr-[20px]">
           <Link to="/login">
             <button
-              className="border-white font-semibold hover:bg-orange-600 px-2 hover:rounded-xl py-1 text-[15px]"
+              className="border-white font-semibold hover:bg-orange-600 px-2 hover:rounded-xl py-1 text-[15px] text-white"
               size="medium"
             >
               Log In
             </button>
           </Link>
           <Link to="/beforesign">
-            <button className="border-white font-semibold text-[15px] hover:bg-orange-600 px-2 py-1 hover:rounded-xl  ">
+            <button className="border-white font-semibold text-[15px] hover:bg-orange-600 px-2 py-1 hover:rounded-xl text-white ">
               Sign Up
             </button>
           </Link>
@@ -111,9 +112,12 @@ export default function Landingpage() {
 
       <Splide
         options={{
-          type: "fade", // Use fade for smooth transitions
+          type: "loop", // Use fade for smooth transitions
           perPage: 1,
-          interval: 5000,
+          interval: 4000,
+          autoplay: true,
+          arrows: false,
+          pagination: false,
         }}
       >
         <SplideSlide>
@@ -212,21 +216,29 @@ export default function Landingpage() {
             <img
               alt="photooflanding"
               className="h-[12vh] w-auto  "
-              src={require("../../Images/gig.png")}
+              src={require("../../Images/footerlogo.png")}
             />
           </div>
           <div>
             <h1 className=" font-bold  text-white cursor-pointer hover:text-orange-600">
               Company
             </h1>
-            <h3 className="text-white font-light cursor-pointer">About Us</h3>
+            <h3
+              className="text-white font-light cursor-pointer"
+              onClick={() => setShowModal(true)}
+            >
+              About Us
+            </h3>
             <h3 className="text-white font-light cursor-pointer">Blog</h3>
           </div>
           <div>
             <h1 className="text-white font-bold hover:text-orange-600 cursor-pointer">
               Event Planners
             </h1>
-            <h3 className="text-white font-light cursor-pointer">
+            <h3
+              className="text-white font-light cursor-pointer"
+              onClick={() => setShowModal1(true)}
+            >
               How it Works
             </h3>
           </div>
@@ -247,28 +259,139 @@ export default function Landingpage() {
           </div>
         </div>
       </div>
-      {/* <div className="flex justify-between  pt-3 pb-3 bg-[#E3EDEE] mt-5">
-        <div className=" ml-4 flex gap-6">
-          <p className="text-[12px] flex gap-1 font-semibold cursor-pointer hover:text-[#A75D5D]">
-            About Us
-            <FcAbout className="mt-0.5 text-lg" />
-          </p>
-          <p className="text-[12px] flex gap-1 font-semibold cursor-pointer hover:text-[#A75D5D]">
-            Contact
-            <FcBusinessContact className="mt-0.5 text-lg " />
-          </p>
-        </div>
-        <div className="mr-5 flex gap-6">
-          <p className="text-[12px] flex gap-1 font-semibold cursor-pointer hover:text-[#A75D5D]">
-            <SiTwitter className="mt-0.5 text-lg" />
-            Twitter
-          </p>
-          <p className="text-[12px] flex gap-1 font-semibold cursor-pointer hover:text-[#A75D5D]">
-            <SiFacebook className="mt-0.5 text-lg" />
-            Facebook
-          </p>
-        </div>
-      </div> */}
+      {/* modal for about us */}
+      <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
+        <h1 className="text-[30px] text-black text-center">About Us</h1>
+        <p className="text-black">
+          Welcome to NepalGroove? - A Journey of Solo Innovation Greetings and a
+          warm embrace to all our esteemed visitors! We are thrilled to have you
+          here at NepalGroove, a project that bears the heart and soul of a
+          passionate individual - me! A Personal Quest: During my final year, as
+          the world around me buzzed with excitement and anticipation, I
+          embarked on a personal quest to leave a lasting mark on the digital
+          landscape. Fuelled by an insatiable curiosity and a love for
+          technology, I set out to build something extraordinary - a website
+          that would be a testament to my skills, knowledge, and unwavering
+          determination. A Journey of Passion: The journey of crafting this
+          website was more than just lines of code; it was an odyssey of passion
+          and creativity. Every late-night session and every hurdle I overcame
+          made me believe in the beauty of solo innovation. I poured my heart
+          into every pixel, every line of code, and every design element,
+          ensuring that this platform would resonate with its visitors in a
+          meaningful way. The Purpose and Vision: NepalGroove was born from my
+          desire to create a space where the restuarants can be able to seek the
+          new and talented bands from this platform to perform into their venue
+          also the band can seek and apply for the available gig published by
+          the restaurantes. This platform holds a special place in my heart, and
+          I truly believe it has the power to make a positive impact on the
+          lives of those who visit it. Challenges and Triumphs: The journey was
+          not without its challenges. I encountered roadblocks that tested my
+          resolve and demanded innovative solutions. But with unwavering
+          determination, I embraced these challenges as opportunities for
+          growth. Every triumph over a hurdle reaffirmed my belief in the
+          potential of one individual's dedication. Gratitude and
+          Acknowledgments: I would be remiss if I didn't express my heartfelt
+          gratitude to the mentors, professors, and friends who supported and
+          guided me throughout this endeavor. Their encouragement and wisdom
+          were invaluable, propelling me forward when the path seemed uncertain.
+          Join the Journey: As we set forth on this journey of solo innovation,
+          I invite you, our esteemed visitors, to explore NepalGroove and
+          immerse yourself in the passion and dedication that gave it life. Your
+          feedback, suggestions, and support are the pillars that will
+          strengthen this platform and shape its future. Thank you for being a
+          part of this extraordinary adventure. Together, let's pave the way for
+          innovation, one keystroke at a time. With heartfelt gratitude,
+          <br /> Suresh Lama Founder & Creator, NepalGroove
+        </p>
+      </Modal>
+
+      {/* modal for how it wokrs */}
+      <Modal isVisible={showModal1} onClose={() => setShowModal1(false)}>
+        <h1 className="text-[30px] text-black text-center">NepalGroove</h1>
+        <p className="text-black">
+          Sign Up and Profile Creation:
+          <br />
+          1.Restaurants and Musicians interested in live music gigs can sign up
+          on NepalGroove by providing basic information and creating a profile.
+          <br />
+          2.Restaurants will specify their venue details, preferred genres,
+          available dates, and any other relevant information.
+          <br />
+          3.Musicians will create profiles showcasing their talents, genre
+          preferences, performance videos, and availability.
+          <br />
+          Browse and Search:
+          <br />
+          1.Restaurants can browse through a curated list of talented musicians
+          registered on the platform.
+          <br />
+          2.Musicians can explore a list of restaurants that offer live music
+          gigs, filtered by location, genre, and available dates.
+          <br />
+          Posting Gigs:
+          <br />
+          1.Restaurants can create gig postings, detailing the date, time,
+          genre, and any specific requirements for the performance.
+          <br />
+          2.Restaurants may include information about payment terms, sound
+          equipment availability, and any additional perks they offer to
+          musicians.
+          <br />
+          Applying for Gigs:
+          <br />
+          1.Musicians can browse through available gig postings and apply for
+          the ones that match their genre and availability.
+          <br />
+          2.When applying, musicians can provide a brief introduction, links to
+          their previous performances, and any other relevant information.
+          <br />
+          Review and Selection:
+          <br />
+          1.Restaurants have access to musicians' profiles and previous
+          performances, helping them evaluate applicants.
+          <br />
+          2.Musicians are notified of their selection status, and once selected,
+          they can confirm their participation.
+          <br />
+          Coordination and Communication:
+          <br />
+          1.NepalGroove provides a messaging platform for restaurants and
+          musicians to communicate and discuss gig details.
+          <br />
+          2.Restaurants and musicians can discuss performance logistics, sound
+          arrangements, and any other necessary arrangements.
+          <br />
+          Live Performances:
+          <br />
+          1.On the scheduled date, the musician performs live at the restaurant,
+          enhancing its ambiance and attracting customers.
+          <br />
+          2.The restaurant provides the agreed-upon payment and any additional
+          perks promised in the gig posting.
+          <br />
+          Feedback and Ratings:
+          <br />
+          1.After the gig, both parties can provide feedback and ratings to each
+          other, helping build a reliable and credible community.
+          <br />
+          Repeat Engagements:
+          <br />
+          1.Restaurants and musicians can build lasting relationships through
+          the platform, leading to future gig opportunities.
+          <br />
+          2.NepalGroove fosters a vibrant community of live music enthusiasts,
+          promoting talent and enriching the restaurant experience.
+          <br />
+          Support and Assistance:
+          <br />
+          1.NepalGroove offers customer support to address any issues or queries
+          from restaurants or musicians promptly.
+          <br />
+          2.The platform continuously improves its features based on user
+          feedback to ensure a seamless experience for all users.
+          <br />
+        </p>
+      </Modal>
     </div>
   );
 }
